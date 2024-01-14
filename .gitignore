@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /client/package-lock.json
+/user_files
 
 # testing
 /coverage
