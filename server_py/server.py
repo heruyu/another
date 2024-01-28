@@ -139,12 +139,12 @@ def upload():
 def search():
     word = request.json["word"]
     i = 1
-    temp = {}
-    for x in table_in.find({}, {"_id":0, "basename": 1, "main title": 1, "keywords":1,"summary":1}): 
-        # print(x)
+    temp = {"word":word}
+    for x in table_in.find({"keywords":word}, {"_id":0, "basename": 1, "main title": 1, "keywords":1,"summary":1}): 
         temp = {**temp,**{i:x}}
         i=i+1
-    return temp
+
+    return json.dumps(temp,indent=4)
 
 @app.route("/filetree", methods=["POST","GET"])
 def filetree():

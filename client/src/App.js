@@ -27,9 +27,7 @@ function App() {
             <div>
               <Upload></Upload>
             </div>
-            <div>
-              <FileTree></FileTree>
-            </div>
+            <div>{/* <FileTree></FileTree> */}</div>
           </div>
         </div>
       </div>
