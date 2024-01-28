@@ -1,0 +1,7 @@
+\contentsline {section}{Wstęp}{3}{}%
+\contentsline {section}{\numberline {1}Zagadnienia teoretyczne}{4}{}%
+\contentsline {section}{\numberline {2}Implementacja}{5}{}%
+\contentsline {subsection}{\numberline {2.1}Struktura aplikacji}{5}{}%
+\contentsline {subsection}{\numberline {2.2}Architektura systemu}{5}{}%
+\contentsline {section}{\numberline {3}Scenariusze wykorzystania aplikacji}{6}{}%
+\contentsline {section}{Podsumowanie i wnioski}{7}{}%
