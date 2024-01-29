@@ -47,18 +47,20 @@ Podejście ekstraktywne polega na wybraniu najważniejszych zdań z całego doku
 \newpage
 %% ########################################################
 \subsection{Tworzenie aplikacji webowych}
-W proces tworzenia aplikacji wchodzi wiele elementów. Na samym poziomie koncepcyjnym jest wiele do przemyślenia
+W proces tworzenia aplikacji wchodzi wiele elementów. Wybór odpowiednich narzędzi jest jednym nich. 
 %% ########################################################
 \section{Implementacja}
 \subsection{Projekt systemu}
 System ma na celu ułatwienie przechowywania plików zawierających informacje. Pliki, po dostarczeniu przez użytkownika, są przenoszone do dedykowanego folderu aplikacji. Sprawdzany jest typ pliku i zgodnie z nim wykonywane są inne akcje. Dla plików o rozszeżeniu pdf pobierana jest zawartość i z niej powstaje streszczenie i słowa klucze. Potem wszystkie informacje umieszczane są w bazie danych tak, aby użytkownik mógł wyszukać z użyciem aplikacji dany pliki. \par
 %% ########################################################
 \subsection{Struktura aplikacji}
+(kiedy zaczynałam apke to robiłam ją z templatki electron+react (link) do której dokleiłam server python)
 Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.
 \subsubsection*{Javascript React}
 Jest to biblioteką pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu. Pozwala to na reakcje na zmiany wywołane przez użytkownika lub sam system i przy tym automatyczne aktualizowanie tych stron. React używa składni JSX (\textit{Javascript XML}), który jest rozszerzeniem składni Javascript. Integruje ona kod Javascript z deklaratywnym opisem struktury interfejsu.
 \subsubsection*{Python Flask}
-Od wybranego frameworku obsługującego serwer HTTP 
+Na potrzeby tego projektu, mikroserwis jakim jest flask, jest wystarczający do zaprezentowania idei aplikacji. Jest on elastyczny i prosty w urzytkowaniu. Najważniejszą jego cechą, z punktu widxenia tej pracy jest fakt, że jest on biblioteką języka python. W pierwszej fazie testów używanych algorytmów, były one tworzone z pomocą tego języka. Python jest językiem często używanym w szerokim spektrum tematu jakim jest sztuczna inteligencja.\par
+Obsługa serweru HTTP poprzez moduł \textit{Flask} jest dokonywana z użyciem dekoratorów. Dekoratory te definiują \textit{routes} na jakie odpowiada dana funkcja. Pisanie takiej funkcji jest ograniczone jedynie poprzez strukturę odpowiedzi zwrotnej (return function). Funkcja musi zwrócić obiekt, któy jest w stanie przejść przez komunikat HTTP (nwm jak to nazwać inaczej, musi się dać przenieść). Tutaj serwer jest traktowany jako narzędzie umożliwiające kożystanie z bibliotek języka python. W innych sytuacjach, kiedy tworzenie aplikacji jest robione całkowicie w pythonie, możliwe jest tworzenie templatek do których dodawane są wartości z funkcji. (lol dokumentacja)
 \begin{figure}[h!]
 \centering
   \includegraphics{img/file_structure.jpg}
