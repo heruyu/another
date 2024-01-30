@@ -4,7 +4,7 @@ const SERVER_URL = "http://127.0.0.1:5000";
 // CONNECTION_STRING = "mongodb://localhost:27017";
 
 function SearchBar() {
-  const [ResFiles, setResFiles] = useState([{}]);
+  const [ResFiles, setResFiles] = useState([]);
   const handleSearch = () => {
     const searchword = document.getElementById("search").value;
     const sendWord = { word: searchword };
@@ -15,7 +15,7 @@ function SearchBar() {
         })
         .then((response) => {
           // console.log(response.data.all);
-          setResFiles(response.data);
+          setResFiles(response.data.all);
         })
         .catch((err) => {
           console.log(err);
@@ -38,16 +38,26 @@ function SearchBar() {
       >
         search
       </button>
-      <div>{View(ResFiles[1])}</div>
+      <div>
+        {Object.entries(ResFiles).map(([key, value]) => View(ResFiles[key]))}
+      </div>
     </>
   );
 }
 
 function View(record) {
   if (record) {
+    const keywords = record.keywords.map((keyword) => (
+      <div className="flex-auto bg-slate-500 my-1 p-1">{keyword}</div>
+    ));
     return (
       <>
-        <h2>{record.basename}</h2>
+        <div className="rounded bg-neutral-700 px-6 pb-2 pt-2.5 my-2 text-white grid grid-cols-2">
+          <div className="w-3/4">
+            <h2>{record["main title"]}</h2>
+          </div>
+          <div className="uppercase text-xs">{keywords}</div>
+        </div>
       </>
     );
   }

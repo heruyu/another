@@ -1,7 +1,18 @@
 \contentsline {section}{Wstęp}{3}{}%
 \contentsline {section}{\numberline {1}Zagadnienia teoretyczne}{4}{}%
+\contentsline {subsection}{\numberline {1.1}Problem tworzenia streszczeń}{4}{}%
+\contentsline {subsection}{\numberline {1.2}Tworzenie aplikacji webowych}{5}{}%
+\contentsline {subsection}{\numberline {1.3}Ekstrakcja słów z plików pdf}{5}{}%
 \contentsline {section}{\numberline {2}Implementacja}{5}{}%
-\contentsline {subsection}{\numberline {2.1}Struktura aplikacji}{5}{}%
-\contentsline {subsection}{\numberline {2.2}Architektura systemu}{5}{}%
-\contentsline {section}{\numberline {3}Scenariusze wykorzystania aplikacji}{6}{}%
-\contentsline {section}{Podsumowanie i wnioski}{7}{}%
+\contentsline {subsection}{\numberline {2.1}Projekt systemu}{5}{}%
+\contentsline {subsection}{\numberline {2.2}Struktura aplikacji}{5}{}%
+\contentsline {subsection}{\numberline {2.3}Architektura systemu}{7}{}%
+\contentsline {subsection}{\numberline {2.4}Scenariusze wykorzystania aplikacji}{8}{}%
+\contentsline {subsection}{\numberline {2.5}Testy funkcjonalne}{10}{}%
+\contentsline {subsection}{\numberline {2.6}TEMP Idealna aplikacja}{10}{}%
+\contentsline {section}{\numberline {3}Możliwości rozwoju i wykorzystania aplikacji}{10}{}%
+\contentsline {subsection}{\numberline {3.1}Przetwarzanie obrazów}{10}{}%
+\contentsline {subsection}{\numberline {3.2}Rozbudowanie funkcjonalności dla plików bazodanowych}{10}{}%
+\contentsline {subsection}{\numberline {3.3}Przejście na wersje web}{10}{}%
+\contentsline {section}{Podsumowanie i wnioski}{10}{}%
+\contentsline {section}{Spis Rysunków}{10}{}%

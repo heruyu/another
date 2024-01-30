@@ -112,7 +112,7 @@ def upload():
                                         top=num_keywords, features=None)
         
         keywords = kw_extract.extract_keywords(res)
-        tags = [kw[0] for kw in keywords]
+        tags = [kw[0].lower() for kw in keywords]
         main_title = tags[0]
         parser = PlaintextParser.from_string(res,Tokenizer("english"))
         summarizer = TextRankSummarizer()
@@ -137,14 +137,14 @@ def upload():
     
 @app.route("/search_view", methods=["GET", "POST"])
 def search():
-    word = request.json["word"]
+    word = request.json["word"].lower()
     i = 1
-    temp = {"word":word}
+    temp = {}
     for x in table_in.find({"keywords":word}, {"_id":0, "basename": 1, "main title": 1, "keywords":1,"summary":1}): 
         temp = {**temp,**{i:x}}
         i=i+1
-
-    return json.dumps(temp,indent=4)
+    res = {"word":word,"all":temp}
+    return json.dumps(res,indent=4)
 
 @app.route("/filetree", methods=["POST","GET"])
 def filetree():
