@@ -16,3 +16,4 @@
 \contentsline {subsection}{\numberline {3.3}Przejście na wersje web}{10}{}%
 \contentsline {section}{Podsumowanie i wnioski}{10}{}%
 \contentsline {section}{Spis Rysunków}{10}{}%
+\contentsline {section}{Bibliografia}{10}{}%

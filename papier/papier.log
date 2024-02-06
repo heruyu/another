@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.4)  29 JAN 2024 22:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.12) (preloaded format=pdflatex 2023.1.4)  30 JAN 2024 20:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -270,48 +270,60 @@ GH.jpg>] (papier.toc)
 \tf@toc=\write3
 \openout3 = `papier.toc'.
 
- [2] [3] [4] [5]
+ [2] [3]
+
+LaTeX Warning: Citation `ELKASSAS2021113679' on page 4 undefined on input line 
+48.
+
+[4] [5]
 <img/file_structure.jpg, id=23, 222.8325pt x 395.22656pt>
 File: img/file_structure.jpg Graphic file (type jpg)
 <use img/file_structure.jpg>
-Package pdftex.def Info: img/file_structure.jpg  used on input line 68.
+Package pdftex.def Info: img/file_structure.jpg  used on input line 73.
 (pdftex.def)             Requested size: 222.83195pt x 395.22559pt.
- [6 <./img/file_structure.jpg>] [7]
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[6] [7 <./img/file_structure.jpg>]
 <img/file_add_pl.png, id=31, 602.9727pt x 307.1475pt>
 File: img/file_add_pl.png Graphic file (type png)
 <use img/file_add_pl.png>
-Package pdftex.def Info: img/file_add_pl.png  used on input line 89.
+Package pdftex.def Info: img/file_add_pl.png  used on input line 94.
 (pdftex.def)             Requested size: 426.79135pt x 217.40137pt.
-
-[8 <./img/file_add_pl.png>]
+ [8 <./img/file_add_pl.png>]
 <img/file_search.png, id=36, 526.6074pt x 307.1475pt>
 File: img/file_search.png Graphic file (type png)
 <use img/file_search.png>
-Package pdftex.def Info: img/file_search.png  used on input line 103.
+Package pdftex.def Info: img/file_search.png  used on input line 108.
 (pdftex.def)             Requested size: 426.79135pt x 248.9334pt.
  [9 <./img/file_search.png>]
-Overfull \hbox (3.398pt too wide) in paragraph at lines 117--117
+Overfull \hbox (3.398pt too wide) in paragraph at lines 124--124
 []\OT4/cmr/bx/n/14.4 Rozbudowanie funk-cjo-nal-no-±ci dla pli-ków ba-zo-da-no-w
 ych 
  []
 
-No file papier.lof.
+(papier.lof)
 \tf@lof=\write4
 \openout4 = `papier.lof'.
 
-[10] (papier.aux) )
+ (papier.bbl) [10] (papier.aux)
+
+LaTeX Warning: There were undefined references.
+
+ )
 (\end occurred inside a group at level 1)
 
 ### semi simple group (level 1) entered at line 8 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 2709 strings out of 476406
- 49336 string characters out of 2789568
+ 2725 strings out of 476406
+ 49640 string characters out of 2789568
  1855787 words of memory out of 3000000
- 23033 multiletter control sequences out of 15000+600000
+ 23044 multiletter control sequences out of 15000+600000
  520783 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,7n,77p,730b,808s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 72i,7n,77p,730b,809s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/monik/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/p
 l/plit.enc}{C:/Users/monik/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plr
 m.enc}<C:/Users/monik/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plbx1
@@ -320,7 +332,7 @@ m.enc}<C:/Users/monik/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plbx1
 .pfb><C:/Users/monik/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plss17
 .pfb><C:/Users/monik/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/plti12
 .pfb>
-Output written on papier.pdf (10 pages, 243465 bytes).
+Output written on papier.pdf (10 pages, 247385 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

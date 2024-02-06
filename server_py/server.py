@@ -11,6 +11,8 @@ from pdfminer.layout import LAParams
 from pdfminer.converter import PDFResourceManager, PDFPageAggregator
 from pdfminer.pdfpage import PDFPage
 from pdfminer.layout import LTTextBoxHorizontal
+from pdfminer.pdfparser import PDFParser, PDFSyntaxError
+from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines
 from flask_cors import CORS
 import yake
 import sumy
@@ -32,6 +34,7 @@ import json
 import contextlib
 from pathlib import Path
 import seedir
+import re
 
 CONNECTION_STRING = "mongodb://localhost:27017"
 client = MongoClient(CONNECTION_STRING)
@@ -88,19 +91,12 @@ def upload():
                 if isinstance(element, LTTextBoxHorizontal):
                     res=res+element.get_text()
 
-        # checking the pdf file contents
-        # with open('../user_files/temp.txt', 'w') as f:
-        #     f.write(res.encode('ascii',errors='replace').decode('ascii'))
+        res = re.sub(r"-\s",'',res) #hyphens
 
-        # parser = PDFParser(t_file)
-        # document = PDFDocument(parser)
-        # outlines = document.get_outlines()
-        # if outlines:
-        #     t = [title for (level,title,des,a,se) in outlines]
-
-        
-        
-        # print(main_title, file=sys.stderr)
+        #ligatures
+        lig = {'\uFB00':"ff",'\uFB01':"fi",'\uFB02':"fl",'\uFB03':"ffi",'\uFB04':"ffl",'\uFB06':"st"}
+        for x,y in lig.items():
+            res = re.sub(x,y,res)
 
         #tags
         lang = "en"
@@ -108,19 +104,37 @@ def upload():
         deduplication_treshold = 0.5
         num_keywords = 6
         kw_extract = yake.KeywordExtractor(lan=lang,n=max_ngram_size,
-                                        dedupLim=deduplication_treshold, 
-                                        top=num_keywords, features=None)
+                                           dedupLim=deduplication_treshold, 
+                                           top=num_keywords, features=None)
         
         keywords = kw_extract.extract_keywords(res)
         tags = [kw[0].lower() for kw in keywords]
-        main_title = tags[0]
+        main_title = basename
+
+        # checking the pdf file contents
+        with open('../user_files/temp.txt', 'w') as f:
+            f.write(res.encode('ascii',errors='replace').decode('ascii'))
+        f.close()
+
+        parser = PDFParser(t_file)
+        document = PDFDocument(parser)
+        
+        try:
+            outlines = document.get_outlines()
+            t = [title for (level,title,des,a,se) in outlines]
+            main_title = t[0]
+        except PDFNoOutlines:
+            pass
+        
+        # print(main_title, file=sys.stderr)
+
         parser = PlaintextParser.from_string(res,Tokenizer("english"))
         summarizer = TextRankSummarizer()
         summary =summarizer(parser.document,2)
         text_summary=""
 
         for sentence in summary:
-            text_summary+=str(sentence)
+            text_summary=text_summary+" "+str(sentence)
         
         insert = {"_id":str(ObjectId()),
                   "basename":basename,
