@@ -5,7 +5,8 @@
 \usepackage{graphicx}
 \usepackage{lipsum}
 \usepackage{setspace}
-\spacing{1.5}
+\usepackage{xcolor}
+\spacing{1.15}
 \setlength{\parindent}{1.25cm}
 %% ########################################################
 \begin{document}
@@ -35,7 +36,7 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-W czasach przeciążonych informacją, 
+{\color{blue}{(Tutaj niedługo powstanie wstęp)}}\par
 \subsection*{Cel i zakres projektu}
 Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkownikowi proces zbierania i segregowania informacji. Poniższa praca skupi się na ogólnym koncepcie aplikacji oraz szczegółowym opisie implementacji modułu tworzącego streszczenia.
 \newpage
@@ -43,7 +44,7 @@ Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkown
 \section{Zagadnienia teoretyczne}
 %% ########################################################
 \subsection{Problem tworzenia streszczeń}
-(JA TUTAJ ROBIĘ NIENADZOROWANY TEXTRANK JAK COŚ)\\
+%%(JA TUTAJ ROBIĘ NIENADZOROWANY TEXTRANK JAK COŚ)\\
 Streszczenie w każdej pracy naukowej jest jej ważną częścią. Osoby poszukujące informacji na dany temat nie są w stanie przetworzyć ilości dostępnych informacji. Ma ono na celu przekazać kluczowe informacje o czytanym dokumencie, aby czytelnik mógł ocenić czy dany artykuł zawiera informacje mu przydatne. \par
 W kontekście uczenia maszynowego kondensowanie treści, w celu stworzenia kontekstu, opiera się o obliczanie poziomu istotności dla każdego zdania. \cite{MUTLU2020102359}. Automatyzacja tego procesu dąży do ułatwienia autorom tworzenia prac, poprzez skrócenie czasu, którego wymaga kreacja abstraktu. Systemy ATS (ang. \textit{Automatic Text Summarization}) są jednym z cięższych wyzwań sztucznej inteligencji, dotyczących przetwarzania języka naturalnego \cite{ELKASSAS2021113679}. Podejścia do tworzenia tych systemów, możemy podzielić na ekstraktywane, abstrakcyjne i hybrydowe. 
 \subsubsection{Metody ekstraktywne a abstrakcyjne}
@@ -58,28 +59,29 @@ Jednymi z pierwszych metod ewaluacji automatycznej były metryki takie jak podob
 Tymczasem \textit{ROUGE-L} jest wyznaczana na podstawie porównania najdłuższych wspólnych sekwencji słów w zdaniach, występujących w streszczeniu wygenerowanym i wzorcowym. \textit{ROUGE-S} działa na tej samej zasadzie co \textit{ROUGE-2} lecz uwzględnia w swoim działaniu struktury skip-bigram, który jest rozszerzeniem definicji bigramów o możliwość zawierania w sobie maksymalnie jednego przedimka.
 %% ########################################################
 \subsection{Tworzenie aplikacji webowych}
-W proces tworzenia aplikacji wchodzi wiele elementów. Wybór odpowiednich narzędzi jest jednym nich. 
+{\color{blue}{(pomysł)}}\par
 %% ########################################################
 \subsection{Ekstrakcja tekstu plików PDF}
 Pliki PDF są powszechnie przyjętym standardem przechowywania informacji. Format PDF jest oparty o strukturę binarnego formatu plików, zoptymalizowanego pod kątem wysokiej wydajności odczytu wizualnego. Zawierają w sobie informacje o strukturze dokumentu, takie jak zawartość tekstowa, grafiki czy użyta czcionka. Są one zoptymalizowane pod drukowanie. Niezaszyfrowane PDF mogą być w całości reprezentowane z użyciem wartości bitowych, odpowiadających części zbioru znaków zdefiniowanego w \textit{ANSI X3.4-1986}, symbole kontrolne oraz puste znaki. Wizualnie jednak nie są one ograniczone do zbioru znaków ASCII.\par
 Format PDF separuje informacje dotyczące samego znaku a jego wizualną reprezentacją. Jest to rozróżnienie na znak pisarski i glif, gdzie grafem jest jednostką tekstu a glif, jednostką graficzną. Glif informuje o położeniu znaków na stronie dokumentu, jego czcionce i innych elementach wyglądu. \par
 Otrzymanie zawartości pliku może być wykonane za pomocą wydobycia elementów PDF z strumienia pliku lub z użyciem analizy obrazów, na przykład technologi optycznego rozpoznawania znaków OCR (\textit{ang. Optical Character Recogintion}). 
-Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do edytowania czy wyszukiwania. Techniki oparte o analizę obrazów są bezpośrednio zależne od jakości wprowadzonego elementu. OCR będzie skuteczny w sytuacji gdzie plik zawiera w sobie jedynie tekst i jest obrazem binarnym \cite{mithe2013optical}. \par
+Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do edytowania czy wyszukiwania. Techniki oparte o analizę obrazów są bezpośrednio zależne od jakości wprowadzonego elementu. Idealną sytuacją dla wykożystania metod OCR jest kiedy posiadany plik zawiera w sobie jedynie tekst i jest obrazem binarnym \cite{mithe2013optical}. Dodatkowym atutem takich systemów jest możliwość wykrycia pisma i konwersja na tekst.\par
 Ekstrahowanie danych z strumienia pliku, wiąże się z kilkoma problemami. Biorąc pod uwagę możliwość że plik pdf może posiadać różne kodowanie takie jak \textit{UTF-8}, \textit{ASCII} czy \textit{Unicode}, możemy doświadczyć utraty informacji spowodowanej schematem kodowania pliku. Automatyczna ekstrakcja zawartości polega na selekcji znaków znajdujących się pomiędzy zdefiniowanymi słowami kluczowymi. Pliki PDF są przystosowane do drukowania, z tego powodu reprezentacja tekstu w strumieniu może się znacząco różnić od tej na stronie. Ponieważ pozycje znaków na poszczególnych stronach są absolutne, przedstawienie w strumieniu bierze pod uwagę spacje między elementami.\par
 Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie ich poprawności względem dokumentu wejściowego. Brak formalnej definicji struktury, przynajmniej jeżeli chodzi o artykuły naukowe, uniemożliwia stworzenie uniwersalnego algorytmu ekstrakcji.
 \newpage
 \section{Implementacja}
 \subsection{Projekt systemu}
-Aplikacja została zaprojektowana z myślą o użytkownikach będących w posiadaniu dużej ilości plików z danymi. Głównym celem jest automatyzacja procesu segregowania i przetwarzania informacji. System etykietuje otrzymane pliki poprzez ekstrakcje słów kluczowych (pliki zawierające tekst) i daje możliwość wyszukiwania plików w bardziej optymalny sposób. Otrzymane dokumenty są kategoryzowane ze względu na słowa klucze. Po otrzymaniu elementów o podobnej strukturze i zawartości, są one łączone ze sobą. Informacja o takim połączeniu jest umieszczana w bazie danych, tak aby przy odczycie jednego z elementów, drugi był sugerowany jako następny plik do wyświetlenia. \par
+Aplikacja została zaprojektowana z myślą o użytkownikach będących w posiadaniu dużej ilości plików z danymi. Głównym celem jest automatyzacja procesu segregowania i przetwarzania informacji. System etykietuje otrzymane pliki poprzez ekstrakcje słów kluczowych i daje możliwość wyszukiwania plików w bardziej optymalny sposób. Otrzymane dokumenty są kategoryzowane ze względu na słowa klucze. Po otrzymaniu elementów o podobnej strukturze i zawartości, są one łączone ze sobą. Informacja o takim połączeniu jest umieszczana w bazie danych, tak aby przy odczycie jednego z elementów, drugi był sugerowany jako następny plik do wyświetlenia. \par
 %% ########################################################
 \subsection{Struktura aplikacji}
 Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.
 \subsubsection{Javascript React}
 Jest to biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu. Pozwala to na reakcje na zmiany wywołane przez użytkownika lub sam system i przy tym automatyczne aktualizowanie tych stron. React używa składni JSX (\textit{Javascript XML}), który jest rozszerzeniem składni Javascript. Integruje ona kod Javascript z deklaratywnym opisem struktury interfejsu.
 \subsubsection{Python Flask}
-Flask to lekki i elastyczny framework, pozwalający na szybkie tworzenie aplikacji internetowych przy minimalnej ilości kodu. Dostarcza on jedynie niezbędne narzędzia, stawiając tym na dużą swobodę implementacji innych funkcji. \par
-PRZEPISAĆ [Najważniejszą jego cechą, z punktu widzenia tej pracy jest fakt, że jest on biblioteką języka python. W pierwszej fazie testów używanych algorytmów, były one tworzone z pomocą tego języka. Python jest językiem często używanym w szerokim spektrum tematu, jakim jest sztuczna inteligencja. Tutaj serwer jest traktowany jako narzędzie umożliwiające kożystanie z bibliotek języka python.]\par
-Funkcja serwera jest uruchamiana w sytuacji gdy na podany adres URL zostanie wysłany komunikat. Informacja o aktywującym adresie jest przekazywana z użyciem dekoratora \textit{.route()}. Rysunek X przedstawia przykład takiego wywołania.
+Flask to lekki i elastyczny framework, pozwalający na szybkie tworzenie aplikacji internetowych przy minimalnej ilości kodu. Dostarcza on jedynie niezbędne narzędzia, stawiając tym na dużą swobodę implementacji innych funkcji. 
+Funkcja serwera jest uruchamiana w sytuacji gdy na podany adres URL zostanie wysłany komunikat. Informacja o aktywującym adresie jest przekazywana z użyciem dekoratora \textit{.route()}. Rysunek X przedstawia przykład takiego wywołania.\par
+Jedną z możliwość tej biblioteki jest generowanie plików strony jako wynik końcowy działania funkcji. Kożystamy w takiej sytuacji z metody \textit{render\_template()}, która otrzymuje na wejściu uprzednio utworzony szablon HTML.\par 
+Implementacja serwera z pomocą pakietu Flask umożliwia kożystanie z szerokiego spektrum bibliotek dotyczących sztucznej inteligencji.
 \begin{figure}[h!]
 \centering
   \includegraphics[width=\textwidth]{img/flask.jpg}
@@ -88,20 +90,28 @@ Funkcja serwera jest uruchamiana w sytuacji gdy na podany adres URL zostanie wys
 \subsubsection{Electron}
 Biblioteka Electron jest projektem open-source umożliwiającym tworzenie aplikacji natywnych używając technologii web. Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji kontekstu. Izolacja kontekstu odpowiada za separację procesu renderowania strony od głównego procesu aplikacji w środowisku Node.js. Zwiększa to bezpieczeństwo aplikacji, negując możliwość dostępu do użytych API z strony. \par
 System posiada jeden główny proces \textit{``main''}, którego celem jest tworzenie aplikacji i kierowanie podprocesami, oraz wiele procesów odpowiedzialnych za renderowanie zawartości strony zwanych procesami \textit{``renderer''}. Biblioteka umożliwia również dodanie skryptów, które działają przed renderowaniem strony (ang. \textit{preload scripts}). Otrzymują one dodatkowe możliwości w porównaniu plików \textit{renderer}, poprzez posiadanie uprawnień do korzystania z Node.js APIs. Mogą one bezpiecznie udostępnić części API dla procesów strony.
-\begin{figure}[h!]
-\centering
-  \includegraphics{img/file_structure.jpg}
-  \caption{Uogólniona struktura projektu}
-\end{figure}
-\newpage
+%\begin{figure}[h!]
+%\centering
+%  \includegraphics{img/file_structure.jpg}
+%  \caption{Uogólniona struktura projektu}
+%\end{figure}
+%\newpage
 %% ########################################################
 \subsection{Architektura systemu} %omg electron+react+flask
-\subsubsection*{Baza danych}
+Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o protokół HTTP. Serwer w odpowiedzi na zwraca odpowiedz w postaci pliku JSON, który następnie jest przetwarzany przez stronę React, czego wynik jest wyświetlany klientowi.
+po stronie klienta.
 %% ########################################################
 \subsection{Schematy poszczególnych funkcjonalności}
-(dodać screeny z postmana jak wywołuje jakąś funkcje)
-Poniżej zaprezentowane są funkcjonalności końcowej aplikacji na przykładzie plików o rozszerzeniu \textit{.pdf}.
-(można zrobić opisy funkcjonalności, nawet tych nie zaimplementowanych razem ze schematami, a potem cały opis modułu streszczeń)
+%%s(dodać screeny z postmana jak wywołuje jakąś funkcje)
+{\color{blue}{(tutaj zostaną dodane do każdego punktu zrzuty ekranu odpowiedzi serwera)}}\par
+\begin{figure}[h!]
+\centering
+  \includegraphics{img/activity\_diagram.png}
+  \caption{Diagram aktywności przesyłania pliku}
+\end{figure}
+Poniżej zaprezentowane są funkcjonalności końcowej aplikacji na przykładzie plików o rozszerzeniu PDF oraz diagram aktywności aplikacji.
+%%(można zrobić opisy funkcjonalności, nawet tych nie zaimplementowanych razem ze schematami, a potem cały opis modułu streszczeń)
+\newpage
 \subsubsection{Dodawanie pliku}
 Zachowanie systemu przy dodaniu plików tekstowych.
 \begin{enumerate}
@@ -117,7 +127,7 @@ Zachowanie systemu przy dodaniu plików tekstowych.
 	\begin{figure}[h]
 		\centering
   		\includegraphics[width=\textwidth]{img/yake\_keyword.jpg}
-  		\caption{przykład użycia \textit{KeywordExtractor()}}
+  		\caption{Przykład użycia \textit{KeywordExtractor()}}
 	\end{figure}
 	\item w tym samym czasie z pomocą biblioteki \textit{sumy} oraz funkcji \textit{TextRankSummarizer}, jest tworzone streszczenie z użyciem algorytmu \textit{TextRank},
 	\item jeżeli plik pdf posiada zakładki (ang. \textit{outlines}) to metoda \textit{.get\_outlines()} ekstraktuje je i z wyniku możemy otrzymać tytuł dokumentu i nadać plikowi taką nazwę. a jeżeli ich nie ma to tytułem pliku zostaje bazowa nazwa pliku,
@@ -128,7 +138,8 @@ Zachowanie systemu przy dodaniu plików tekstowych.
   \includegraphics[width=\textwidth]{img/file\_add\_pl.png}
   \caption{Schemat sekwencyjny dodawania pliku}
 \end{figure}\par
-Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla naszego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. 
+Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla naszego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. \par
+Biblioteka \textit{PdfMiner} języka Python
 \newpage
 \subsubsection{Wyszukiwanie i wyświetlanie plików}
 Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule pliku. Tutaj przydatne jest użycie API generującego synonimy dla wyszukiwanego słowa. System zachowuje się w poniżej opisany sposób.
@@ -139,28 +150,47 @@ Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule 
 	\item baza zwraca informacje dotyczące znalezionych dokumentów oraz słowo klucz,
 	\item serwer zwraca listę plików użytkownikowi, posortowane zgodnie z rankingiem
 \end{enumerate}
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
   \includegraphics[width=\textwidth]{img/file\_search.png}
   \caption{Schemat sekwencyjny wyszukiwania pliku}
 \end{figure}
-\subsubsection{Asocjacja plików o podobnej tematyce}
-Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenerowanych słów kluczowych.
 \newpage
+\subsubsection{Asocjacja plików o podobnej tematyce}
+Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenerowanych słów kluczowych. System z każdym dodanym plikiem przeszukuję przestrzeń dokumentów i aktualizuje już utworzone rekordy, w sytuacji dopasowania. Schemat przedstawia tworzenie połączeń dla nowo dodanego pliku.
+\begin{enumerate}
+\item dla każdego słowa kluczowego, jest pobrana lista ID plików z tabeli \textit{file\_properties}, pod warunkiem dopasowania przynajmniej jednego tagu,
+\item następnie obliczany jest współczynnik podobieństwa, którego schemat postępowania jest przedstawiony poniżej:
+	\begin{enumerate}
+		\item wyznaczana jest wartość dla poszczególnych słów kluczy
+		\begin{itemize}
+			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia odżywiania''), to zapisywana jest wartość $2\cdot\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
+			\item jeżeli słowa są identyczne, zapisywana jest wartość 1,
+		\end{itemize}
+		\item wartości dla wszystkich słów kluczy są sumowane i dzielone przez liczbę tagów.
+	\end{enumerate}
+\item do ID pliku przypisana jest wartość podobieństwa, i po posortowaniu od największej wartości, ID są dodawane do jednego rekordu w tabeli \textit{file\_connections}
+	\begin{itemize}
+		\item jeżeli wartość podobieństwa nie przekracza 0.3, to plik nie jest brany pod uwagę
+	\end{itemize}
+\end{enumerate}
+\subsubsection{Obsługa plików csv}
+Jako że pliki csv z natury nie posiadają treści, nie jesteśmy w stanie przeprowadzić podobnej analizy co w przypadku pdf. Dlatego też te pliki wymagają od użytkownika większego wkładu. Przy dodaniu pliku csv potrzeba jest też podać dodatkowe słowa klucze po których będzie można ich wyszukiwać
+%\newpage
 %% ########################################################
 \subsection{Testy funkcjonalne}
-Jeżeli chodzi o testowanie tworzenia streszczeń to nie jest możliwa automatyzacja tego. Nie jesteśmy w stanie przewidzieć jakie zdania będą wchodziły w skład wygenerowanego abstraktu. Czynnik ludzki w tym przypadku jest wymagany do oceny poprawności danego algorytmu. (wait to jak oni sprawdzają to przy metodach abstrakcyjnych????)\par
-jak będzie czas to mogę przetestować ocr i tersseract
+%Jeżeli chodzi o testowanie tworzenia streszczeń to nie jest możliwa automatyzacja tego. Nie jesteśmy w stanie przewidzieć jakie zdania będą wchodziły w skład wygenerowanego abstraktu. Czynnik ludzki w tym przypadku jest wymagany do oceny poprawności danego algorytmu. (wait to jak oni sprawdzają to przy metodach abstrakcyjnych????)\par
+%jak będzie czas to mogę przetestować ocr i tersseract
 %% ########################################################
-\subsection{TEMP Idealna aplikacja}
-DOBRA JEŻELI ROBIMY STRESZCZENIA TO ŻEBY NAJPIERW BYŁ NIENADZOROWANY TYP ROBIENIA STRESZCZEŃ A POTEM JAK PODZIELIMY PLIKI NA KATEGORIE TO WTEDY PRÓBOWAĆ ROBIĆ Z DANYMI WEJŚCIOWYMI, CZYLI NASZE WCZEŚNIEJ DODANE PLIKI (THE BLIND LEADING THE BLIND)\par
-jeszcze można wygenerować nasze streszczenia jako osobny plik; wykrywanie języka dokumentu by się przydało
+%\subsection{TEMP Idealna aplikacja}
+%DOBRA JEŻELI ROBIMY STRESZCZENIA TO ŻEBY NAJPIERW BYŁ NIENADZOROWANY TYP ROBIENIA STRESZCZEŃ A POTEM JAK PODZIELIMY PLIKI NA KATEGORIE TO WTEDY PRÓBOWAĆ ROBIĆ Z DANYMI WEJŚCIOWYMI, CZYLI NASZE WCZEŚNIEJ DODANE PLIKI (THE BLIND LEADING THE BLIND)\par
+%jeszcze można wygenerować nasze streszczenia jako osobny plik; wykrywanie języka dokumentu by się przydało
 %% ########################################################
 \section{Możliwości rozwoju i wykorzystania aplikacji}
 %% ########################################################
 \section*{Podsumowanie i wnioski}
 \addcontentsline{toc}{section}{Podsumowanie i wnioski}
-W sumie to nie wiem co jest celem tej pracy ani co mam podsumować, 
+%%W sumie to nie wiem co jest celem tej pracy ani co mam podsumować, 
 %% ########################################################
 \newpage
 \listoffigures

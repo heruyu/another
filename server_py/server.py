@@ -92,11 +92,16 @@ def upload():
                     res=res+element.get_text()
 
         res = re.sub(r"-\s",'',res) #hyphens
+        res = re.sub(';','.',res) 
 
         #ligatures
-        lig = {'\uFB00':"ff",'\uFB01':"fi",'\uFB02':"fl",'\uFB03':"ffi",'\uFB04':"ffl",'\uFB06':"st"}
+        lig = {'\uFB00':"ff",'\uFB01':"fi",
+               '\uFB02':"fl",'\uFB03':"ffi",
+               '\uFB04':"ffl",'\uFB06':"st",'\u2022':'.'}
         for x,y in lig.items():
             res = re.sub(x,y,res)
+
+        res = re.sub(r'([^0-9]\.)\d+',r'\1',res)
 
         #tags
         lang = "en"
