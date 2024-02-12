@@ -74,7 +74,21 @@ Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie 
 Aplikacja została zaprojektowana z myślą o użytkownikach będących w posiadaniu dużej ilości plików z danymi. Głównym celem jest automatyzacja procesu segregowania i przetwarzania informacji. System etykietuje otrzymane pliki poprzez ekstrakcje słów kluczowych i daje możliwość wyszukiwania plików w bardziej optymalny sposób. Otrzymane dokumenty są kategoryzowane ze względu na słowa klucze. Po otrzymaniu elementów o podobnej strukturze i zawartości, są one łączone ze sobą. Informacja o takim połączeniu jest umieszczana w bazie danych, tak aby przy odczycie jednego z elementów, drugi był sugerowany jako następny plik do wyświetlenia. \par
 %% ########################################################
 \subsection{Architektura systemu} %omg electron+react+flask
-Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.
+Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.\par
+Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o protokół HTTP. Serwer zwraca odpowiedz w postaci pliku JSON, który następnie jest przetwarzany przez stronę React, czego wynik jest wyświetlany klientowi.\par
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{img/archi.png}
+  \caption{Diagram łączenia komponentów}
+\end{figure}
+%% ########################################################
+System składa się z 4 głównych komponentów:
+\begin{enumerate}
+	\item serwer HTTP
+	\item baza danych
+	\item interfejs użytkownika
+	\item konwerter na aplikację natywną
+\end{enumerate}
 \subsubsection{Javascript React}
 Jest to biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu. Pozwala to na reakcje na zmiany wywołane przez użytkownika lub sam system i przy tym automatyczne aktualizowanie tych stron. React używa składni JSX (\textit{Javascript XML}), który jest rozszerzeniem składni Javascript. Integruje ona kod Javascript z deklaratywnym opisem struktury interfejsu.
 \subsubsection{Python Flask}
@@ -97,10 +111,6 @@ System posiada jeden główny proces \textit{``main''}, którego celem jest twor
 %\end{figure}
 %\newpage
 %% ########################################################
-\subsection{Struktura aplikacji}
-Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o protokół HTTP. Serwer w odpowiedzi na zwraca odpowiedz w postaci pliku JSON, który następnie jest przetwarzany przez stronę React, czego wynik jest wyświetlany klientowi.
-po stronie klienta.
-%% ########################################################
 \subsection{Obsługiwane rodzaje plików}
 %% ########################################################
 System jest przystosowany do obsługi plików o rozszerzeniach takich jak \textit{PDF}, \textit{CSV} i \textit{TXT}. Każdy rodzaj pliku ma osobne funkcjonalności opisane poniżej. Do plików przypisujemy tag opisujący rodzaj pliku, lecz nie jest on odrębną jednostką od słów kluczowych generowanych na podstawie zawartości pliku.
@@ -110,20 +120,14 @@ System wykorzystuje potokowanie zawartości w celu ekstrakcji tekstu, obrazów o
 \subsubsection*{Pliki tabelaryczne CSV}
 Podstawowym zachowaniem aplikacji w obliczu plików zawierających dane tabelaryczne w systemie przecinkowym generacja opisu zgodnie z następującymi krokami. Dla każdej kolumny pobierana jest jej nazwa oraz rodzaj danych zawartych w niej (\textit{double}, \textit{string}, itp.). \par
 Ze względu na rodzaj pliku generacja słów kluczy może przebiec na dwa sposoby: tagami zostają nazwy kolumn lub użytkownik samodzielnie je dodaje. Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji tabel, więc tworzenie tagów w takiej sytuacji nie jest optymalne. Drugie podejście wymaga od użytkownika większego wkładu w ten proces. Potrzebna do tego jest pewna znajomość zestawu danych, który chcemy wprowadzić do systemu aby odpowiednio przypisać słowa klucze do plików.
-\subsubsection*{Pliki tekstowe .txt}
+\subsubsection*{Pliki tekstowe TXT}
 Zawartość plików tekstowych nie jest uwarunkowana żadnymi normami, co czyni obsługę tych plików niemożliwą do standaryzacji. Podczas dodawania do aplikacji, wymagają one od użytkownika określenia rodzaju zawartości. Opcjami, które użytkownik ma do wyboru są: tekst lub dane tabelaryczne.\par
 W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 200 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}. Tworzone jest streszczenie.\par
 \newpage
 \subsection{Schematy poszczególnych funkcjonalności}
 %%s(dodać screeny z postmana jak wywołuje jakąś funkcje)
-\begin{figure}[h!]
-\centering
-  \includegraphics{img/activity\_diagram.png}
-  \caption{Diagram aktywności przesyłania pliku}
-\end{figure}
 %%Poniżej zaprezentowane są funkcjonalności końcowej aplikacji na przykładzie plików o rozszerzeniu PDF oraz diagram aktywności aplikacji.
 %%(można zrobić opisy funkcjonalności, nawet tych nie zaimplementowanych razem ze schematami, a potem cały opis modułu streszczeń)
-\newpage
 \subsubsection{Dodawanie pliku PDF}
 Zachowanie systemu przy dodaniu plików tekstowych.
 \begin{enumerate}
@@ -145,14 +149,18 @@ Zachowanie systemu przy dodaniu plików tekstowych.
 	\item jeżeli plik pdf posiada zakładki (ang. \textit{outlines}) to metoda \textit{.get\_outlines()} ekstraktuje je i z wyniku możemy otrzymać tytuł dokumentu i nadać plikowi taką nazwę. a jeżeli ich nie ma to tytułem pliku zostaje bazowa nazwa pliku,
 	\item ostatecznie wszystkie informacje są zbierane i przesyłane do bazy danych.
 \end{enumerate}
-\begin{figure}[h]
-\centering
-  \includegraphics[width=\textwidth]{img/file\_add\_pl.png}
-  \caption{Schemat sekwencyjny dodawania pliku}
-\end{figure}\par
+%\begin{figure}[h]
+%\centering
+%  \includegraphics[width=\textwidth]{img/file\_add\_pl.png}
+%  \caption{Schemat sekwencyjny dodawania pliku}
+%\end{figure}\par
 Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla naszego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. \par
 Biblioteka \textit{PdfMiner} języka Python
-\newpage
+\begin{figure}[h!]
+\centering
+  \includegraphics{img/activity\_diagram.png}
+  \caption{Diagram aktywności przesyłania pliku}
+\end{figure}
 \subsubsection{Wyszukiwanie i wyświetlanie plików}
 Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule pliku. Tutaj przydatne jest użycie API generującego synonimy dla wyszukiwanego słowa. System zachowuje się w poniżej opisany sposób.
 \begin{enumerate}
@@ -186,10 +194,19 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 		\item jeżeli wartość podobieństwa nie przekracza 0.3, to plik nie jest brany pod uwagę
 	\end{itemize}
 \end{enumerate}
-\subsubsection{Obsługa plików csv}
-%\begin{enumerate}
-%\item
-%\end{enumerate}
+\subsubsection{Obsługa plików CSV}
+\begin{enumerate}
+	\item użytkownik przy dodaniu pliku podaje następujące informacje:
+	\begin{itemize}
+		\item czy plik zawiera informacje o nazwach kolumn, jeżeli nie to czy chce on nadać te nazwy,
+		\item czy słowa kluczowe będą nadane manualnie lub czy powinny być pobrane z nazw kolumn,
+	\end{itemize}
+	\item odpowiednio wczytywana na server do postaci ramki danych (\textit{ang. dataframe}) modułu \textit{pandas},
+	\item sprawdzany i zapisywany jest typ wartości w każdej kolumnie oraz obliczony procent ilości wartości brakujących,
+	\item dodanie rekordu do bazy danych.
+\end{enumerate}
+\subsubsection{Obsługa plików TXT}
+Przetwarzanie plików tekstowych rozpoczyna się pytaniem o zawartość takiego pliku. Użytkownik dodaje informacje czy plik zawiera w sobie tekst czy dane kolumnowe. Jeżeli jest to tabela, to proces ekstrakcji jest taki sam jak w przypadku plików csv. 
 %\newpage
 %% ########################################################
 \subsection{Testy funkcjonalne}
@@ -201,6 +218,13 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 %jeszcze można wygenerować nasze streszczenia jako osobny plik; wykrywanie języka dokumentu by się przydało
 %% ########################################################
 \section{Możliwości rozwoju i wykorzystania aplikacji}
+Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. \par
+\subsection{Ekspansja działań dotyczących danych tabelarycznych}
+Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy 
+\subsection{Implementacja abstrakcyjnego tworzenia streszczeń}
+\subsection{Obsługa obrazów}
+\subsection{Kategoryzowanie plików względem zawartości}
+\subsection{Ulepszenie procesu ekstrakcji tekstu}
 %% ########################################################
 \section*{Podsumowanie i wnioski}
 \addcontentsline{toc}{section}{Podsumowanie i wnioski}
@@ -209,6 +233,7 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 \newpage
 \listoffigures
 \addcontentsline{toc}{section}{Spis Rysunków}
+\addcontentsline{toc}{section}{Bibliografia}
 \bibliographystyle{IEEEtran}
 \bibliography{biblioteka}
 \addcontentsline{toc}{section}{Bibliografia}
