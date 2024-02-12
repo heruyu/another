@@ -73,7 +73,7 @@ Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie 
 \subsection{Projekt systemu}
 Aplikacja została zaprojektowana z myślą o użytkownikach będących w posiadaniu dużej ilości plików z danymi. Głównym celem jest automatyzacja procesu segregowania i przetwarzania informacji. System etykietuje otrzymane pliki poprzez ekstrakcje słów kluczowych i daje możliwość wyszukiwania plików w bardziej optymalny sposób. Otrzymane dokumenty są kategoryzowane ze względu na słowa klucze. Po otrzymaniu elementów o podobnej strukturze i zawartości, są one łączone ze sobą. Informacja o takim połączeniu jest umieszczana w bazie danych, tak aby przy odczycie jednego z elementów, drugi był sugerowany jako następny plik do wyświetlenia. \par
 %% ########################################################
-\subsection{Struktura aplikacji}
+\subsection{Architektura systemu} %omg electron+react+flask
 Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.
 \subsubsection{Javascript React}
 Jest to biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu. Pozwala to na reakcje na zmiany wywołane przez użytkownika lub sam system i przy tym automatyczne aktualizowanie tych stron. React używa składni JSX (\textit{Javascript XML}), który jest rozszerzeniem składni Javascript. Integruje ona kod Javascript z deklaratywnym opisem struktury interfejsu.
@@ -97,22 +97,34 @@ System posiada jeden główny proces \textit{``main''}, którego celem jest twor
 %\end{figure}
 %\newpage
 %% ########################################################
-\subsection{Architektura systemu} %omg electron+react+flask
+\subsection{Struktura aplikacji}
 Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o protokół HTTP. Serwer w odpowiedzi na zwraca odpowiedz w postaci pliku JSON, który następnie jest przetwarzany przez stronę React, czego wynik jest wyświetlany klientowi.
 po stronie klienta.
 %% ########################################################
+\subsection{Obsługiwane rodzaje plików}
+%% ########################################################
+System jest przystosowany do obsługi plików o rozszerzeniach takich jak \textit{PDF}, \textit{CSV} i \textit{TXT}. Każdy rodzaj pliku ma osobne funkcjonalności opisane poniżej. Do plików przypisujemy tag opisujący rodzaj pliku, lecz nie jest on odrębną jednostką od słów kluczowych generowanych na podstawie zawartości pliku.
+\subsubsection*{Pliki PDF}
+Proces obsługi plików pdf jest zależny od wielu czynników. Najprostrzymi plikami do analizy są artykuły posiadające zakładki (\textit{ang. outlines}) o ujednoliconej strukturze, zawierające jedynie tekst. \textit{Outlines} są potrzebne do ustalenia tytułu danego pliku, ponieważ nie zawsze nazwa samego pliku koresponduje tytułowi.\par
+System wykorzystuje potokowanie zawartości w celu ekstrakcji tekstu, obrazów oraz tabel. Działanie aplikacji jest oparte o sam tekst pliku co Na potrzeby aplikacji, takie fragmenty jak tabele czy grafiki są jedynie przeszkodą , ponieważ nie powinne one wpływać na wynik algorytmu streszczania. Część elementów tabelarycznych jest niepoprawnie podpisywana jako tekst, co może przyczynić się do generacji niezrozumiałych streszczeń. 
+\subsubsection*{Pliki tabelaryczne CSV}
+Podstawowym zachowaniem aplikacji w obliczu plików zawierających dane tabelaryczne w systemie przecinkowym generacja opisu zgodnie z następującymi krokami. Dla każdej kolumny pobierana jest jej nazwa oraz rodzaj danych zawartych w niej (\textit{double}, \textit{string}, itp.). \par
+Ze względu na rodzaj pliku generacja słów kluczy może przebiec na dwa sposoby: tagami zostają nazwy kolumn lub użytkownik samodzielnie je dodaje. Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji tabel, więc tworzenie tagów w takiej sytuacji nie jest optymalne. Drugie podejście wymaga od użytkownika większego wkładu w ten proces. Potrzebna do tego jest pewna znajomość zestawu danych, który chcemy wprowadzić do systemu aby odpowiednio przypisać słowa klucze do plików.
+\subsubsection*{Pliki tekstowe .txt}
+Zawartość plików tekstowych nie jest uwarunkowana żadnymi normami, co czyni obsługę tych plików niemożliwą do standaryzacji. Podczas dodawania do aplikacji, wymagają one od użytkownika określenia rodzaju zawartości. Opcjami, które użytkownik ma do wyboru są: tekst lub dane tabelaryczne.\par
+W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 200 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}. Tworzone jest streszczenie.\par
+\newpage
 \subsection{Schematy poszczególnych funkcjonalności}
 %%s(dodać screeny z postmana jak wywołuje jakąś funkcje)
-{\color{blue}{(tutaj zostaną dodane do każdego punktu zrzuty ekranu odpowiedzi serwera)}}\par
 \begin{figure}[h!]
 \centering
   \includegraphics{img/activity\_diagram.png}
   \caption{Diagram aktywności przesyłania pliku}
 \end{figure}
-Poniżej zaprezentowane są funkcjonalności końcowej aplikacji na przykładzie plików o rozszerzeniu PDF oraz diagram aktywności aplikacji.
+%%Poniżej zaprezentowane są funkcjonalności końcowej aplikacji na przykładzie plików o rozszerzeniu PDF oraz diagram aktywności aplikacji.
 %%(można zrobić opisy funkcjonalności, nawet tych nie zaimplementowanych razem ze schematami, a potem cały opis modułu streszczeń)
 \newpage
-\subsubsection{Dodawanie pliku}
+\subsubsection{Dodawanie pliku PDF}
 Zachowanie systemu przy dodaniu plików tekstowych.
 \begin{enumerate}
 	\item Gdy użytkownik wybierze plik, aplikacja przesyła ścieżkę pliku do serwera,
@@ -175,7 +187,9 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 	\end{itemize}
 \end{enumerate}
 \subsubsection{Obsługa plików csv}
-Jako że pliki csv z natury nie posiadają treści, nie jesteśmy w stanie przeprowadzić podobnej analizy co w przypadku pdf. Dlatego też te pliki wymagają od użytkownika większego wkładu. Przy dodaniu pliku csv potrzeba jest też podać dodatkowe słowa klucze po których będzie można ich wyszukiwać
+%\begin{enumerate}
+%\item
+%\end{enumerate}
 %\newpage
 %% ########################################################
 \subsection{Testy funkcjonalne}
