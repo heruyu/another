@@ -36,7 +36,6 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-{\color{blue}{(Tutaj niedługo powstanie wstęp)}}\par
 \subsection*{Cel i zakres projektu}
 Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkownikowi proces zbierania i segregowania informacji. Poniższa praca skupi się na ogólnym koncepcie aplikacji oraz szczegółowym opisie implementacji modułu tworzącego streszczenia.
 \newpage
@@ -220,11 +219,17 @@ Przetwarzanie plików tekstowych rozpoczyna się pytaniem o zawartość takiego 
 \section{Możliwości rozwoju i wykorzystania aplikacji}
 Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. \par
 \subsection{Ekspansja działań dotyczących danych tabelarycznych}
-Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy 
+Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy usuniecie wartości odstajacych. \par
+Dobrą decyzją byłoby również dodanie możliwości automatycznego obliczania elementów statystyki (średnia etc)
 \subsection{Implementacja abstrakcyjnego tworzenia streszczeń}
+Abstrakcyjna generacja streszczeń jest procesem wymagającym posiadania zestawu treningowego złożonych z streszczeń i przypisanym im tekstów początkowych. Jest to proces czasochłonny, lecz jakościowo przewyższa streszczenia metodami ekstraktywnymi. \par
+Samodzielna kreacja takiego modelu nie jest optymalna pod względem ilości zasobów potrzebnych do modelowania a zasobów pamięciowych przeznaczonych na działanie całej aplikacji. Istnieje jednak rozwiązanie tego problemu za pomocą wykożystania \textit{API} (\textit{ang. Application Programming Interface}). 
 \subsection{Obsługa obrazów}
+Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu.
 \subsection{Kategoryzowanie plików względem zawartości}
+Na obecnym etapie implementacji systemu, wszystkie pliki znajdują się w jednym miejscu oraz jedynym sposobem na odnalezienie plików jest skożystanie z zaprogramowanej wyszukiwarki plików. Pliki o różnorodnej tematyce mieszają się ze sobą do tego stopnia, że nie jest możliwe, przy niepoprawnie nazwanych plikach, znaleźć te potrzebne. Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segregacja powinna odbywać się na podstawie słów kluczy, jednakże dalsze badania są wymagane do określenia wymagań warunku podziału. Niepoprawny warunek może spowodować duplikację plików na szeroką skalę, co negowałoby cel tej implementacji.
 \subsection{Ulepszenie procesu ekstrakcji tekstu}
+Proces pozyskiwania tekstu z plików PDF odbywa się 
 %% ########################################################
 \section*{Podsumowanie i wnioski}
 \addcontentsline{toc}{section}{Podsumowanie i wnioski}
@@ -236,5 +241,4 @@ Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (
 \addcontentsline{toc}{section}{Bibliografia}
 \bibliographystyle{IEEEtran}
 \bibliography{biblioteka}
-\addcontentsline{toc}{section}{Bibliografia}
 \end{document}
