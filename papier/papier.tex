@@ -154,11 +154,12 @@ Zachowanie systemu przy dodaniu plików tekstowych.
 %  \caption{Schemat sekwencyjny dodawania pliku}
 %\end{figure}\par
 Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla naszego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. \par
-Biblioteka \textit{PdfMiner} języka Python
+Poniższy diagram przedstawia proces dodawania pliku pdf wraz z uwzględnieniem implementacji asocjacji plików o podobnej tematyce, opisanej w punkcie 2.4.3.
 \begin{figure}[h!]
 \centering
-  \includegraphics{img/activity\_diagram.png}
-  \caption{Diagram aktywności przesyłania pliku}
+%  \includegraphics{img/activity\_diagram.png}
+  \includegraphics{img/activity\_file\_add.png}
+  \caption{Diagram aktywności przesyłania pliku PDF}
 \end{figure}
 \subsubsection{Wyszukiwanie i wyświetlanie plików}
 Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule pliku. Tutaj przydatne jest użycie API generującego synonimy dla wyszukiwanego słowa. System zachowuje się w poniżej opisany sposób.
@@ -183,7 +184,7 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 	\begin{enumerate}
 		\item wyznaczana jest wartość dla poszczególnych słów kluczy
 		\begin{itemize}
-			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia odżywiania''), to zapisywana jest wartość $2\cdot\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
+			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia odżywiania''), to zapisywana jest wartość $\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
 			\item jeżeli słowa są identyczne, zapisywana jest wartość 1,
 		\end{itemize}
 		\item wartości dla wszystkich słów kluczy są sumowane i dzielone przez liczbę tagów.
@@ -193,7 +194,7 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 		\item jeżeli wartość podobieństwa nie przekracza 0.3, to plik nie jest brany pod uwagę
 	\end{itemize}
 \end{enumerate}
-\subsubsection{Obsługa plików CSV}
+\subsubsection{Obsługa plików zawierających dane tabelaryczne}
 \begin{enumerate}
 	\item użytkownik przy dodaniu pliku podaje następujące informacje:
 	\begin{itemize}
@@ -204,6 +205,11 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 	\item sprawdzany i zapisywany jest typ wartości w każdej kolumnie oraz obliczony procent ilości wartości brakujących,
 	\item dodanie rekordu do bazy danych.
 \end{enumerate}
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{img/csvac.png}
+  \caption{Diagram aktywności przetwarzania plików tabelarycznych}
+\end{figure}
 \subsubsection{Obsługa plików TXT}
 Przetwarzanie plików tekstowych rozpoczyna się pytaniem o zawartość takiego pliku. Użytkownik dodaje informacje czy plik zawiera w sobie tekst czy dane kolumnowe. Jeżeli jest to tabela, to proces ekstrakcji jest taki sam jak w przypadku plików csv. 
 %\newpage
