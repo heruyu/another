@@ -36,6 +36,8 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
+W czasach szerokiego dostępu do informacji, proces ich zarządzania i \par
+W kontekście poniższej pracy, zbiorem danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenie analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.
 \subsection*{Cel i zakres projektu}
 Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkownikowi proces zbierania i segregowania informacji. Poniższa praca skupi się na ogólnym koncepcie aplikacji oraz szczegółowym opisie implementacji modułu tworzącego streszczenia.
 \newpage
@@ -67,6 +69,7 @@ Otrzymanie zawartości pliku może być wykonane za pomocą wydobycia elementów
 Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do edytowania czy wyszukiwania. Techniki oparte o analizę obrazów są bezpośrednio zależne od jakości wprowadzonego elementu. Idealną sytuacją dla wykożystania metod OCR jest kiedy posiadany plik zawiera w sobie jedynie tekst i jest obrazem binarnym \cite{mithe2013optical}. Dodatkowym atutem takich systemów jest możliwość wykrycia pisma i konwersja na tekst.\par
 Ekstrahowanie danych z strumienia pliku, wiąże się z kilkoma problemami. Biorąc pod uwagę możliwość że plik pdf może posiadać różne kodowanie takie jak \textit{UTF-8}, \textit{ASCII} czy \textit{Unicode}, możemy doświadczyć utraty informacji spowodowanej schematem kodowania pliku. Automatyczna ekstrakcja zawartości polega na selekcji znaków znajdujących się pomiędzy zdefiniowanymi słowami kluczowymi. Pliki PDF są przystosowane do drukowania, z tego powodu reprezentacja tekstu w strumieniu może się znacząco różnić od tej na stronie. Ponieważ pozycje znaków na poszczególnych stronach są absolutne, przedstawienie w strumieniu bierze pod uwagę spacje między elementami.\par
 Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie ich poprawności względem dokumentu wejściowego. Brak formalnej definicji struktury, przynajmniej jeżeli chodzi o artykuły naukowe, uniemożliwia stworzenie uniwersalnego algorytmu ekstrakcji.
+\subsection{Preprocessing i manipulacja danych}
 \newpage
 \section{Implementacja}
 \subsection{Projekt systemu}
@@ -83,11 +86,12 @@ Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o proto
 %% ########################################################
 System składa się z 4 głównych komponentów:
 \begin{enumerate}
-	\item serwer HTTP
-	\item baza danych
-	\item interfejs użytkownika
-	\item konwerter na aplikację natywną
+	\item serwer HTTP - zbudowany z pomocą języka Python oraz biblioteki Flask,
+	\item baza danych NoSQL
+	\item interfejs użytkownika - generowany z użyciem frameworku Javascript React,
+	\item konwerter na aplikację natywną Electron.
 \end{enumerate}
+Poniższe sekcje przedstawiają opis poszczególnych elementów służących do implementacji systemu. 
 \subsubsection{Javascript React}
 Jest to biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu. Pozwala to na reakcje na zmiany wywołane przez użytkownika lub sam system i przy tym automatyczne aktualizowanie tych stron. React używa składni JSX (\textit{Javascript XML}), który jest rozszerzeniem składni Javascript. Integruje ona kod Javascript z deklaratywnym opisem struktury interfejsu.
 \subsubsection{Python Flask}
@@ -116,9 +120,10 @@ System jest przystosowany do obsługi plików o rozszerzeniach takich jak \texti
 \subsubsection*{Pliki PDF}
 Proces obsługi plików pdf jest zależny od wielu czynników. Najprostrzymi plikami do analizy są artykuły posiadające zakładki (\textit{ang. outlines}) o ujednoliconej strukturze, zawierające jedynie tekst. \textit{Outlines} są potrzebne do ustalenia tytułu danego pliku, ponieważ nie zawsze nazwa samego pliku koresponduje tytułowi.\par
 System wykorzystuje potokowanie zawartości w celu ekstrakcji tekstu, obrazów oraz tabel. Działanie aplikacji jest oparte o sam tekst pliku co Na potrzeby aplikacji, takie fragmenty jak tabele czy grafiki są jedynie przeszkodą , ponieważ nie powinne one wpływać na wynik algorytmu streszczania. Część elementów tabelarycznych jest niepoprawnie podpisywana jako tekst, co może przyczynić się do generacji niezrozumiałych streszczeń. 
-\subsubsection*{Pliki tabelaryczne CSV}
-Podstawowym zachowaniem aplikacji w obliczu plików zawierających dane tabelaryczne w systemie przecinkowym generacja opisu zgodnie z następującymi krokami. Dla każdej kolumny pobierana jest jej nazwa oraz rodzaj danych zawartych w niej (\textit{double}, \textit{string}, itp.). \par
-Ze względu na rodzaj pliku generacja słów kluczy może przebiec na dwa sposoby: tagami zostają nazwy kolumn lub użytkownik samodzielnie je dodaje. Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji tabel, więc tworzenie tagów w takiej sytuacji nie jest optymalne. Drugie podejście wymaga od użytkownika większego wkładu w ten proces. Potrzebna do tego jest pewna znajomość zestawu danych, który chcemy wprowadzić do systemu aby odpowiednio przypisać słowa klucze do plików.
+\subsubsection*{Pliki tabelaryczne}
+Podstawowym zachowaniem aplikacji w obliczu plików zawierających dane tabelaryczne jest generacja opisu zgodnie z następującymi krokami. Dla każdej kolumny pobierana jest jej nazwa oraz rodzaj danych zawartych w niej (\textit{double}, \textit{string}, itp.). \par
+Ze względu na rodzaj pliku generacja słów kluczy może przebiec na dwa sposoby: tagami zostają nazwy kolumn lub użytkownik samodzielnie je dodaje. Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji tabel, więc tworzenie tagów w takiej sytuacji nie jest optymalne. \par 
+Drugie podejście wymaga od użytkownika większego wkładu w ten proces. Potrzebna do tego jest pewna znajomość zestawu danych, który chcemy wprowadzić do systemu aby odpowiednio przypisać słowa klucze do plików.
 \subsubsection*{Pliki tekstowe TXT}
 Zawartość plików tekstowych nie jest uwarunkowana żadnymi normami, co czyni obsługę tych plików niemożliwą do standaryzacji. Podczas dodawania do aplikacji, wymagają one od użytkownika określenia rodzaju zawartości. Opcjami, które użytkownik ma do wyboru są: tekst lub dane tabelaryczne.\par
 W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 200 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}. Tworzone jest streszczenie.\par
@@ -223,22 +228,23 @@ Przetwarzanie plików tekstowych rozpoczyna się pytaniem o zawartość takiego 
 %jeszcze można wygenerować nasze streszczenia jako osobny plik; wykrywanie języka dokumentu by się przydało
 %% ########################################################
 \section{Możliwości rozwoju i wykorzystania aplikacji}
-Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. \par
+Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworzenie dodatkowych zdolności programu jest uproszczone, poprzez oparcie systemu o odpowiedzi w postaci komunikatu http zamiast stosowania szablonów, jak to jest zwykle przy standardowym projektowaniu z użyciem Python Flask. Baza danych wykożystana w projekcie, MongoDB, jest bazą typu NoSQL, która umożliwia przechowywanie informacji w nie ustrukturyzowany sposób. Dzięki czemu tabele można wypełnić dowolnymi wartościami a sama aplikacja wyświetla wyszystkie elementy tabeli dla wyszukiwanego obiektu.\par
 \subsection{Ekspansja działań dotyczących danych tabelarycznych}
 Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy usuniecie wartości odstajacych. \par
-Dobrą decyzją byłoby również dodanie możliwości automatycznego obliczania elementów statystyki (średnia etc)
+Celem stworzenia systemu jest automatyzacja procesów związanych z przechowywaniem informacji. 
 \subsection{Implementacja abstrakcyjnego tworzenia streszczeń}
 Abstrakcyjna generacja streszczeń jest procesem wymagającym posiadania zestawu treningowego złożonych z streszczeń i przypisanym im tekstów początkowych. Jest to proces czasochłonny, lecz jakościowo przewyższa streszczenia metodami ekstraktywnymi. \par
 Samodzielna kreacja takiego modelu nie jest optymalna pod względem ilości zasobów potrzebnych do modelowania a zasobów pamięciowych przeznaczonych na działanie całej aplikacji. Istnieje jednak rozwiązanie tego problemu za pomocą wykożystania \textit{API} (\textit{ang. Application Programming Interface}). 
 \subsection{Obsługa obrazów}
-Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu.
+Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu. Dla człowieka proces identyfikacji elementów obrazu dzieje się podświadomie, lecz przy doczynieniu z dużą ilością obrazów proces ten staje się żmudny. Program jest w stanie rozpoznać i przypisać grafikę do odpowiedniej kategorii, jedynie w sytuacji gdy jest on zaprogramowany do wykrywania ich. Dla systemu obraz jest macierzą pikseli, której każdy element zawiera informacje o wartościach kolorów, gdzie w przypadku obrazów RGB są to wartości kolejno kolorów czerwonego, zielonego i niebieskiego (\textit{ang. R - red, G - green, B - blue}). \par
+Komputery kategoryzują obrazy, porównując układ pikseli wejściowego obrazu ze schematami zapisanymi w systemie. Schematy nie muszą być takie same aby obraz został poprawnie zaklasyfikowany, wystarczy aby były podobne. Wymaga to posiadania ekstensywnego zbioru treningowego, aby móc przypisać obrazy do odpowiednich klas. W celu oszczędności zasobów pamięciowych, do implementacji można wykożystać dostępne powszechnie narzędzia. 
 \subsection{Kategoryzowanie plików względem zawartości}
-Na obecnym etapie implementacji systemu, wszystkie pliki znajdują się w jednym miejscu oraz jedynym sposobem na odnalezienie plików jest skożystanie z zaprogramowanej wyszukiwarki plików. Pliki o różnorodnej tematyce mieszają się ze sobą do tego stopnia, że nie jest możliwe, przy niepoprawnie nazwanych plikach, znaleźć te potrzebne. Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segregacja powinna odbywać się na podstawie słów kluczy, jednakże dalsze badania są wymagane do określenia wymagań warunku podziału. Niepoprawny warunek może spowodować duplikację plików na szeroką skalę, co negowałoby cel tej implementacji.
-\subsection{Ulepszenie procesu ekstrakcji tekstu}
-Proces pozyskiwania tekstu z plików PDF odbywa się 
+Na obecnym etapie implementacji systemu, wszystkie pliki znajdują się w jednym miejscu oraz jedynym sposobem na odnalezienie plików jest skożystanie z zaprogramowanej wyszukiwarki plików. System łączy pliki ze względu na wspólne słowa klucze, lecz nie ingeruje w proces sytuowania obiektów w katalogu aplikacji. Pliki o różnorodnej tematyce mieszają się ze sobą do tego stopnia, że nie jest możliwe, by przy niepoprawnie nazwanych plikach, znaleźć te potrzebne. Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segregacja powinna odbywać się na podstawie słów kluczy, jednakże dalsze badania są wymagane do określenia wymagań warunku podziału. Niepoprawny warunek może spowodować duplikację plików na szeroką skalę, co negowałoby cel tej implementacji.
+%\subsection{Ulepszenie procesu ekstrakcji tekstu}
 %% ########################################################
 \section*{Podsumowanie i wnioski}
 \addcontentsline{toc}{section}{Podsumowanie i wnioski}
+Automatyzacja procesów związanych z 
 %%W sumie to nie wiem co jest celem tej pracy ani co mam podsumować, 
 %% ########################################################
 \newpage
