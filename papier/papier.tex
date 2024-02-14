@@ -36,7 +36,7 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-W czasach szerokiego dostępu do informacji, proces ich zarządzania i \par
+W  \par
 W kontekście poniższej pracy, zbiorem danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenia analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.
 \subsection*{Cel i zakres projektu}
 Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkownikowi proces zbierania i segregowania informacji. Poniższa praca skupi się na ogólnym koncepcie aplikacji oraz szczegółowym opisie implementacji modułu tworzącego streszczenia.
@@ -226,14 +226,25 @@ Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworze
 \subsection{Ekspansja działań dotyczących danych tabelarycznych}
 Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy usuniecie wartości odstajacych. \par
 Celem stworzenia systemu jest automatyzacja procesów związanych z przechowywaniem informacji. 
+możliwość pd.concat
 \subsection{Implementacja abstrakcyjnego tworzenia streszczeń}
 Abstrakcyjna generacja streszczeń jest procesem wymagającym posiadania zestawu treningowego złożonych z streszczeń i przypisanym im tekstów początkowych. Jest to proces czasochłonny, lecz jakościowo przewyższa streszczenia metodami ekstraktywnymi. \par
 Samodzielna kreacja takiego modelu nie jest optymalna pod względem ilości zasobów potrzebnych do modelowania a zasobów pamięciowych przeznaczonych na działanie całej aplikacji. Istnieje jednak rozwiązanie tego problemu za pomocą wykożystania \textit{API}. 
-\subsection{Obsługa obrazów}
-Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu. Dla człowieka proces identyfikacji elementów obrazu dzieje się podświadomie, lecz przy doczynieniu z dużą ilością obrazów proces ten staje się żmudny. Program jest w stanie rozpoznać i przypisać grafikę do odpowiedniej kategorii, jedynie w sytuacji gdy jest on zaprogramowany do wykrywania ich. Dla systemu obraz jest macierzą pikseli, której każdy element zawiera informacje o wartościach kolorów, gdzie w przypadku obrazów RGB są to wartości kolejno kolorów czerwonego, zielonego i niebieskiego (\textit{ang. R - red, G - green, B - blue}). \par
-Komputery kategoryzują obrazy, porównując układ pikseli wejściowego obrazu ze schematami zapisanymi w systemie. Schematy nie muszą być takie same aby obraz został poprawnie zaklasyfikowany, wystarczy aby były podobne. Wymaga to posiadania ekstensywnego zbioru treningowego, aby móc przypisać obrazy do odpowiednich klas. W celu oszczędności zasobów pamięciowych, do implementacji można wykożystać dostępne powszechnie narzędzia. 
+\subsection{Identyfikacja obrazów}
+Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu. Dla człowieka proces identyfikacji elementów obrazu dzieje się podświadomie.  Program jest w stanie rozpoznać i przypisać grafikę do odpowiedniej kategorii, jedynie w sytuacji gdy jest on zaprogramowany do wykrywania ich. Z punktu widzenia maszyny, obraz jest ustrukturyzowaną macierzą liczb, której każdy element zawiera informacje o nasyceniu i kolorze piksela. Aby stworzyć system odpowiedzialny za kategoryzację obrazów, należy przejść przez następujące kroki.
+\begin{enumerate}
+	\item Zebranie danych,
+	\item przygotowanie danych,
+	\item wybór, trenowanie i testowanie modelu,
+	\item wprowadzenie modelu do systemu.
+\end{enumerate}
+Pierwszym i najbardziej kluczowym krokiem przy tworzeniu systemu jest zebranie i opisanie obszernego zestawu grafik, przedstawiających różnorodne obiekty lub sceny rodzajowe. Tak aby nauczyć model rozpoznawania obrazów, skupiając się na podobieństwu, a nie idealnym dopasowaniu. \par
+Celem drugiego etapu jest przekształcenie zebranych danych do odpowiedniej postaci. Proces ten może obejmować działania takie jak normalizowanie wartości pikseli, ujednolicenie rozmiaru obrazów wejściowych czy filtracja. Dopiero po takich modyfikacjach, zbiór jest gotowy do trenowania modelu.\par
+Wybór modelu zależy od złożoności danego problemu oraz wielkość przeznaczonych zasobów 
+Komputery kategoryzują obrazy, porównując układ pikseli wejściowego obrazu ze schematami zapisanymi w systemie. Schematy nie muszą być takie same aby obraz został poprawnie zaklasyfikowany, wystarczy aby były podobne. W celu oszczędności zasobów pamięciowych, do implementacji można wykorzystać dostępne powszechnie narzędzia. 
 \subsection{Kategoryzowanie plików względem zawartości}
-Na obecnym etapie implementacji systemu, wszystkie pliki znajdują się w jednym miejscu oraz jedynym sposobem na odnalezienie plików jest skożystanie z zaprogramowanej wyszukiwarki plików. System łączy pliki ze względu na wspólne słowa klucze, lecz nie ingeruje w proces sytuowania obiektów w katalogu aplikacji. Pliki o różnorodnej tematyce mieszają się ze sobą do tego stopnia, że nie jest możliwe, by przy niepoprawnie nazwanych plikach, znaleźć te potrzebne. Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segregacja powinna odbywać się na podstawie słów kluczy, jednakże dalsze badania są wymagane do określenia wymagań warunku podziału. Niepoprawny warunek może spowodować duplikację plików na szeroką skalę, co negowałoby cel tej implementacji.
+Na obecnym etapie implementacji systemu, wszystkie pliki znajdują się w jednym miejscu oraz jedynym sposobem na odnalezienie plików jest skorzystanie z zaprogramowanej wyszukiwarki plików. System łączy pliki ze względu na wspólne słowa klucze, lecz nie ingeruje w proces sytuowania obiektów w katalogu aplikacji. Pliki o różnorodnej tematyce mieszają się ze sobą do tego stopnia, że nie jest możliwe, aby przy niepoprawnie nazwanych plikach, znaleźć te potrzebne. \par
+Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segregacja powinna odbywać się na podstawie słów kluczy, jednakże dalsze badania są wymagane do określenia wymagań warunku podziału. Niepoprawny warunek może spowodować duplikację plików na szeroką skalę, co negowałoby cel tej implementacji.
 %% ########################################################
 \section*{Podsumowanie i wnioski}
 \addcontentsline{toc}{section}{Podsumowanie i wnioski}
