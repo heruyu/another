@@ -36,14 +36,17 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-W  \par
-W kontekście poniższej pracy, zbiorem danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenia analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.
+Dane odgrywają niezwykle istotną rolę w funkcjonowaniu współczesnego społeczeństwa, będąc fundamentem dla wielu procesów i decyzji. Dzięki danym można analizować i rozumieć zmiany w otaczającym świecie, identyfikować wzorce i trendy oraz przewidywać przyszłe wydarzenia.\par
+Przechowywanie danych jest niezbędne nie tylko ze względu na konieczność zachowania informacji historycznych, ale także po to, aby zapewnić dostępność potrzebnych informacji w odpowiednim czasie oraz miejscu. Organizacje różnego rodzaju gromadzą ogromne ilości informacji, które są kluczowe dla ich funkcjonowania i rozwoju. Systematyczne przechowywanie tych danych pozwala na śledzenie zmian w czasie, analizę trendów oraz identyfikację ważnych wzorców i relacji, co z kolei umożliwia podejmowanie trafniejszych decyzji biznesowych. Wykorzystując dane, można personalizować doświadczenia użytkowników, dostosowując produkty i usługi do ich potrzeb i preferencji.\par
+W kontekście poniższej pracy, zbiór danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenia analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.\par
+Zapewnienie bezpieczeństwa i poufności gromadzonych informacji jest również ważnym aspektem przechowywania danych. W obliczu coraz częstszych przypadków naruszeń danych i cyberataków, odpowiednie zabezpieczenie przechowywanych danych staje się priorytetem. Dlatego też organizacje, ale także osoby prywatne muszą inwestować w zaawansowane systemy ochrony danych i stosować odpowiednie procedury zarządzania dostępem do informacji.\par
 \subsection*{Cel i zakres projektu}
 Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkownikowi proces zbierania i segregowania informacji. Poniższa praca skupi się na ogólnym koncepcie aplikacji oraz szczegółowym opisie implementacji modułu tworzącego streszczenia.
 \newpage
 %% ########################################################
 \section{Zagadnienia teoretyczne}
 %% ########################################################
+\subsection{Sposoby przechowywania informacji}
 \subsection{Problem tworzenia streszczeń}
 %%(JA TUTAJ ROBIĘ NIENADZOROWANY TEXTRANK JAK COŚ)\\
 Streszczenie artykułu naukowego jest jego kluczowym elementem. Ilość informacji dostępnych dla każdego, kto szuka wiedzy na dany temat, może być przytłaczająca. Jego celem jest przekazanie najważniejszych cech czytanej treści, aby czytelnik mógł określić, czy informacje są dla niego istotne. \par
@@ -52,8 +55,8 @@ W kontekście uczenia maszynowego, kondensacja treści w celu stworzenia abstrak
 Większość badań nad systemami ATS skupia się na użyciu metod ekstraktywnych, starając się przy tym uzyskać zwięzłe i kompletne streszczenia. Podejście ekstraktywne polega na wybraniu najważniejszych zdań z całego dokumentu, a długość uzyskanego wyniku zależy od wartości stopnia kompresji \cite{Gambhir2017}. \par
 Streszczenia stworzone z użyciem metod abstrakcyjnych wymagają głębszej analizy tekstu wejściowego. Generują one podsumowanie poprzez "zrozumienie" głównych pojęć w dokumencie wejściowym. Dzieje się to poprzez implementacje złożonych algorytmów przetwarzania języka naturalnego (\textit{ang. NLP, Natural Language Processing}). Następnie dokonywane jest parafrazowanie tekstu w celu wyrażenia tych pojęć z użyciem słów, które nie należą do oryginalnego tekstu. W praktyce rozwój wspomnianych systemów wymaga kompleksowych zbiorów danych.\par
 %Streszczenia stworzone z użyciem metod abstraktywnych zawierają zdania, które nie znajdują się w orginalnym tekście. System musi w pewnym stopniu ``rozumieć'' tekst, aby móc poprawnie zinterpretować dokument. Abstraktywność wymaga implementacji bardziej złożonych algorytmów przetwarzania języka naturalnego.\par
-Istnieje również podział zadania podsumowania na nienadzorowane i nadzorowanie. Nienadzorowane tworzą streszczenia tylko na podstawie danych wejściowych, czyli jedynie zawartości wprowadanego dokumentu. Do optymalnego wyboru zdań, takie systemy implementują metody natury heurystycznej. Z tego powodu są one odpowiednie do przetwarzania danych na bierząco.\par
-Sposób nadzorowany wymaga przeprowadzenia fazy trenowania modelu, która wymaga wprowadzenia opisanego zbioru treningowego. Takie zbiory powinny posiadać docelowe postacie streszczeń otrzymane z pełnego tekstu dokumentu. Taki proces jest trudny do przeprowadzenia na większej ilości tekstów.
+Istnieje również podział technik tworzenia streszczeń na nienadzorowane i nadzorowanie. Nienadzorowane tworzą streszczenia tylko na podstawie danych wejściowych, czyli jedynie zawartości wprowadanego dokumentu. Próbują one odkryć ukrytą strukturę w nieoznakowanych danych. Techniki te są zatem odpowiednie dla wszelkich nowo zaobserwowanych danych nie wymagających modyfikacji.\par
+Sposób nadzorowany wymaga trenowania modelu, jak i wprowadzenia opisanego zbioru treningowego. Takie zbiory powinny posiadać docelowe postacie streszczeń otrzymane z pełnego tekstu dokumentu. Taki proces jest trudny do przeprowadzenia na większej ilości tekstów \cite{ELKASSAS2021113679}.
 \subsubsection{Ocena poprawności abstraktu}
 Zazwyczaj ingerencja człowieka jest wymagana przy ewaluacji wytworzonego streszczenia. Treść jest sprawdzana pod kątem poprawności gramatycznej, składni czy całościowej spójności. Taka ewaluacja wymaga dużego nakładu pracy, a przy większych projektach jest praktycznie niemożliwe. Dlatego możliwość zautomatyzowania tego procesu jest wręcz wymagana.\par
 Jednymi z pierwszych metod ewaluacji automatycznej były metryki takie jak podobieństwo cosinusowe (\textit{ang. cosine similarity}), \textit{unit overlap} czy miara najdłuższego wspólnego podzdania (\textit{ang. longest common subsequence}). Te elementy zostały później skondensowane w zbiór kryteriów opisanych akronimem \textit{ROUGE} (\textit{ang. Recall-Oriented Understudy of Gisting Evaluation}) \cite{rouge}. Poniższy segment przedstawia poszczególne komponenty zestawu \textit{ROUGE}, to jest kryteria \textit{ROUGE-N}, \textit{ROUGE-L} oraz \textit{ROUGE-S}.\par
@@ -186,24 +189,6 @@ Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule 
   \caption{Implementacja wyszukiwania pliku}
 \end{figure}
 \newpage
-\subsubsection{Asocjacja plików o podobnej tematyce}
-Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenerowanych słów kluczowych. System z każdym dodanym plikiem przeszukuję przestrzeń dokumentów i aktualizuje już utworzone rekordy, w sytuacji dopasowania. Schemat przedstawia tworzenie połączeń dla nowo dodanego pliku.
-\begin{enumerate}
-\item dla każdego słowa kluczowego, jest pobrana lista ID plików z tabeli \textit{file\_properties}, pod warunkiem dopasowania przynajmniej jednego tagu,
-\item następnie obliczany jest współczynnik podobieństwa, którego schemat postępowania jest przedstawiony poniżej:
-	\begin{enumerate}
-		\item wyznaczana jest wartość dla poszczególnych słów kluczy
-		\begin{itemize}
-			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia odżywiania''), to zapisywana jest wartość $\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
-			\item jeżeli słowa są identyczne, zapisywana jest wartość 1,
-		\end{itemize}
-		\item wartości dla wszystkich słów kluczy są sumowane i dzielone przez liczbę tagów.
-	\end{enumerate}
-\item do ID pliku przypisana jest wartość podobieństwa, i po posortowaniu od największej wartości, ID są dodawane do jednego rekordu w tabeli \textit{file\_connections}
-	\begin{itemize}
-		\item jeżeli wartość podobieństwa nie przekracza 0.5, to plik nie jest brany pod uwagę
-	\end{itemize}
-\end{enumerate}
 \subsubsection{Obsługa plików zawierających dane tabelaryczne}
 \begin{enumerate}
 	\item użytkownik przy dodaniu pliku podaje następujące informacje:
@@ -221,6 +206,26 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
   \caption{Diagram aktywności przetwarzania plików tabelarycznych}
 \end{figure}
 %% ########################################################
+\clearpage
+\newpage
+\subsubsection{Asocjacja plików o podobnej tematyce}
+Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenerowanych słów kluczowych. System z każdym dodanym plikiem przeszukuje przestrzeń dokumentów i aktualizuje już utworzone rekordy, w sytuacji dopasowania. Schemat przedstawia tworzenie połączeń dla nowo dodanego pliku.
+\begin{enumerate}
+\item dla każdego słowa kluczowego, jest pobrana lista ID plików z tabeli \textit{file\_properties}, pod warunkiem dopasowania przynajmniej jednego tagu,
+\item następnie obliczany jest współczynnik podobieństwa, którego schemat postępowania jest przedstawiony poniżej:
+	\begin{enumerate}
+		\item wyznaczana jest wartość dla poszczególnych słów kluczy
+		\begin{itemize}
+			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia odżywiania''), to zapisywana jest wartość $\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
+			\item jeżeli słowa są identyczne, zapisywana jest wartość 1,
+		\end{itemize}
+		\item wartości dla wszystkich słów kluczy są sumowane i dzielone przez liczbę tagów.
+	\end{enumerate}
+\item do ID pliku przypisana jest wartość podobieństwa, i po posortowaniu od największej wartości, ID są dodawane do jednego rekordu w tabeli \textit{file\_connections}
+	\begin{itemize}
+		\item jeżeli wartość podobieństwa nie przekracza 0.5, to plik nie jest brany pod uwagę
+	\end{itemize}
+\end{enumerate}
 \newpage
 \section{Możliwości rozwoju i wykorzystania aplikacji}
 Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworzenie dodatkowych zdolności programu jest uproszczone, poprzez oparcie systemu o odpowiedzi w postaci komunikatu http zamiast stosowania szablonów, jak to jest zwykle przy standardowym projektowaniu z użyciem Python Flask. Baza danych wykorzystana w projekcie, MongoDB, jest bazą typu NoSQL, która umożliwia przechowywanie informacji w nie ustrukturyzowany sposób. Dzięki czemu tabele można wypełnić dowolnymi wartościami a sama aplikacja wyświetla wyszystkie elementy tabeli dla wyszukiwanego obiektu.\par
@@ -251,7 +256,7 @@ Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segre
 %% ########################################################
 \section*{Podsumowanie i wnioski}
 \addcontentsline{toc}{section}{Podsumowanie i wnioski}
-Automatyzacja procesów związanych z 
+Podczas pracy nad projektem zaobserwowano problemy zawiązane z ekstrakcją informacji z plików PDF
 %% ########################################################
 \newpage
 \listoffigures
