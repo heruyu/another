@@ -45,8 +45,8 @@ Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkown
 \newpage
 %% ########################################################
 \section{Zagadnienia teoretyczne}
-Projektowany system ma służyć do przechowywania informacji (istnieje też aspekt miejsca gdzie dane są przechowywane. \par
-wstęp do wyciągania informacji
+Zaprojektowany system ma uprościć proces gromadzenia informacji dla użytkownika prywatnego. Zgromadzone dane mogą być przechowywane w pliku w systemie plików lub przy użyciu takich narzędzi jak bazy danych. Rozważając rodzaj przechowywania danych należy również wziąć pod uwagę aspekt fizyczny.  \par
+Projekt wykorzystuje architekture typu klient-serwer, jednakże dzięki wykorzystaniu pakietu \textit{Electron} języka Javascript, jest możliwe przekształcenie aplikacji webowej na natywną. Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Pełny opis tej biblioteki jest zawarty w podrozdziale 1.4. 
 %% ########################################################
 \subsection{Sposoby przechowywania informacji}
 Istnieje wiele sposobów magazynowania danych. Wybór odpowiedniego sposobu zależy od indywidualnych potrzeb użytkownika oraz od ilości informacji. Na poziomie organizacji dzielą się one na serwery lokalne (\textit{ang. on-premises servers}) oraz przechowywanie w chmurze (\textit{ang. cloud storage}). Poniżej zostały opisane obie metody.\par
@@ -110,8 +110,12 @@ Otrzymanie zawartości pliku może być wykonane za pomocą wydobycia elementów
 Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do edytowania czy wyszukiwania. Techniki oparte o analizę obrazów są bezpośrednio zależne od jakości wprowadzonego elementu. Idealną sytuacją dla wykożystania metod OCR jest kiedy posiadany plik zawiera w sobie jedynie tekst i jest obrazem binarnym \cite{mithe2013optical}. Dodatkowym atutem takich systemów jest możliwość wykrycia pisma i konwersja na tekst.\par
 Ekstrahowanie danych z strumienia pliku, wiąże się z kilkoma problemami. Biorąc pod uwagę możliwość że plik pdf może posiadać różne kodowanie takie jak \textit{UTF-8}, \textit{ASCII} czy \textit{Unicode}, możemy doświadczyć utraty informacji spowodowanej schematem kodowania pliku. Automatyczna ekstrakcja zawartości polega na selekcji znaków znajdujących się pomiędzy zdefiniowanymi słowami kluczowymi. Pliki PDF są przystosowane do drukowania, z tego powodu reprezentacja tekstu w strumieniu może się znacząco różnić od tej na stronie. Ponieważ pozycje znaków na poszczególnych stronach są absolutne, przedstawienie w strumieniu bierze pod uwagę koordynaty elementów.\par
 Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie ich poprawności względem dokumentu wejściowego. Brak formalnej definicji struktury, przynajmniej jeżeli chodzi o artykuły naukowe, uniemożliwia stworzenie uniwersalnego algorytmu ekstrakcji.
-%\subsection{Preprocessing i manipulacja danych}
+\subsection{Pakiet Electron}
+Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji kontekstu. Izolacja kontekstu odpowiada za separację procesu renderowania strony od głównego procesu aplikacji w środowisku Node.js. Zwiększa to bezpieczeństwo aplikacji, negując możliwość dostępu do użytych API  (\textit{ang. Application Programming Interface}) od strony klienta. \par
+System posiada jeden główny proces \textit{``main''}, którego celem jest tworzenie aplikacji i kierowanie podprocesami, oraz wiele procesów odpowiedzialnych za renderowanie zawartości strony zwanych procesami \textit{``renderer''}. Biblioteka umożliwia również dodanie skryptów, które działają przed renderowaniem strony (ang. \textit{preload scripts}). Otrzymują one dodatkowe możliwości w porównaniu plików renderujących, poprzez posiadanie uprawnień do korzystania z Node.js APIs. Mogą one bezpiecznie udostępnić części API dla procesów strony.
 \newpage
+\section{Projekt systemu}
+System w założeniu działa następująco, użytkownik dodaje plik a serwer zajmuje się resztą, po stronie serwera jest wykrywany rodzaj pliku i wykonywane są specyficzne dla niego operacje
 \section{Implementacja}
 \subsection{Projekt systemu}
 Aplikacja została zaprojektowana z myślą o użytkownikach będących w posiadaniu dużej ilości plików z danymi. Głównym celem jest automatyzacja procesu segregowania i przetwarzania informacji. System etykietuje otrzymane pliki poprzez ekstrakcje słów kluczowych i daje możliwość wyszukiwania plików w bardziej optymalny sposób. Otrzymane dokumenty są kategoryzowane ze względu na słowa klucze. Po otrzymaniu elementów o podobnej strukturze i zawartości, są one łączone ze sobą. Informacja o takim połączeniu jest umieszczana w bazie danych, tak aby przy odczycie jednego z elementów, drugi był sugerowany jako następny plik do wyświetlenia. \par
@@ -152,9 +156,6 @@ Implementacja serwera z pomocą pakietu Flask umożliwia dostęp do szerokiego s
   \includegraphics[width=\textwidth]{img/flask.jpg}
   \caption{Przykładowa implementacja funkcji serwera}
 \end{figure}
-\subsubsection{Electron}
-Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji kontekstu. Izolacja kontekstu odpowiada za separację procesu renderowania strony od głównego procesu aplikacji w środowisku Node.js. Zwiększa to bezpieczeństwo aplikacji, negując możliwość dostępu do użytych API  (\textit{ang. Application Programming Interface}) od strony klienta. \par
-System posiada jeden główny proces \textit{``main''}, którego celem jest tworzenie aplikacji i kierowanie podprocesami, oraz wiele procesów odpowiedzialnych za renderowanie zawartości strony zwanych procesami \textit{``renderer''}. Biblioteka umożliwia również dodanie skryptów, które działają przed renderowaniem strony (ang. \textit{preload scripts}). Otrzymują one dodatkowe możliwości w porównaniu plików renderujących, poprzez posiadanie uprawnień do korzystania z Node.js APIs. Mogą one bezpiecznie udostępnić części API dla procesów strony.
 %\begin{figure}[h!]
 %\centering
 %  \includegraphics{img/file_structure.jpg}
