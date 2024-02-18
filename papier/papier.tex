@@ -48,6 +48,7 @@ Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkown
 Zaprojektowany system ma uprościć proces gromadzenia informacji dla użytkownika prywatnego. Zgromadzone dane mogą być przechowywane w pliku w systemie plików lub przy użyciu takich narzędzi jak bazy danych. Rozważając rodzaj przechowywania danych należy również wziąć pod uwagę aspekt fizyczny.  \par
 Projekt wykorzystuje architekture typu klient-serwer, jednakże dzięki wykorzystaniu pakietu \textit{Electron} języka Javascript, jest możliwe przekształcenie aplikacji webowej na natywną. Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Pełny opis tej biblioteki jest zawarty w podrozdziale 1.4. 
 %% ########################################################
+%% 
 \subsection{Sposoby przechowywania informacji}
 Istnieje wiele sposobów magazynowania danych. Wybór odpowiedniego sposobu zależy od indywidualnych potrzeb użytkownika oraz od ilości informacji. Na poziomie organizacji dzielą się one na serwery lokalne (\textit{ang. on-premises servers}) oraz przechowywanie w chmurze (\textit{ang. cloud storage}). Poniżej zostały opisane obie metody.\par
 Pojęcie \textbf{serwerów on-premises} odnosi się do fizycznego sprzętu i infrastruktury, które znajdują się pod kontrolą organizacji lub osoby fizycznej. Podejście to obejmuje konfigurowanie i utrzymywanie serwerów na miejscu w celu przechowywania danych i zarządzania nimi, bez angażowania usługodawców zewnętrznych. Oto przegląd zalet i wad korzystania z serwerów lokalnych do przechowywania danych:
@@ -111,8 +112,21 @@ Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do e
 Ekstrahowanie danych z strumienia pliku, wiąże się z kilkoma problemami. Biorąc pod uwagę możliwość że plik pdf może posiadać różne kodowanie takie jak \textit{UTF-8}, \textit{ASCII} czy \textit{Unicode}, możemy doświadczyć utraty informacji spowodowanej schematem kodowania pliku. Automatyczna ekstrakcja zawartości polega na selekcji znaków znajdujących się pomiędzy zdefiniowanymi słowami kluczowymi. Pliki PDF są przystosowane do drukowania, z tego powodu reprezentacja tekstu w strumieniu może się znacząco różnić od tej na stronie. Ponieważ pozycje znaków na poszczególnych stronach są absolutne, przedstawienie w strumieniu bierze pod uwagę koordynaty elementów.\par
 Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie ich poprawności względem dokumentu wejściowego. Brak formalnej definicji struktury, przynajmniej jeżeli chodzi o artykuły naukowe, uniemożliwia stworzenie uniwersalnego algorytmu ekstrakcji.
 \subsection{Pakiet Electron}
-Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji kontekstu. Izolacja kontekstu odpowiada za separację procesu renderowania strony od głównego procesu aplikacji w środowisku Node.js. Zwiększa to bezpieczeństwo aplikacji, negując możliwość dostępu do użytych API  (\textit{ang. Application Programming Interface}) od strony klienta. \par
-System posiada jeden główny proces \textit{``main''}, którego celem jest tworzenie aplikacji i kierowanie podprocesami, oraz wiele procesów odpowiedzialnych za renderowanie zawartości strony zwanych procesami \textit{``renderer''}. Biblioteka umożliwia również dodanie skryptów, które działają przed renderowaniem strony (ang. \textit{preload scripts}). Otrzymują one dodatkowe możliwości w porównaniu plików renderujących, poprzez posiadanie uprawnień do korzystania z Node.js APIs. Mogą one bezpiecznie udostępnić części API dla procesów strony.
+Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji kontekstu. 
+\subsubsection*{Izolacja wątku}
+W Electroni separacja wątków odnosi się do możliwości izolacji różnych części aplikacji w celu zapobiegania interferencji oraz zapewnienia stabilności i bezpieczeństwa. Separacja ta jest osiągana poprzez wykorzystanie wielu procesów, w tym procesu głównego i procesów renderujących.
+\begin{itemize}
+	\item Proces główny: Zarządza cyklem życia aplikacji i interakcjami z systemem operacyjnym. Działa we własnym, odizolowanym wątku, oddzielnie od procesów renderujących.
+	\item Procesy renderujące: obsługują renderowanie i wyświetlanie treści internetowych w poszczególnych oknach aplikacji. Każdy proces renderujący działa niezależnie, odizolowany od innych procesów renderujących i procesu głównego.
+\end{itemize}
+Separacja wątku zapewnia, że zmiany dokonane w jednej części aplikacji nie wpływają na inne części, zwiększając stabilność i bezpieczeństwo. Separacja ta umożliwia również efektywne zarządzanie zasobami i skalowalność, ponieważ każdy proces może być zarządzany i optymalizowany niezależnie.
+\subsubsection*{Komunikacja międzyprocesowa (IPC)}
+Pomimo separacji między procesami, Electron zapewnia mechanizmy komunikacji między nimi poprzez IPC (\textit{ang. Inter-Process Communication}). Pozwala to różnym częściom aplikacji na efektywną wymianę danych, wyzwalanie akcji i synchronizację stanu.
+\begin{itemize}
+	\item IPC Main: Electron zapewnia moduł \textit{ipcMain} w głównym procesie, pozwalając mu nasłuchiwać i obsługiwać zdarzenia IPC wysyłane z procesów renderujących.
+	\item IPC Renderer: W procesach renderujących, moduł \textit{ipcRenderer}	 umożliwia wysyłanie zdarzeń IPC do głównego procesu i odbieranie odpowiedzi.
+\end{itemize}
+Dzięki IPC deweloperzy mogą zaimplementować dwukierunkową komunikację między procesem głównym a procesami renderującymi, umożliwiając im koordynację działań, udostępnianie danych i synchronizację stanu w różnych częściach aplikacji.\par
 \newpage
 \section{Projekt systemu}
 System w założeniu działa następująco, użytkownik dodaje plik a serwer zajmuje się resztą, po stronie serwera jest wykrywany rodzaj pliku i wykonywane są specyficzne dla niego operacje
