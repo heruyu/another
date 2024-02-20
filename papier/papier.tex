@@ -36,24 +36,20 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-Dane odgrywają niezwykle istotną rolę w funkcjonowaniu współczesnego społeczeństwa, będąc fundamentem dla wielu procesów i decyzji. Dzięki danym można analizować i rozumieć zmiany w otaczającym świecie, identyfikować wzorce i trendy oraz przewidywać przyszłe wydarzenia.\par
+Celem niniejszej pracy jest omówienie projektu systemu, który upraszcza użytkownikowi proces gromadzenia i sortowania informacji. Skupi się ona na przedstawieniu koncepcji aplikacji oraz  opisie poszczególnych implementacji, w tym modułu odpowiedzialnego za obsługę artykułów.\par
 Przechowywanie danych jest niezbędne nie tylko ze względu na konieczność zachowania informacji historycznych, ale także po to, aby zapewnić dostępność potrzebnych informacji w odpowiednim czasie oraz miejscu. Organizacje różnego rodzaju gromadzą ogromne ilości informacji, które są kluczowe dla ich funkcjonowania i rozwoju. Systematyczne przechowywanie tych danych pozwala na śledzenie zmian w czasie, analizę trendów oraz identyfikację ważnych wzorców i relacji, co z kolei umożliwia podejmowanie trafniejszych decyzji biznesowych. Wykorzystując dane, można personalizować doświadczenia użytkowników, dostosowując produkty i usługi do ich potrzeb i preferencji.\par
-W kontekście poniższej pracy, zbiór danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenia analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.\par
-Zapewnienie bezpieczeństwa i poufności gromadzonych informacji jest również ważnym aspektem przechowywania danych. W obliczu coraz częstszych przypadków naruszeń danych i cyberataków, odpowiednie zabezpieczenie przechowywanych danych staje się priorytetem. Dlatego też organizacje, ale także osoby prywatne muszą inwestować w zaawansowane systemy ochrony danych i stosować odpowiednie procedury zarządzania dostępem do informacji.\par
-\subsection*{Cel i zakres projektu}
-Projekt ma na celu przedstawienie możliwości systemu ułatwiającego użytkownikowi proces zbierania i segregowania informacji. Poniższa praca skupi się na zaprezentowaniu konceptu aplikacji oraz szczegółowym opisie implementacji modułu obsługi artykułów.
+W kontekście poniższej pracy, zbiór danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenia analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.
 \newpage
 %% ########################################################
-\section{Zagadnienia teoretyczne}
+\section{Zagadnienia dotyczące projektu}
 Zaprojektowany system ma uprościć proces gromadzenia informacji dla użytkownika prywatnego. Zgromadzone dane mogą być przechowywane w pliku w systemie plików lub przy użyciu takich narzędzi jak bazy danych. Rozważając rodzaj przechowywania danych należy również wziąć pod uwagę aspekt fizyczny. Rozróżnienie to jest opisane w rozdziale 1.1. Wraz z danymi będą przechowywanie metainformacje, opisujące te dane.  \par
 Pozyskiwanie informacji z plików różni się zależnie od ich rodzaju. Aplikacja umożliwia przetworzenie plików tabelarycznych czy tekstowych, poprzez wykorzystanie ich zawartości. Szczególnym przypadkiem są pliki PDF, gdzie proces ekstrakcji zawartości jest utrudniony w związku z kodowaniem i formatem pliku, co zostanie omówione w dziale 1.2. \par
-Analiza tekstu może być przeprowadzona pod kilkoma względami\par
 Projekt aplikacji wykorzystuje architekture typu klient-serwer, jednakże dzięki wykorzystaniu pakietu \textit{Electron} języka Javascript, jest możliwe przekształcenie aplikacji webowej na natywną. Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Pełny opis tej biblioteki jest zawarty w podrozdziale 1.4. 
 %% ########################################################
 %% 
 \subsection{Sposoby przechowywania informacji}
 Istnieje wiele sposobów magazynowania danych. Wybór odpowiedniego sposobu zależy od indywidualnych potrzeb użytkownika oraz od ilości informacji. Na poziomie organizacji dzielą się one na serwery lokalne (\textit{ang. on-premises servers}) oraz przechowywanie w chmurze (\textit{ang. cloud storage}). Poniżej zostały opisane obie metody.\par
-Pojęcie \textbf{serwerów on-premises} odnosi się do fizycznego sprzętu i infrastruktury, które znajdują się pod kontrolą organizacji lub osoby fizycznej. Podejście to obejmuje konfigurowanie i utrzymywanie serwerów na miejscu w celu przechowywania danych i zarządzania nimi, bez angażowania usługodawców zewnętrznych. Oto przegląd zalet i wad korzystania z serwerów lokalnych do przechowywania danych:
+Pojęcie \textbf{serwerów on-premises} odnosi się do fizycznego sprzętu i infrastruktury, które znajdują się pod kontrolą organizacji lub osoby fizycznej. Podejście to obejmuje konfigurowanie i utrzymywanie serwerów na miejscu w celu przechowywania danych i zarządzania nimi, bez angażowania usługodawców zewnętrznych. Oto przegląd zalet i wad korzystania z serwerów lokalnych do przechowywania danych \cite{F2023}:
 \begin{itemize}
 	\item zalety:
 		\begin{enumerate}
@@ -69,7 +65,7 @@ Pojęcie \textbf{serwerów on-premises} odnosi się do fizycznego sprzętu i inf
 			\item Ograniczona redundancja geograficzna - serwery mogą nie mieć redundancji geograficznej, co oznacza, że dane są przechowywane w jednej lokalizacji i są podatne na zagrożenia, takie jak klęski żywiołowe, pożary lub inne nieprzewidziane zdarzenia, które mogą spowodować utratę danych.
 		\end{enumerate}
 \end{itemize}\par
-Usługi \textbf{przechowywania w chmurze}, takie jak Amazon Web Services (AWS), zapewniają możliwość przechowywania danych i zarządzania nimi w zdalnych centrach danych utrzymywanych przez zewnętrznych dostawców usług. Poniżej przedstawiono przegląd wad i zalet korzystania z usług przechowywania danych w chmurze:
+Usługi \textbf{przechowywania w chmurze}, takie jak Amazon Web Services (AWS) czy Azure Cloud, zapewniają możliwość przechowywania danych i zarządzania nimi w zdalnych centrach danych utrzymywanych przez zewnętrznych dostawców usług. Poniżej przedstawiono przegląd wad i zalet korzystania z usług przechowywania danych w chmurze:
 \begin{itemize}
 	\item zalety:
 		\begin{enumerate}
@@ -88,7 +84,7 @@ Usługi \textbf{przechowywania w chmurze}, takie jak Amazon Web Services (AWS), 
 			\item Obawy dotyczące bezpieczeństwa danych i prywatności: Pomimo solidnych środków bezpieczeństwa wdrożonych przez dostawców usług w chmurze, organizacje mogą nadal mieć obawy dotyczące bezpieczeństwa i prywatności swoich danych przechowywanych w chmurze.
 		\end{enumerate}
 \end{itemize}\par
-Wybór miejsca przechowywania danych zależy od takich czynników, jak wymagania bezpieczeństwa, potrzeby skalowalności czy ograniczenia budżetowe. Często korzystne dla organizacji jest przyjęcie podejścia hybrydowego lub wielochmurowego, wykorzystującego mocne strony różnych opcji przechowywania danych. Umożliwia to zaspokojenie różnorodnych potrzeb biznesowych przy jednoczesnym złagodzeniu wpływu niedoskonałości różnych rozwiązań.
+Wybór miejsca przechowywania danych zależy od takich czynników, jak wymagania bezpieczeństwa, potrzeby skalowalności czy ograniczenia budżetowe. Często korzystne dla organizacji jest przyjęcie podejścia hybrydowego lub wielochmurowego, wykorzystującego mocne strony różnych opcji przechowywania danych. Umożliwia to zaspokojenie różnorodnych potrzeb biznesowych przy jednoczesnym złagodzeniu wpływu niedoskonałości różnych rozwiązań \cite{Ho2022}.
 %% ########################################################
 \subsection{Ekstrakcja tekstu plików PDF}
 Pliki PDF są powszechnie przyjętym standardem przechowywania informacji. Format PDF jest oparty o strukturę binarnego formatu plików, zoptymalizowanego pod kątem wysokiej wydajności odczytu wizualnego. Zawierają w sobie informacje o strukturze dokumentu, takie jak zawartość tekstowa, grafiki czy użyta czcionka. Są one zoptymalizowane pod drukowanie. Niezaszyfrowane PDF mogą być w całości reprezentowane z użyciem wartości bitowych, odpowiadających części zbioru znaków zdefiniowanego w \textit{ANSI X3.4-1986}, symbole kontrolne oraz puste znaki. Wizualnie jednak nie są one ograniczone do zbioru znaków ASCII \cite{ISO32000}.\par
@@ -131,7 +127,7 @@ Pomimo separacji między procesami, Electron zapewnia mechanizmy komunikacji mi�
 \end{itemize}
 Dzięki IPC możliwa jest implementacja dwukierunkowej komunikacji między procesem głównym a procesami renderującymi, umożliwiając im koordynację działań, udostępnianie danych i synchronizację stanu w różnych częściach aplikacji.\par
 \newpage
-\section{Projekt systemu}
+\section{Projekt}
 Celem systemu jest zapewnienie scentralizowanej platformy, która ułatwia efektywne gromadzenie, organizowanie i wyszukiwanie treści cyfrowych. Aplikacja ma na celu usprawnienie procesu zarządzania informacjami poprzez oferowanie takich funkcji jak:
 \begin{enumerate}
 	\item Umożliwienie użytkownikom łatwego wprowadzania do aplikacji różnych typów plików, w tym dokumentów, danych tabelarycznych, notatek i innych.
@@ -140,6 +136,7 @@ Celem systemu jest zapewnienie scentralizowanej platformy, która ułatwia efekt
 	\item Automatyczne generowanie streszczeń artykułów w celu zapewnienia użytkownikom szybkiego wglądu w treść bez konieczności czytania całego tekstu.
 \end{enumerate}\par
 Aplikację można podzielić na kilka głównych komponentów, z których każdy pełni odrębną funkcję w systemie. Do nich zaliczamy przetwarzanie, wyszukiwanie, streszczenia, organizacja i dodawanie plików. Poniższy segment przedstawi poszczególne moduły i ich planowane możliwości.\par
+\subsection*{Opisy funkcjonalne modułów}
 \textbf{Moduł organizacji danych} automatycznie kategoryzuje i organizuje dane użytkownika, aby ułatwić ich efektywne wyszukiwanie i zarządzanie.
 \begin{itemize}
 	\item System tagowania: Użytkownicy mogą samodzielnie przypisywać etykiety do każdego dokumentu lub pozostawić te wygenerowane przez system, umożliwiając im kategoryzowanie i łączenie plików w oparciu o wspólne motywy lub tematy.
@@ -157,7 +154,7 @@ Aplikację można podzielić na kilka głównych komponentów, z których każdy
 	\item Algorytmy podsumowujące tekst: Aplikacja wykorzystuje zaawansowane algorytmy do podsumowywania tekstu, które mogą obejmować metody ekstrakcyjne, które wybierają ważne zdania lub metody abstrakcyjne, które generują nową treść podsumowania.
 	\item Automatyczne podsumowanie: Użytkownicy mogą wybrać opcje dla automatycznego generowania podsumowań dla dokumentów w aplikacji, takie jak ilość zdań lub poziom szczegółowości podsumowań.
 \end{itemize}\par
-\textbf{Przetwarzanie plików} wykrywa rodzaj pliku dodanego przez klienta i wyznacza akcje do przeprowadzenia zgodnie z typem.
+\textbf{Przetwarzanie plików} wykrywa rodzaj pliku dodanego przez klienta i wyznacza akcje do przeprowadzenia zgodnie z typem. 
 \newpage
 \section{Implementacja}
 Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.\par
@@ -170,24 +167,25 @@ Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o proto
 %% ########################################################
 System składa się z 4 głównych komponentów:
 \begin{enumerate}
-\item serwer HTTP - zbudowany z pomocą języka Python oraz biblioteki Flask,
-\item baza danych NoSQL
-\item interfejs użytkownika - generowany z użyciem frameworku Javascript React,
-\item konwerter na aplikację natywną Electron.
-\end{enumerate}
-Poniższe sekcje przedstawiają opis poszczególnych elementów służących do implementacji systemu.
-\subsubsection*{Języki programowania}
-javascript
+\item serwer HTTP,
+\item baza danych NoSQL,
+\item interfejs użytkownika,
+\item konwerter na aplikację natywną.
+\end{enumerate}\par
+Interfejs aplikacji został opracowany przy użyciu języka JavaScript z biblioteką React, znaną z wydajnej architektury opartej na komponentach i płynnych możliwości tworzenia interfejsu użytkownika. W implementacji serwera został wykorzystany język Python, w połączeniu z frameworkiem Flask. Opis poszczególnych elementów znajduje się poniżej.\par
+Javascript to powszechnie używany język programowania do tworzenia stron internetowych, znany ze swojej wszechstronności i kompatybilności z przeglądarkami. Opisywany system wykorzystuje Javasctipt w środowisku \textit{Node.js}, co ułatwia dostęp do różnorodnych pakietów takich jak \textit{React}, których opis jest przedstawiony poniżej.
 \begin{itemize}
-	\item react - biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu.
-	\item axios - klient HTTP z pomocą którego odbywa się komunikacja z serwerem. Jest to mechanizm oparty o obietnice co pozwala na asynchroniczną relacje z punktem końcowym (\textit{ang. endpoint}). W systemie, po otrzymaniu odpowiedzi od serwera, ustawiany jest stan, czego przykład wykorzystania jest przedstawiony poniżej.
+	\item \textit{React} - biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu.
+	\item \textit{Axios} - klient HTTP z pomocą którego odbywa się komunikacja z serwerem. Jest to mechanizm oparty o obietnice co pozwala na asynchroniczną relacje z punktem końcowym (\textit{ang. endpoint}). W systemie, po otrzymaniu odpowiedzi od serwera, ustawiany jest stan, czego przykład wykorzystania jest przedstawiony poniżej.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{img/axios.jpg}
 \caption{Przykład wykorzystania \textit{Axios}; Implementacja dodania pliku}
 \end{figure}
-\end{itemize}
-python
+\end{itemize}\par
+Python to język programowania wysokiego poziomu znany ze swojej prostoty, czytelności i szerokiego wsparcia dla bibliotek, co czyni go odpowiednim wyborem do tworzenia backendu. 
+Stworzenie serwera w tym języku pozwala na korzystanie z dużego zestawu bibliotek dotyczących takich tematów jak przetwarzanie i analiza danych czy szerokiego spektrum bibliotek sztucznej inteligencji.
+Python ma dużą i aktywną społeczność programistów, którzy przyczyniają się do jego rozległego ekosystemu bibliotek, frameworków i narzędzi. Poniżej zostały przedstawione używane w aplikacji elementy.
 \begin{itemize}
 	\item Flask - jest to elastyczny framework, pozwalający na tworzenie aplikacji internetowych przy minimalnej ilości kodu. Dostarcza on jedynie niezbędne narzędzia, stawiając tym na dużą swobodę implementacji innych funkcji. Funkcja serwera jest uruchamiana w sytuacji gdy na podany adres URL zostanie wysłany komunikat.
 	\item PdfMiner - biblioteka przeznaczona do wyodrębniania tekstu i metadanych z dokumentów PDF. 
@@ -195,8 +193,45 @@ python
 	\item Sumy - biblioteka umozliwiająca automatyczne tworzenie streszczeń tekstów.
 \end{itemize}
 \subsection{Status}
+Ze względu na ograniczenia czasowe, implementacja obejmuje następujące elementy określone w rozdziale 2. Odchylenia od założeń przedstawionych w tym rozdziale zostały opisane w rozdziale 3.3, a poniżej wydnieje lista częściowo lub w pełni zawartych elementów w zależności od modułu. 
+\begin{enumerate}
+	\item Moduł organizacji danych
+	\begin{itemize}
+		\item Zrealizowano: Tagowanie plików poprzez generację słów kluczy na podstawie zawartości oraz łączenie plików
+		\item Odrzucono: Automatyczne wytwarzanie struktury folderów oraz kategoryzacja.
+	\end{itemize}
+	\item Wyszukiwarka
+	\begin{itemize}
+		\item Zrealizowano: Wyszukiwanie, prezentacja wyników wyszukiwania oraz możliwość filtrowania wyników,
+		\item Odrzucono: Sugestie i autouzupełnianie
+	\end{itemize}
+	\item Moduł podsumowujący
+	\begin{itemize}
+		\item Zrealizowano: Tworzenie streszczeń metodą ekstraktywną opartą o algorytm TextRank,
+		\item Odrzucono: Wykorzystanie metod abstrakcyjnych.
+	\end{itemize}
+	\item Przetwarzanie plików
+	\begin{itemize}
+		\item Zrealizowano: Przetwarzanie cześciowe dla plików o rozszerzeniu PDF, CSV oraz TXT.
+	\end{itemize}
+	Pełen opis specyfikacji zależnej od rodzaju jest przedstawiony w rozdziale 3.4.
+\end{enumerate}
 \subsection{Architektura}
+Podstawowe funkcjonalności aplikacji są oparte na architekturze klient-serwer. Interfejs po stronie klienta, opracowany przy użyciu standardowych technologii internetowych, takich jak HTML, CSS i JavaScript, komunikuje się z zapleczem po stronie serwera w celu obsługi żądań użytkowników oraz przechowywania i przetwarzania danych.\par
+Nie jest ona jednak aplikacją internetową. Po stronie klienta jest ona zamknięta w \textit{Electronie}, szkielecie (\textit{ang. framework}) umożliwiającym tworzenie wieloplatformowych aplikacji desktopowych przy użyciu technologii internetowych. Osadzając aplikację internetową w Electron, przekształcana jest ona w samodzielną aplikację desktopową, która może być dystrybuowana i uruchamiana natywnie w różnych systemach operacyjnych (Windows, macOS, Linux). Ta integracja oferuje użytkownikom znane doświadczenie interakcji z aplikacją desktopową przy jednoczesnym zachowaniu korzyści płynących z technologii webowej.
 %########################################################
+\subsection{Ograniczenia implementacji}
+\subsubsection*{Organizacja plików}
+Podczas tworzenia systemu napotkano problem dotyczący modułu organizacji danych, a dokładniej automatycznego tworzenia struktur katalogów. Proces ten wymaga wzięcia pod uwagę wielu warunków co sprawia, że koszty implementacji są niewspółmierne do oczekiwanych wyników. Przykładowe wymagania zostały wypisanie poniżej.
+\begin{enumerate}
+	\item Występowanie niejednoznacznych lub nakładających się słów kluczowych w treści pliku może prowadzić do niepewności w kategoryzacji. Jeśli słowo kluczowe jest powiązane z wieloma kategoriami lub jeśli różne pliki zawierają podobne słowa kluczowe o różnych znaczeniach kontekstowych, może to spowodować błędną klasyfikację plików do nieprawidłowych katalogów.
+	\item Zmienność w użyciu słów kluczowych, takich jak synonimy, skróty lub różnice w pisowni, może stanowić wyzwanie w dokładnej identyfikacji i wyodrębnianiu odpowiednich słów kluczowych z zawartości pliku. 
+\end{enumerate}
+Pozostawienie okazała się optymalniejsza zważając na czas przeznaczony implementacji.
+Zważając na ograniczenia czasowe, została podjęta decyzja o ograniczeniu modułu organizacji danych do implementacji systemu generacji słów kluczowych z zawartości plików oraz łączenia plików ze względu na nie. Schemat działania asocjacji plików został przedstawiony w rozdziale 4.1.4.
+\subsubsection*{Implementacja abstrakcyjnego tworzenia streszczeń}
+Abstrakcyjna generacja streszczeń jest procesem wymagającym posiadania zestawu treningowego złożonych z streszczeń i przypisanym im tekstów początkowych. Jest to proces czasochłonny, lecz jakościowo przewyższa streszczenia metodami ekstraktywnymi. \par
+Samodzielna kreacja takiego modelu nie jest optymalna pod względem ilości zasobów potrzebnych do modelowania a zasobów pamięciowych przeznaczonych na działanie całej aplikacji. Istnieje jednak rozwiązanie tego problemu za pomocą wykożystania \textit{API}. 
 \subsection{Obsługiwane rodzaje plików}
 %% ########################################################
 System jest przystosowany do obsługi plików o rozszerzeniach takich jak \textit{PDF}, \textit{CSV} i \textit{TXT}. Każdy rodzaj pliku ma osobne funkcjonalności opisane poniżej. Do plików przypisujemy tag opisujący rodzaj pliku, lecz jest on odrębną jednostką od słów kluczowych generowanych na podstawie zawartości pliku.
@@ -209,6 +244,17 @@ Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji t
 \subsubsection*{Pliki tekstowe TXT}
 Zawartość plików tekstowych nie jest uwarunkowana żadnymi normami, co czyni obsługę tych plików niemożliwą do standaryzacji. Podczas dodawania do aplikacji, wymagają one od użytkownika określenia rodzaju zawartości. Opcjami, które użytkownik ma do wyboru są: tekst lub dane tabelaryczne.\par
 W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 200 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}.\par
+%\subsection{Przykłady implementacji}
+%Poniższy dział zaprezentuje przykładowe implementacje wyżej wymienionych funkcjonalności.
+%\begin{enumerate}
+%	\item wyszukiwanie
+%	\begin{figure}[h!]
+%		\centering
+% 		\includegraphics[width=\textwidth]{img/file\_search\_code.jpg}
+%  		\caption{Implementacja wyszukiwania pliku}
+%	\end{figure}
+%\end{enumerate}
+\newpage
 \section{Wyniki}
 \subsection{Schematy poszczególnych funkcjonalności}
 \subsubsection{Dodawanie plików PDF}
@@ -232,19 +278,14 @@ Zachowanie systemu przy dodaniu plików tekstowych.
 	\item jeżeli plik pdf posiada zakładki (ang. \textit{outlines}) to metoda \textit{.get\_outlines()} ekstraktuje je i z wyniku możemy otrzymać tytuł dokumentu i nadać plikowi taką nazwę. a jeżeli ich nie ma to tytułem pliku zostaje bazowa nazwa pliku,
 	\item ostatecznie wszystkie informacje są zbierane i przesyłane do bazy danych.
 \end{enumerate}
-%\begin{figure}[h]
-%\centering
-%  \includegraphics[width=\textwidth]{img/file\_add\_pl.png}
-%  \caption{Schemat sekwencyjny dodawania pliku}
-%\end{figure}\par
 Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla przedstawionego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. \par
 Poniższy diagram przedstawia proces dodawania pliku PDF wraz z uwzględnieniem implementacji asocjacji plików o podobnej tematyce, opisanej w punkcie 2.4.3.
 \begin{figure}[h!]
 \centering
-%  \includegraphics{img/activity\_diagram.png}
   \includegraphics{img/activity\_file\_add.png}
   \caption{Diagram aktywności przesyłania pliku PDF}
 \end{figure}
+\newpage
 \subsubsection{Wyszukiwanie i wyświetlanie plików}
 Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule pliku. Tutaj przydatne jest użycie API generującego synonimy dla wyszukiwanego słowa. System zachowuje się w poniżej opisany sposób.
 \begin{enumerate}
@@ -256,15 +297,15 @@ Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule 
 \end{enumerate}
 \begin{figure}[h!]
 \centering
-  \includegraphics[width=\textwidth]{img/file\_search.png}
+  \includegraphics[width=0.8\textwidth]{img/file\_search.png}
   \caption{Schemat sekwencyjny wyszukiwania pliku}
 \end{figure}
-\begin{figure}[h!]
-\centering
-  \includegraphics[width=\textwidth]{img/file\_search\_code.jpg}
-  \caption{Implementacja wyszukiwania pliku}
-\end{figure}
-\newpage
+%\begin{figure}[h!]
+%\centering
+%  \includegraphics[width=\textwidth]{img/file\_search\_code.jpg}
+%  \caption{Implementacja wyszukiwania pliku}
+%\end{figure}
+%\newpage
 \subsubsection{Obsługa plików zawierających dane tabelaryczne}
 \begin{enumerate}
 	\item użytkownik przy dodaniu pliku podaje następujące informacje:
@@ -307,9 +348,6 @@ Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworze
 \subsubsection{Ekspansja działań dotyczących danych tabelarycznych}
 Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy usuniecie wartości odstajacych. \par
 Celem stworzenia systemu jest automatyzacja procesów związanych z przechowywaniem informacji. Dodanie takich możliwości jak łączenie tabel w pojedyńcze pliki czy w przypadku posiadania przez plik osobnych arkuszy danych pozwolenie na rozdzielenie ich na osobne pliki, powinno być celem kolejnych implementacji.
-\subsubsection{Implementacja abstrakcyjnego tworzenia streszczeń}
-Abstrakcyjna generacja streszczeń jest procesem wymagającym posiadania zestawu treningowego złożonych z streszczeń i przypisanym im tekstów początkowych. Jest to proces czasochłonny, lecz jakościowo przewyższa streszczenia metodami ekstraktywnymi. \par
-Samodzielna kreacja takiego modelu nie jest optymalna pod względem ilości zasobów potrzebnych do modelowania a zasobów pamięciowych przeznaczonych na działanie całej aplikacji. Istnieje jednak rozwiązanie tego problemu za pomocą wykożystania \textit{API}. 
 \subsubsection{Identyfikacja obrazów}
 Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu. Dla człowieka proces identyfikacji elementów obrazu dzieje się podświadomie, a w przypadku programu, jest on w stanie rozpoznać i przypisać grafikę do odpowiedniej kategorii, jedynie w sytuacji gdy jest on zaprogramowany do wykrywania ich. Komputery kategoryzują obrazy, porównując układ pikseli wejściowego obrazu ze schematami zapisanymi w systemie. Z punktu widzenia maszyny, obraz jest ustrukturyzowaną macierzą liczb, której każdy element zawiera informacje o nasyceniu i kolorze piksela. Aby stworzyć system odpowiedzialny za kategoryzację obrazów, należy przejść przez następujące kroki.
 \begin{enumerate}
@@ -324,10 +362,7 @@ Kluczową decyzją jest wybór architektury modelu. Wybór architektury powinien
 Ostatnim etapem, poprzedzającym implementacje modelu, jest testowanie wytrenowanego modelu. Jest ono niezbędne do oceny jego wydajności dla nowych danych. System jest zasilany obrazami, których nie napotkał podczas szkolenia, umożliwiając ocenę jego zdolności do generalizacji. Metryki takie jak dokładność, precyzja i czułość zapewniają wgląd w mocne i słabe strony modelu. Rygorystyczne testowanie pomaga w dostrojeniu modelu w celu uzyskania lepszej wydajności.\par
 Powszechnie dostępne, ogromne bazy danych, takie jak \textit{Pascal VOC} czy \textit{ImageNet}, pozwalają na stworzenie i wdrożenie takiego modelu. Zawierają one mnóstwo oznaczonych wzorców opisujących obiekty znajdujące sie na obrazach. 
 %% ########################################################
-%\subsection{Kategoryzowanie plików względem zawartości}
-%Na obecnym etapie implementacji systemu, wszystkie pliki znajdują się w jednym miejscu oraz jedynym sposobem na odnalezienie plików jest skorzystanie z zaprogramowanej wyszukiwarki plików. System łączy pliki ze względu na wspólne słowa klucze, lecz nie ingeruje w proces sytuowania obiektów w katalogu aplikacji. Pliki o różnorodnej tematyce mieszają się ze sobą do tego stopnia, że nie jest możliwe, aby przy niepoprawnie nazwanych plikach, znaleźć te potrzebne. \par
-%Odpowiedzią na ten problem jest system kategoryzacji i podziału plików. Segregacja powinna odbywać się na podstawie słów kluczy, jednakże dalsze badania są wymagane do określenia wymagań warunku podziału. Niepoprawny warunek może spowodować duplikację plików na szeroką skalę, co negowałoby cel tej implementacji.
-%% ########################################################
+\newpage
 \section*{Podsumowanie}
 \addcontentsline{toc}{section}{Podsumowanie}
 W ramach projektu zaimplementowano aplikację umożliwiającą komfortowe przechowywanie oraz zmniejszenie ingerencji użytkownika w proces interpretacji plików. Opisano funkcjonalności aplikacji oraz możliwe rozszerzenia  aplikacji w dalszym ciągu rozwoju. \par
