@@ -139,10 +139,10 @@ Celem systemu jest zapewnienie scentralizowanej platformy, która ułatwia efekt
 	\item Zapewnienie użytkownikom szybkiego wyszukiwania określonych dokumentów z przechowywanych informacji za pomocą słów kluczowych, nazw plików lub innych parametrów.
 	\item Automatyczne generowanie streszczeń artykułów w celu zapewnienia użytkownikom szybkiego wglądu w treść bez konieczności czytania całego tekstu.
 \end{enumerate}\par
-Aplikację można podzielić na kilka głównych komponentów, z których każdy pełni odrębną funkcję w systemie. Do nich zaliczamy przetwarzanie, wyszukiwanie, streszczenia, organizacja i dodawanie plików.\par
+Aplikację można podzielić na kilka głównych komponentów, z których każdy pełni odrębną funkcję w systemie. Do nich zaliczamy przetwarzanie, wyszukiwanie, streszczenia, organizacja i dodawanie plików. Poniższy segment przedstawi poszczególne moduły i ich planowane możliwości.\par
 \textbf{Moduł organizacji danych} automatycznie kategoryzuje i organizuje dane użytkownika, aby ułatwić ich efektywne wyszukiwanie i zarządzanie.
 \begin{itemize}
-	\item System tagowania: Użytkownicy mogą przypisywać etykiety do każdego pliku, umożliwiając im kategoryzowanie i łączenie informacji w oparciu o wspólne motywy lub tematy.
+	\item System tagowania: Użytkownicy mogą samodzielnie przypisywać etykiety do każdego dokumentu lub pozostawić te wygenerowane przez system, umożliwiając im kategoryzowanie i łączenie plików w oparciu o wspólne motywy lub tematy.
 	\item Struktura folderów: Aplikacja zapewnia hierarchiczną strukturę folderów, która pozwala użytkownikom organizować swoje dane w zagnieżdżone kategorie, zapewniając uporządkowany i intuicyjny sposób poruszania się po swoich informacjach.
 	\item Automatyzacja: Wykorzystując zaawansowane algorytmy, aplikacja analizuje zawartość elementów, aby automatycznie kategoryzować je w oparciu o cechy, takie jak słowa kluczowe, tematy lub podobieństwo treści.
 \end{itemize}\par
@@ -151,8 +151,32 @@ Aplikację można podzielić na kilka głównych komponentów, z których każdy
 	\item Funkcja wyszukiwania pełnotekstowego: Użytkownicy mogą przeszukiwać wszystkie elementy danych w aplikacji za pomocą słów kluczowych lub fraz, pobierając odpowiednie wyniki na podstawie pasujących treści.
 	\item Zaawansowane filtry: Aplikacja oferuje szereg filtrów wyszukiwania, takich jak zakres dat, typ pliku lub tag, umożliwiając użytkownikom zawężenie wyników wyszukiwania i znalezienie dokładnie tego, czego szukają.
 	\item Sugestie i autouzupełnianie: Gdy użytkownicy wpisują swoje zapytania, aplikacja zapewnia sugestie i opcje autouzupełniania, aby przyspieszyć proces wyszukiwania i poprawić dokładność.
-\end{itemize}
+\end{itemize}\par
+\textbf{Moduł podsumowujący} generuje zwięzłe streszczenia długich dokumentów, zapewniając użytkownikom szybki wgląd w główne punkty artykułów.
+\begin{itemize}
+	\item Algorytmy podsumowujące tekst: Aplikacja wykorzystuje zaawansowane algorytmy do podsumowywania tekstu, które mogą obejmować metody ekstrakcyjne, które wybierają ważne zdania lub metody abstrakcyjne, które generują nową treść podsumowania.
+	\item Automatyczne podsumowanie: Użytkownicy mogą wybrać opcje dla automatycznego generowania podsumowań dla dokumentów w aplikacji, takie jak ilość zdań lub poziom szczegółowości podsumowań.
+\end{itemize}\par
+\textbf{Przetwarzanie plików} wykrywa rodzaj pliku dodanego przez klienta i wyznacza akcje do przeprowadzenia zgodnie z typem.
+\newpage
 \section{Implementacja}
+Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.\par
+Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o protokół HTTP. Serwer zwraca odpowiedz w postaci pliku JSON, który następnie jest przetwarzany przez stronę React, czego wynik jest wyświetlany klientowi.\par
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{img/archi.png}
+\caption{Diagram łączenia komponentów}
+\end{figure}
+%% ########################################################
+System składa się z 4 głównych komponentów:
+\begin{enumerate}
+\item serwer HTTP - zbudowany z pomocą języka Python oraz biblioteki Flask,
+\item baza danych NoSQL
+\item interfejs użytkownika - generowany z użyciem frameworku Javascript React,
+\item konwerter na aplikację natywną Electron.
+\end{enumerate}
+Poniższe sekcje przedstawiają opis poszczególnych elementów służących do implementacji systemu.
+\subsubsection*{Języki programowania}
 javascript
 \begin{itemize}
 	\item react - biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu.
@@ -170,6 +194,8 @@ python
 	\item Yake - biblioteka stworzona do identyfikowania i wyodrębniania kluczowych terminów, które reprezentują główne tematy lub wątki dokumentu.
 	\item Sumy - biblioteka umozliwiająca automatyczne tworzenie streszczeń tekstów.
 \end{itemize}
+\subsection{Status}
+\subsection{Architektura}
 %########################################################
 \subsection{Obsługiwane rodzaje plików}
 %% ########################################################
@@ -183,6 +209,7 @@ Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji t
 \subsubsection*{Pliki tekstowe TXT}
 Zawartość plików tekstowych nie jest uwarunkowana żadnymi normami, co czyni obsługę tych plików niemożliwą do standaryzacji. Podczas dodawania do aplikacji, wymagają one od użytkownika określenia rodzaju zawartości. Opcjami, które użytkownik ma do wyboru są: tekst lub dane tabelaryczne.\par
 W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 200 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}.\par
+\section{Wyniki}
 \subsection{Schematy poszczególnych funkcjonalności}
 \subsubsection{Dodawanie plików PDF}
 Zachowanie systemu przy dodaniu plików tekstowych.
@@ -275,16 +302,15 @@ Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenero
 		\item jeżeli wartość podobieństwa nie przekracza 0.5, to plik nie jest brany pod uwagę
 	\end{itemize}
 \end{enumerate}
-\newpage
-\section{Możliwości rozwoju i wykorzystania aplikacji}
+\subsection{Możliwości rozwoju i wykorzystania aplikacji}
 Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworzenie dodatkowych zdolności programu jest uproszczone, poprzez oparcie systemu o odpowiedzi w postaci komunikatu http zamiast stosowania szablonów, jak to jest zwykle przy standardowym projektowaniu z użyciem Python Flask. Baza danych wykorzystana w projekcie, MongoDB, jest bazą typu NoSQL, która umożliwia przechowywanie informacji w nie ustrukturyzowany sposób. Dzięki czemu tabele można wypełnić dowolnymi wartościami a sama aplikacja wyświetla wyszystkie elementy tabeli dla wyszukiwanego obiektu.\par
-\subsection{Ekspansja działań dotyczących danych tabelarycznych}
+\subsubsection{Ekspansja działań dotyczących danych tabelarycznych}
 Aktualny system pozwala na implementacje metod wstępnego przetwarzania danych (\textit{ang. preprocessing}) z wnętrza aplikacji. Preprocessing oznacza zbiór działań miejących na celu obróbkę i przygotowanie danych do dalszej manipulacji. Do takich działań należą usunięcie wartości brakujących, filtracja czy usuniecie wartości odstajacych. \par
 Celem stworzenia systemu jest automatyzacja procesów związanych z przechowywaniem informacji. Dodanie takich możliwości jak łączenie tabel w pojedyńcze pliki czy w przypadku posiadania przez plik osobnych arkuszy danych pozwolenie na rozdzielenie ich na osobne pliki, powinno być celem kolejnych implementacji.
-\subsection{Implementacja abstrakcyjnego tworzenia streszczeń}
+\subsubsection{Implementacja abstrakcyjnego tworzenia streszczeń}
 Abstrakcyjna generacja streszczeń jest procesem wymagającym posiadania zestawu treningowego złożonych z streszczeń i przypisanym im tekstów początkowych. Jest to proces czasochłonny, lecz jakościowo przewyższa streszczenia metodami ekstraktywnymi. \par
 Samodzielna kreacja takiego modelu nie jest optymalna pod względem ilości zasobów potrzebnych do modelowania a zasobów pamięciowych przeznaczonych na działanie całej aplikacji. Istnieje jednak rozwiązanie tego problemu za pomocą wykożystania \textit{API}. 
-\subsection{Identyfikacja obrazów}
+\subsubsection{Identyfikacja obrazów}
 Identyfikacja obrazów mogą przysłużyć się sukcesowi systemu. Dla człowieka proces identyfikacji elementów obrazu dzieje się podświadomie, a w przypadku programu, jest on w stanie rozpoznać i przypisać grafikę do odpowiedniej kategorii, jedynie w sytuacji gdy jest on zaprogramowany do wykrywania ich. Komputery kategoryzują obrazy, porównując układ pikseli wejściowego obrazu ze schematami zapisanymi w systemie. Z punktu widzenia maszyny, obraz jest ustrukturyzowaną macierzą liczb, której każdy element zawiera informacje o nasyceniu i kolorze piksela. Aby stworzyć system odpowiedzialny za kategoryzację obrazów, należy przejść przez następujące kroki.
 \begin{enumerate}
 	\item Gromadzenie danych,
