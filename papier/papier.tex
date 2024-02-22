@@ -36,15 +36,17 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-Celem niniejszej pracy jest omówienie projektu systemu, który upraszcza użytkownikowi proces gromadzenia i sortowania informacji. Skupi się ona na przedstawieniu koncepcji aplikacji oraz  opisie poszczególnych implementacji, w tym modułu odpowiedzialnego za obsługę artykułów.\par
-Przechowywanie danych jest niezbędne nie tylko ze względu na konieczność zachowania informacji historycznych, ale także po to, aby zapewnić dostępność potrzebnych informacji w odpowiednim czasie oraz miejscu. Organizacje różnego rodzaju gromadzą ogromne ilości informacji, które są kluczowe dla ich funkcjonowania i rozwoju. Systematyczne przechowywanie tych danych pozwala na śledzenie zmian w czasie, analizę trendów oraz identyfikację ważnych wzorców i relacji, co z kolei umożliwia podejmowanie trafniejszych decyzji biznesowych. Wykorzystując dane, można personalizować doświadczenia użytkowników, dostosowując produkty i usługi do ich potrzeb i preferencji.\par
-W kontekście poniższej pracy, zbiór danych jest określany jako plik zawierający w sobie wszelkie informacje, tj. artykuły naukowe, dane tabelaryczne, grafiki czy notatki. Każdy z tych przykładów przechowuje wiedzę możliwą do interpretacji przez człowieka. Do przeprowadzenia analizy danych, często potrzebna jest znajomość teorii kryjącej się za wartościami w zestawie.
+Poniższa praca ma na celu zapewnienie kompleksowego przeglądu projektu aplikacji, która umożliwi osobom fizycznym lepsze zarządzanie i wykorzystywanie własnych zasobów wiedzy. Przedstawiając tym zasady projektowania, szczegóły implementacji i potencjalne rozszerzenia aplikacji.\par
+Aplikacja ułatwia płynne gromadzenie danych, umożliwiając użytkownikom importowanie i przechowywanie plików zawierających cenne informacje. Pliki te, określane zbiorczo jako zbiór danych, obejmują szeroki zakres typów treści, z których każdy reprezentuje wiedzę możliwą do interpretacji przez człowieka. Od prac naukowych po osobiste notatki i pliki multimedialne, projekt systemu uwzględnia obsługę różnych formatów danych, aby zaspokoić indywidualne preferencje i wymagania użytkowników.\par
+Choć początkowo została zaprojektowana jako proste rozwiązanie programowe dla użytkowników prywatnych, aplikacja może być wyposażona w rozszerzenia, które wykorzystują techniki sztucznej inteligencji (AI).\par
+W niniejszym dokumencie zostanie zagłębiony koncept i możliwy rozwój tej aplikacji, podkreślając kluczowe komponenty, takie jak moduł gromadzenia danych, mechanizm kategoryzacji czy funkcjonalność wyszukiwania. Ponadto zostanie zbadana integrację rozszerzeń opartych na sztucznej inteligencji w celu zautomatyzowania takich elementów jak proces klasyfikacji, oferując wgląd w podstawowe algorytmy i strategie wdrażania.
 \newpage
 %% ########################################################
 \section{Zagadnienia dotyczące projektu}
 Zaprojektowany system ma uprościć proces gromadzenia informacji dla użytkownika prywatnego. Zgromadzone dane mogą być przechowywane w pliku w systemie plików lub przy użyciu takich narzędzi jak bazy danych. Rozważając rodzaj przechowywania danych należy również wziąć pod uwagę aspekt fizyczny. Rozróżnienie to jest opisane w rozdziale 1.1. Wraz z danymi będą przechowywanie metainformacje, opisujące te dane.  \par
 Pozyskiwanie informacji z plików różni się zależnie od ich rodzaju. Aplikacja umożliwia przetworzenie plików tabelarycznych czy tekstowych, poprzez wykorzystanie ich zawartości. Szczególnym przypadkiem są pliki PDF, gdzie proces ekstrakcji zawartości jest utrudniony w związku z kodowaniem i formatem pliku, co zostanie omówione w dziale 1.2. \par
-Projekt aplikacji wykorzystuje architekture typu klient-serwer, jednakże dzięki wykorzystaniu pakietu \textit{Electron} języka Javascript, jest możliwe przekształcenie aplikacji webowej na natywną. Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Pełny opis tej biblioteki jest zawarty w podrozdziale 1.4. 
+Projekt aplikacji wykorzystuje architekturę typu klient-serwer. Określenie architektura aplikacji odnosi się do wysokopoziomowej struktury i organizacji systemów oprogramowania. W rozdziale 1.4 została opisana wyżej wymieniona architektura pod kątem charakterystyki, zalet i przypadków użycia. 
+%Projekt aplikacji wykorzystuje architekture typu klient-serwer, jednakże dzięki wykorzystaniu pakietu \textit{Electron} języka Javascript, jest możliwe przekształcenie aplikacji webowej na natywną. Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Pełny opis tej biblioteki jest zawarty w podrozdziale 1.4. 
 %% ########################################################
 %% 
 \subsection{Sposoby przechowywania informacji}
@@ -110,7 +112,12 @@ Jednymi z pierwszych metod ewaluacji automatycznej były metryki takie jak podob
 	\item \textit{ROUGE-L} jest wyznaczana na podstawie porównania najdłuższych wspólnych sekwencji słów w zdaniach, występujących w streszczeniu wygenerowanym i wzorcowym. 
 	\item \textit{ROUGE-S} działa na tej samej zasadzie co \textit{ROUGE-2} lecz uwzględnia w swoim działaniu struktury skip-bigram, który jest rozszerzeniem definicji bigramów o możliwość zawierania w sobie maksymalnie jednego przedimka.
 \end{itemize}
-\subsection{Pakiet Electron}
+\subsection{Architektura klient-server}
+Architektura klient-serwer to model projektowania systemów rozproszonych, w którym zadania lub procesy obliczeniowe są podzielone między klientów i serwery. W tej architekturze klientami są zazwyczaj urządzenia użytkowników końcowych (takie jak komputery, smartfony lub tablety), które żądają usług lub zasobów, podczas gdy serwery są scentralizowanymi systemami, które je zapewniają. Architektura najczęściej wykorzystywana w wytwarzaniu oprogramowania internetowego z wykorzystaniem takich narzędzi jak języki opisowe HTML i CSS, czy języka Javascript. Takie aplikacje działają w przeglądarkach internetowych, lecz dzięki takim szkieletom aplikacji jak Electron istnieje możliwość konwersji na program z własnym interfejsem graficznym, oddzielonym od przeglądarki. Opis tego projektu znajduje się w dalszej części rozdziału.\par
+Transfer informacji między elementami aplikacji może odbywa się z pomocą protokołu komunikacyjnego jak HTTP/HTTPS \par
+HTTP (\textit{ang. Hypertext transfer protocol}) jest to bezstanowy protokół, co oznacza, że każde zapytanie jest przetwarzane niezależne od poprzedniego. Jest on zgodny z modelem zapytanie-odpowiedź (\textit{ang. request-response}), gdzie klient wysyła proźbę a serwer odpowiada. Odpowiedź zawiera w sobie kod statusu, wymagane zasoby lub treść błędu.\par
+\subsubsection{Pakiet Electron}
+Electron jest oparty na Chromium, projekcie stojącym za przeglądarką Google Chrome. Oznacza to, że aplikacje Electron wykorzystują ten sam silnik renderujący i obsługę standardów internetowych, co Chrome. Electron osadza instancję Chromium do renderowania treści internetowych w oknach aplikacji.\par
 Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji wątku. 
 \subsubsection*{Izolacja wątku}
 Separacja wątków odnosi się do możliwości izolacji różnych części aplikacji w celu zapobiegania interferencji oraz zapewnienia stabilności aplikacji. Separacja ta jest osiągana poprzez wykorzystanie wielu procesów, w tym procesu głównego i procesów renderujących.
@@ -128,15 +135,29 @@ Pomimo separacji między procesami, Electron zapewnia mechanizmy komunikacji mi�
 Dzięki IPC możliwa jest implementacja dwukierunkowej komunikacji między procesem głównym a procesami renderującymi, umożliwiając im koordynację działań, udostępnianie danych i synchronizację stanu w różnych częściach aplikacji.\par
 \newpage
 \section{Projekt}
-Celem systemu jest zapewnienie scentralizowanej platformy, która ułatwia efektywne gromadzenie, organizowanie i wyszukiwanie treści cyfrowych. Aplikacja ma na celu usprawnienie procesu zarządzania informacjami poprzez oferowanie takich funkcji jak:
-\begin{enumerate}
-	\item Umożliwienie użytkownikom łatwego wprowadzania do aplikacji różnych typów plików, w tym dokumentów, danych tabelarycznych, notatek i innych.
-	\item Automatyczna organizacja i kategoryzacja zebranych danych w oparciu o predefiniowane kryteria takie jak słowa klucze.
-	\item Zapewnienie użytkownikom szybkiego wyszukiwania określonych dokumentów z przechowywanych informacji za pomocą słów kluczowych, nazw plików lub innych parametrów.
-	\item Automatyczne generowanie streszczeń artykułów w celu zapewnienia użytkownikom szybkiego wglądu w treść bez konieczności czytania całego tekstu.
-\end{enumerate}\par
-Aplikację można podzielić na kilka głównych komponentów, z których każdy pełni odrębną funkcję w systemie. Do nich zaliczamy przetwarzanie, wyszukiwanie, streszczenia, organizacja i dodawanie plików. Poniższy segment przedstawi poszczególne moduły i ich planowane możliwości.\par
-\subsection*{Opisy funkcjonalne modułów}
+Celem pracy było zaprojektowanie i wykonanie programu użytkowego wspomagającego gromadzenie informacji oraz późniejsze przeszukiwanie utworzonych kolekcji.
+Wśród jego planowanych funkcjonalności należy wymienić:
+\begin{itemize}
+	\item możliwość gromadzenia danych różnych rodzajów (dokumenty tekstowe i hipertekstowe, dane tabelaryczne, grafiki i inne),
+	\item automatyczną organizację i kategoryzację plików ze względu na zawartość
+	\item automatyczne generowanie streszczeń dokumentów tekstowych tak, by zapewnić użytkownikowi szybki wgląd w treść bez konieczności zapoznania się z całą zawartością
+\end{itemize}
+Docelowym odbiorcą produktu ma być indywidualny użytkownik, korzystający z lokalnych zasobów. Dlatego założeniem projektowym było, aby unikać używania usług zewnętrznych, np. chmurowych.
+\subsection{Opis projektu}
+Ze względu na rozbudowany charakter narzędzia, zostało ono zaprojektowane jako system współpracujących elementów. Są to:
+%Celem systemu jest zapewnienie scentralizowanej platformy, która ułatwia efektywne gromadzenie, organizowanie i wyszukiwanie treści cyfrowych. Aplikacja ma na celu usprawnienie procesu zarządzania informacjami poprzez oferowanie takich funkcji jak:
+\begin{itemize}
+	\item moduł przetwarzania plików - najważniejszy moduł, decydujący jakie akcje zostaną podjęte dla danego pliku,
+	\item moduł organizacji danych - segreguje dokumenty oraz tworzy połączenia między podobnymi plikami,
+	\item wyszukiwarka - pobiera informacje z systemu związane z frazą wejściową i przedstawia użytkownikowi,
+	\item moduł podsumowujący - niezależnie od rodzaju pliku tworzy skrótowy opis zawartości.
+%	\item Umożliwienie użytkownikom łatwego wprowadzania do aplikacji różnych typów plików, w tym dokumentów, danych tabelarycznych, notatek i innych.
+%	\item Automatyczna organizacja i kategoryzacja zebranych danych w oparciu o predefiniowane kryteria takie jak słowa klucze.
+%	\item Zapewnienie użytkownikom szybkiego wyszukiwania określonych dokumentów z przechowywanych informacji za pomocą słów kluczowych, nazw plików lub innych parametrów.
+%	\item Automatyczne generowanie streszczeń artykułów w celu zapewnienia użytkownikom szybkiego wglądu w treść bez konieczności czytania całego tekstu.
+\end{itemize}\par
+%Aplikację można podzielić na kilka głównych komponentów, z których każdy pełni odrębną funkcję w systemie. Do nich zaliczamy przetwarzanie, wyszukiwanie, streszczenia, organizacja i dodawanie plików. Poniższy segment przedstawi poszczególne moduły i ich planowane możliwości.\par
+\subsection{Wymagania funkcjonalne modułów}
 \textbf{Moduł organizacji danych} automatycznie kategoryzuje i organizuje dane użytkownika, aby ułatwić ich efektywne wyszukiwanie i zarządzanie.
 \begin{itemize}
 	\item System tagowania: Użytkownicy mogą samodzielnie przypisywać etykiety do każdego dokumentu lub pozostawić te wygenerowane przez system, umożliwiając im kategoryzowanie i łączenie plików w oparciu o wspólne motywy lub tematy.
@@ -155,24 +176,99 @@ Aplikację można podzielić na kilka głównych komponentów, z których każdy
 	\item Automatyczne podsumowanie: Użytkownicy mogą wybrać opcje dla automatycznego generowania podsumowań dla dokumentów w aplikacji, takie jak ilość zdań lub poziom szczegółowości podsumowań.
 \end{itemize}\par
 \textbf{Przetwarzanie plików} wykrywa rodzaj pliku dodanego przez klienta i wyznacza akcje do przeprowadzenia zgodnie z typem. 
-\newpage
-\section{Implementacja}
-Aplikacja została zbudowana z myślą o zapewnieniu interfejsu użytkownika przy użyciu JavaScript React, serwera HTTP opartego na Flask Python, oraz bazy danych MongoDB, która jest bazą typu NoSQL. Zintegrowana całość jest uruchamiana z wykorzystaniem pakietu Electron, co umożliwia stworzenie aplikacji natywnej, zachowując przy tym funkcje przeglądarki oraz pozwalając na dostęp do zasobów systemowych.\par
-Zakres implementacji obejmuje stworzenie serwera działajacego w oparciu o protokół HTTP. Serwer zwraca odpowiedz w postaci pliku JSON, który następnie jest przetwarzany przez stronę React, czego wynik jest wyświetlany klientowi.\par
+\subsection{Przykładowe schematy funkcjonalności}
+\subsubsection*{Dodawanie plików PDF}
+Zachowanie systemu przy dodaniu plików tekstowych.
+\begin{enumerate}
+	\item Gdy użytkownik wybierze plik, aplikacja przesyła ścieżkę pliku do serwera,
+	\item System ekstraktuje z pliku całą zawartość,
+	\item Z tekstu wytwarzane są słowa klucze, 
+	\item W tym samym czasie jest tworzone streszczenie z użyciem algorytmu \textit{TextRank},
+	\item jeżeli plik PDF posiada zakładki (ang. \textit{outlines}) to możemy otrzymać tytuł dokumentu i nadać plikowi taką nazwę. a jeżeli ich nie ma to tytułem pliku zostaje bazowa nazwa pliku,
+	\item ostatecznie wszystkie informacje są zbierane i przesyłane do bazy danych.
+\end{enumerate}
+Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla przedstawionego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. \par
+Poniższy diagram przedstawia proces dodawania pliku PDF wraz z uwzględnieniem implementacji asocjacji plików o podobnej tematyce, opisanej w punkcie 2.4.3.
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]{img/archi.png}
-\caption{Diagram łączenia komponentów}
+  \includegraphics{img/activity\_file\_add.png}
+  \caption{Diagram aktywności przesyłania pliku PDF}
+\end{figure}
+\clearpage
+\newpage
+\subsubsection*{Wyszukiwanie i wyświetlanie plików}
+Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule pliku. Tutaj przydatne jest użycie API generującego synonimy dla wyszukiwanego słowa. System zachowuje się w poniżej opisany sposób.
+\begin{enumerate}
+	\item aplikacja przesyła komunikat z wyszukiwanym słowem,
+	\item serwer używając API synonimów pobiera 5 najbliższych słów do słowa szukanego,
+	\item serwer przesyła osobne komunikaty do tabeli w bazie danych, zawierające osobno słowo klucz oraz synonimy
+	\item baza zwraca informacje dotyczące znalezionych dokumentów oraz słowo klucz,
+	\item serwer wysyła użytkownikowi posortowaną listę plików.
+\end{enumerate}
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=0.8\textwidth]{img/file\_search.png}
+  \caption{Schemat sekwencyjny wyszukiwania pliku}
+\end{figure}
+%\begin{figure}[h!]
+%\centering
+%  \includegraphics[width=\textwidth]{img/file\_search\_code.jpg}
+%  \caption{Implementacja wyszukiwania pliku}
+%\end{figure}
+%\newpage
+\subsubsection*{Obsługa plików zawierających dane tabelaryczne}
+\begin{enumerate}
+	\item użytkownik przy dodaniu pliku podaje następujące informacje:
+	\begin{itemize}
+		\item czy plik zawiera informacje o nazwach kolumn, jeżeli nie to czy chce on nadać te nazwy,
+		\item czy słowa kluczowe będą nadane manualnie lub czy powinny być pobrane z nazw kolumn,
+	\end{itemize}
+	\item dane są odpowiednio wczytywane na serwer do postaci ramki danych,
+	\item sprawdzany i zapisywany jest typ wartości w każdej kolumnie oraz obliczony procent ilości wartości brakujących,
+	\item dodanie rekordu do bazy danych.
+\end{enumerate}
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=0.9\textwidth]{img/csvac.png}
+  \caption{Diagram aktywności przetwarzania plików tabelarycznych}
 \end{figure}
 %% ########################################################
-System składa się z 4 głównych komponentów:
+\clearpage
+\newpage
+\subsubsection*{Asocjacja plików o podobnej tematyce}
+Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenerowanych słów kluczowych. System z każdym dodanym plikiem przeszukuje przestrzeń dokumentów i aktualizuje już utworzone rekordy, w sytuacji dopasowania. Schemat przedstawia tworzenie połączeń dla nowo dodanego pliku.
 \begin{enumerate}
-\item serwer HTTP,
-\item baza danych NoSQL,
-\item interfejs użytkownika,
-\item konwerter na aplikację natywną.
-\end{enumerate}\par
-Interfejs aplikacji został opracowany przy użyciu języka JavaScript z biblioteką React, znaną z wydajnej architektury opartej na komponentach i płynnych możliwości tworzenia interfejsu użytkownika. W implementacji serwera został wykorzystany język Python, w połączeniu z frameworkiem Flask. Opis poszczególnych elementów znajduje się poniżej.\par
+\item dla każdego słowa kluczowego, jest pobrana lista ID plików z tabeli zawierającej informacje o zawartości plików, pod warunkiem dopasowania przynajmniej jednego tagu,
+\item następnie obliczany jest współczynnik podobieństwa, którego schemat postępowania jest przedstawiony poniżej:
+	\begin{enumerate}
+		\item wyznaczana jest wartość dla poszczególnych słów kluczy
+		\begin{itemize}
+			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia snu''), to zapisywana jest wartość $\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
+			\item jeżeli słowa są identyczne, zapisywana jest wartość 1,
+		\end{itemize}
+		\item wartości dla wszystkich słów kluczy są sumowane i dzielone przez liczbę tagów.
+	\end{enumerate}
+\item do ID pliku przypisana jest wartość podobieństwa, i po posortowaniu od największej wartości, ID są dodawane do jednego rekordu w tabeli informującej o podobieństwach dokumentów,
+	\begin{itemize}
+		\item jeżeli wartość podobieństwa nie przekracza 0.5, to plik nie jest brany pod uwagę.
+	\end{itemize}
+\end{enumerate}
+\newpage
+\section{Implementacja}
+Realizacja miała na celu wykazanie możliwości projektu biorąc pod uwagę następujące aspekty. 
+Po pierwsze, wykonalność aplikacji została oceniona w celu określenia jej praktyczności i potencjału pomyślnego rozwoju.
+Dodatkowo przeprowadzono analizę złożoności i wymagań dotyczących zasobów związanych z przetwarzaniem różnych typów plików, w tym artykułów, danych tabelarycznych, grafiki i notatek.\par
+Co więcej, wysiłki ukierunkowano na identyfikację wymaganych rozszerzeń lub ulepszeń niezbędnych do optymalizacji funkcjonalności aplikacji, ze szczególnym uwzględnieniem algorytmów klasyfikacji czy modułu tworzenia abstraktów, opartych na sztucznej inteligencji.
+Wreszcie, podjęto skrupulatne planowanie w celu określenia zakresu wdrożenia w przydzielonych ramach czasowych, zapewniając zgodność z celami projektu i wykonalność w ramach ograniczeń dostępnych zasobów.\par
+Do implementacji aplikacji wykorzystano kombinację technik typowych dla tworzenia aplikacji internetowych jakie zostały określone w rozdziale 1.4. Interfejs użytkownika (UI) został stworzony przy użyciu języka JavaScript, w szczególności wykorzystując bibliotekę React, wraz z językami opisu HTML i CSS do zdefiniowania struktury i stylizacji witryny. Jednak zamiast polegać na tradycyjnej przeglądarce internetowej, cały interfejs użytkownika został zamknięty w aplikacji natywej, dzięki utylizacji szkieletu aplikacji Electron. Opis tego procesu jest zamieszczony w rozdziale 1.4.\par
+Do przechowywania wyodrębnionych danych wybrano nierelacyjną bazę danych, a jako system zarządzania bazą danych wybrano MongoDB. Decyzja ta była podyktowana zróżnicowanym i niejednolitym charakterem danych, gdzie na strukturę każdego rekordu wpływają takie czynniki jak typ pliku.\par
+Aby ustanowić komunikację między aplikacją a bazą danych, zaimplementowano serwer WWW przy użyciu biblioteki Flask języka Pythonie. Działając jako istotny łącznik, serwer ten zarządza wszystkimi podstawowymi funkcjami aplikacji. Nadzoruje on zadania takie jak przetwarzanie plików, ekstrakcja danych, klasyfikacja i segregacja, wraz z wszelkimi niezbędnymi operacjami manipulacji danymi. Takie podejście zapewnia płynną interakcję między komponentami aplikacji, umożliwiając wydajną obsługę i zarządzanie danymi w całym systemie.\par
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{img/archi2.png}
+\caption{Diagram łączenia komponentów}
+\end{figure}\par
+\subsection{Opis wykorzystywanych elementów}
 Javascript to powszechnie używany język programowania do tworzenia stron internetowych, znany ze swojej wszechstronności i kompatybilności z przeglądarkami. Opisywany system wykorzystuje Javasctipt w środowisku \textit{Node.js}, co ułatwia dostęp do różnorodnych pakietów takich jak \textit{React}, których opis jest przedstawiony poniżej.
 \begin{itemize}
 	\item \textit{React} - biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu.
@@ -192,30 +288,6 @@ Python ma dużą i aktywną społeczność programistów, którzy przyczyniają 
 	\item Yake - biblioteka stworzona do identyfikowania i wyodrębniania kluczowych terminów, które reprezentują główne tematy lub wątki dokumentu.
 	\item Sumy - biblioteka umozliwiająca automatyczne tworzenie streszczeń tekstów.
 \end{itemize}
-\subsection{Status}
-Ze względu na ograniczenia czasowe, implementacja obejmuje następujące elementy określone w rozdziale 2. Odchylenia od założeń przedstawionych w tym rozdziale zostały opisane w rozdziale 3.3, a poniżej wydnieje lista częściowo lub w pełni zawartych elementów w zależności od modułu. 
-\begin{enumerate}
-	\item Moduł organizacji danych
-	\begin{itemize}
-		\item Zrealizowano: Tagowanie plików poprzez generację słów kluczy na podstawie zawartości oraz łączenie plików
-		\item Odrzucono: Automatyczne wytwarzanie struktury folderów oraz kategoryzacja.
-	\end{itemize}
-	\item Wyszukiwarka
-	\begin{itemize}
-		\item Zrealizowano: Wyszukiwanie, prezentacja wyników wyszukiwania oraz możliwość filtrowania wyników,
-		\item Odrzucono: Sugestie i autouzupełnianie
-	\end{itemize}
-	\item Moduł podsumowujący
-	\begin{itemize}
-		\item Zrealizowano: Tworzenie streszczeń metodą ekstraktywną opartą o algorytm TextRank,
-		\item Odrzucono: Wykorzystanie metod abstrakcyjnych.
-	\end{itemize}
-	\item Przetwarzanie plików
-	\begin{itemize}
-		\item Zrealizowano: Przetwarzanie cześciowe dla plików o rozszerzeniu PDF, CSV oraz TXT.
-	\end{itemize}
-	Pełen opis specyfikacji zależnej od rodzaju jest przedstawiony w rozdziale 3.4.
-\end{enumerate}
 \subsection{Architektura}
 Podstawowe funkcjonalności aplikacji są oparte na architekturze klient-serwer. Interfejs po stronie klienta, opracowany przy użyciu standardowych technologii internetowych, takich jak HTML, CSS i JavaScript, komunikuje się z zapleczem po stronie serwera w celu obsługi żądań użytkowników oraz przechowywania i przetwarzania danych.\par
 Nie jest ona jednak aplikacją internetową. Po stronie klienta jest ona zamknięta w \textit{Electronie}, szkielecie (\textit{ang. framework}) umożliwiającym tworzenie wieloplatformowych aplikacji desktopowych przy użyciu technologii internetowych. Osadzając aplikację internetową w Electron, przekształcana jest ona w samodzielną aplikację desktopową, która może być dystrybuowana i uruchamiana natywnie w różnych systemach operacyjnych (Windows, macOS, Linux). Ta integracja oferuje użytkownikom znane doświadczenie interakcji z aplikacją desktopową przy jednoczesnym zachowaniu korzyści płynących z technologii webowej.
@@ -243,7 +315,7 @@ Podstawowym zachowaniem aplikacji w obliczu plików zawierających dane tabelary
 Oba podejścia mają swoje wady. Nazwy kolumn nie są wymagane podczas kreacji tabel, więc tworzenie tagów w takiej sytuacji nie jest optymalne. Drugie podejście wymaga od użytkownika większego wkładu w ten proces. Potrzebna do tego jest pewna znajomość zestawu danych, który chcemy wprowadzić do systemu aby odpowiednio przypisać słowa klucze do plików.
 \subsubsection*{Pliki tekstowe TXT}
 Zawartość plików tekstowych nie jest uwarunkowana żadnymi normami, co czyni obsługę tych plików niemożliwą do standaryzacji. Podczas dodawania do aplikacji, wymagają one od użytkownika określenia rodzaju zawartości. Opcjami, które użytkownik ma do wyboru są: tekst lub dane tabelaryczne.\par
-W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 200 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}.\par
+W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decyduje o następnych krokach. Domyślną długością graniczną jest 500 słów, lecz może ona być ustawiona manualnie przez klienta. Po przekroczeniu tego progu, system procesuje plik w sposób podobny do obsługi plików \textit{PDF}.\par
 %\subsection{Przykłady implementacji}
 %Poniższy dział zaprezentuje przykładowe implementacje wyżej wymienionych funkcjonalności.
 %\begin{enumerate}
@@ -256,93 +328,31 @@ W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decy
 %\end{enumerate}
 \newpage
 \section{Wyniki}
-\subsection{Schematy poszczególnych funkcjonalności}
-\subsubsection{Dodawanie plików PDF}
-Zachowanie systemu przy dodaniu plików tekstowych.
+\subsection{Status realizacji}
+Ze względu na ograniczenia czasowe, implementacja obejmuje następujące elementy określone w rozdziale 2. Odchylenia od założeń przedstawionych dziale związanym z opisem projektu zostały opisane w rozdziale 3.3, a poniżej wydnieje lista częściowo lub w pełni zawartych elementów w zależności od modułu. 
 \begin{enumerate}
-	\item Gdy użytkownik wybierze plik, aplikacja przesyła ścieżkę pliku do serwera,
-	\item System ekstraktuje z pliku całą zawartość z pomocą biblioteki języka Python \textit{PdfMiner},
-	\item Z zawartości zostają wyciągnięte słowa klucze. Tworzenie tzw. tagów odbywa się z pomocą biblioteki \textit{yake} oraz metody \textit{KeywordExtractor()}. Przyjmuje ona następujące parametry:
+	\item Moduł organizacji danych
 	\begin{itemize}
-		\item \textit{lan} - język danego tekstu,
-		\item \textit{n} - maksymalna ilość słów w jednym tagu,
-		\item \textit{deduplim} - szansa na powtóżenie się słów w różnych słowach kluczach,
-		\item \textit{top} - ilość elementów wyjściowych
+		\item Zrealizowano: Tagowanie plików poprzez generację słów kluczy na podstawie zawartości oraz łączenie plików
+		\item Odrzucono: Automatyczne wytwarzanie struktury folderów oraz kategoryzacja.
 	\end{itemize}
-	\begin{figure}[h]
-		\centering
-  		\includegraphics[width=\textwidth]{img/yake\_keyword.jpg}
-  		\caption{Przykład użycia \textit{KeywordExtractor()}}
-	\end{figure}
-	\item w tym samym czasie z pomocą biblioteki \textit{sumy} oraz funkcji \textit{TextRankSummarizer}, jest tworzone streszczenie z użyciem algorytmu \textit{TextRank},
-	\item jeżeli plik pdf posiada zakładki (ang. \textit{outlines}) to metoda \textit{.get\_outlines()} ekstraktuje je i z wyniku możemy otrzymać tytuł dokumentu i nadać plikowi taką nazwę. a jeżeli ich nie ma to tytułem pliku zostaje bazowa nazwa pliku,
-	\item ostatecznie wszystkie informacje są zbierane i przesyłane do bazy danych.
-\end{enumerate}
-Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na grafach \cite{textrank}. Operuje on na zasadach ``głosowania'' i ``rekomendacji''. Jest on używany do tworzenia streszczeń metodą ekstraktywną i nienadzorowaną. Dla przedstawionego systemu, nie jest możliwe wytworzenie odpowiedniego zbioru treningowego, aby móc zastosować metody nadzorowane. \par
-Poniższy diagram przedstawia proces dodawania pliku PDF wraz z uwzględnieniem implementacji asocjacji plików o podobnej tematyce, opisanej w punkcie 2.4.3.
-\begin{figure}[h!]
-\centering
-  \includegraphics{img/activity\_file\_add.png}
-  \caption{Diagram aktywności przesyłania pliku PDF}
-\end{figure}
-\newpage
-\subsubsection{Wyszukiwanie i wyświetlanie plików}
-Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule pliku. Tutaj przydatne jest użycie API generującego synonimy dla wyszukiwanego słowa. System zachowuje się w poniżej opisany sposób.
-\begin{enumerate}
-	\item aplikacja przesyła komunikat z wyszukiwanym słowem,
-	\item serwer używając API synonimów pobiera 5 najbliższych słów do słowa szukanego,
-	\item serwer przesyła osobne komunikaty do tabeli \textit{file\_properties} w bazie danych, zawierające osobno słowo klucz oraz synonimy
-	\item baza zwraca informacje dotyczące znalezionych dokumentów oraz słowo klucz,
-	\item serwer wysyła użytkownikowi posortowaną listę plików.
-\end{enumerate}
-\begin{figure}[h!]
-\centering
-  \includegraphics[width=0.8\textwidth]{img/file\_search.png}
-  \caption{Schemat sekwencyjny wyszukiwania pliku}
-\end{figure}
-%\begin{figure}[h!]
-%\centering
-%  \includegraphics[width=\textwidth]{img/file\_search\_code.jpg}
-%  \caption{Implementacja wyszukiwania pliku}
-%\end{figure}
-%\newpage
-\subsubsection{Obsługa plików zawierających dane tabelaryczne}
-\begin{enumerate}
-	\item użytkownik przy dodaniu pliku podaje następujące informacje:
+	\item Wyszukiwarka
 	\begin{itemize}
-		\item czy plik zawiera informacje o nazwach kolumn, jeżeli nie to czy chce on nadać te nazwy,
-		\item czy słowa kluczowe będą nadane manualnie lub czy powinny być pobrane z nazw kolumn,
+		\item Zrealizowano: Wyszukiwanie, prezentacja wyników wyszukiwania oraz możliwość filtrowania wyników,
+		\item Odrzucono: Sugestie i autouzupełnianie
 	\end{itemize}
-	\item odpowiednio wczytywana na server do postaci ramki danych (\textit{ang. dataframe}) modułu \textit{pandas},
-	\item sprawdzany i zapisywany jest typ wartości w każdej kolumnie oraz obliczony procent ilości wartości brakujących,
-	\item dodanie rekordu do bazy danych.
-\end{enumerate}
-\begin{figure}[h!]
-\centering
-  \includegraphics[width=\textwidth]{img/csvac.png}
-  \caption{Diagram aktywności przetwarzania plików tabelarycznych}
-\end{figure}
-%% ########################################################
-\clearpage
-\newpage
-\subsubsection{Asocjacja plików o podobnej tematyce}
-Poniższa sekcja przedstawia proces łączenia dokumentów na podstawie wygenerowanych słów kluczowych. System z każdym dodanym plikiem przeszukuje przestrzeń dokumentów i aktualizuje już utworzone rekordy, w sytuacji dopasowania. Schemat przedstawia tworzenie połączeń dla nowo dodanego pliku.
-\begin{enumerate}
-\item dla każdego słowa kluczowego, jest pobrana lista ID plików z tabeli \textit{file\_properties}, pod warunkiem dopasowania przynajmniej jednego tagu,
-\item następnie obliczany jest współczynnik podobieństwa, którego schemat postępowania jest przedstawiony poniżej:
-	\begin{enumerate}
-		\item wyznaczana jest wartość dla poszczególnych słów kluczy
-		\begin{itemize}
-			\item jeżeli wysłane słowo kluczowe zgadza się fragmentarycznie z otrzymanym tagiem (np. ``zaburzenia'' a ``zaburzenia odżywiania''), to zapisywana jest wartość $\frac{ilosc(dopasowan)}{ilosc\_slow(wejscie)+ilosc\_slow(pobrane)}$,
-			\item jeżeli słowa są identyczne, zapisywana jest wartość 1,
-		\end{itemize}
-		\item wartości dla wszystkich słów kluczy są sumowane i dzielone przez liczbę tagów.
-	\end{enumerate}
-\item do ID pliku przypisana jest wartość podobieństwa, i po posortowaniu od największej wartości, ID są dodawane do jednego rekordu w tabeli \textit{file\_connections}
+	\item Moduł podsumowujący
 	\begin{itemize}
-		\item jeżeli wartość podobieństwa nie przekracza 0.5, to plik nie jest brany pod uwagę
+		\item Zrealizowano: Tworzenie streszczeń metodą ekstraktywną opartą o algorytm TextRank,
+		\item Odrzucono: Wykorzystanie metod abstrakcyjnych.
 	\end{itemize}
+	\item Przetwarzanie plików
+	\begin{itemize}
+		\item Zrealizowano: Przetwarzanie cześciowe dla plików o rozszerzeniu PDF, CSV oraz TXT.
+	\end{itemize}
+	Pełen opis specyfikacji zależnej od rodzaju pliku jest przedstawiony w rozdziale 3.4.
 \end{enumerate}
+\subsection{Diagram przepływu danych}
 \subsection{Możliwości rozwoju i wykorzystania aplikacji}
 Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworzenie dodatkowych zdolności programu jest uproszczone, poprzez oparcie systemu o odpowiedzi w postaci komunikatu http zamiast stosowania szablonów, jak to jest zwykle przy standardowym projektowaniu z użyciem Python Flask. Baza danych wykorzystana w projekcie, MongoDB, jest bazą typu NoSQL, która umożliwia przechowywanie informacji w nie ustrukturyzowany sposób. Dzięki czemu tabele można wypełnić dowolnymi wartościami a sama aplikacja wyświetla wyszystkie elementy tabeli dla wyszukiwanego obiektu.\par
 \subsubsection{Ekspansja działań dotyczących danych tabelarycznych}
@@ -365,8 +375,9 @@ Powszechnie dostępne, ogromne bazy danych, takie jak \textit{Pascal VOC} czy \t
 \newpage
 \section*{Podsumowanie}
 \addcontentsline{toc}{section}{Podsumowanie}
-W ramach projektu zaimplementowano aplikację umożliwiającą komfortowe przechowywanie oraz zmniejszenie ingerencji użytkownika w proces interpretacji plików. Opisano funkcjonalności aplikacji oraz możliwe rozszerzenia  aplikacji w dalszym ciągu rozwoju. \par
-Badania nad aplikacją wyeksponowały ciekawy koncept jakim jest praca z pilkami o rozszerzeniu PDF, jakoże proces automatycznego pobierania tekstu jest zależny od wielu czynników. Okazało się, że rozkład tekstu na stronie jak i program, którego użyto do stworzenia pliku może przyczynić się do błędnego eksportu tekstu. Nie jest możliwe uwzględnienie każdego przypadku stuktury pliku aby zapewnić prawidłowy proces ekstrakcji. Należałoby zastanowić się nad poprawą implementacji tego algorytmu lub zastosowanie innych sposobów, takich jak \textit{Optical Character Recognition}. System powinien być usprawniony o implementacje serwera HTTP oraz logowanie, aby zezwolić na przenoszenie danych użytkownika.
+W ramach projektu zaprezentowano aplikację umożliwiającą komfortowe przechowywanie oraz zmniejszenie ingerencji użytkownika w proces interpretacji plików. Opisano funkcjonalności aplikacji oraz możliwe rozszerzenia  aplikacji w dalszym ciągu rozwoju. \par
+Decyzja o wykorzystaniu MongoDB, nierelacyjnej bazy danych, była kluczowa dla dostosowania się do zróżnicowanego i nieustrukturyzowanego charakteru plików, umożliwiając elastyczne i wydajne rozwiązania w zakresie przechowywania danych. Wybór ten podkreślił zdolność aplikacji do obsługi różnych typów plików i struktur danych, zwiększając tym samym jej użyteczność i zdolność adaptacji.\par
+Badania nad aplikacją wyeksponowały ciekawy koncept jakim jest praca z pilkami o rozszerzeniu PDF, ponieważ proces automatycznego pobierania tekstu jest zależny od wielu czynników. Okazało się, że rozkład tekstu na stronie jak i program, którego użyto do stworzenia pliku może przyczynić się do błędnego eksportu tekstu. Nie jest możliwe uwzględnienie każdego przypadku stuktury pliku aby zapewnić prawidłowy proces ekstrakcji. Należałoby zastanowić się nad poprawą implementacji tego algorytmu lub zastosowanie innych sposobów, takich jak \textit{Optical Character Recognition}.
 %% ########################################################
 \newpage
 \listoffigures
