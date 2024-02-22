@@ -288,6 +288,30 @@ Python ma dużą i aktywną społeczność programistów, którzy przyczyniają 
 Podstawowe funkcjonalności aplikacji są oparte na architekturze klient-serwer. Interfejs po stronie klienta, opracowany przy użyciu standardowych technologii internetowych przedstawionych w rozdziale 1.4, komunikuje się z zapleczem po stronie serwera w celu obsługi żądań użytkowników oraz przechowywania i przetwarzania danych.\par
 Nie jest ona jednak aplikacją internetową. Po stronie klienta jest ona zamknięta w \textit{Electronie}, szkielecie (\textit{ang. framework}) umożliwiającym tworzenie wieloplatformowych aplikacji desktopowych przy użyciu technologii internetowych. Osadzając aplikację internetową w Electron, przekształcana jest ona w samodzielną aplikację desktopową, która może być dystrybuowana i uruchamiana natywnie w różnych systemach operacyjnych (Windows, macOS, Linux). Ta integracja oferuje użytkownikom znane doświadczenie interakcji z aplikacją desktopową przy jednoczesnym zachowaniu korzyści płynących z technologii webowej.
 %########################################################
+\subsection{Status realizacji}
+Ze względu na ograniczenia czasowe, implementacja obejmuje następujące elementy określone w rozdziale 2. Odchylenia od założeń przedstawionych dziale związanym z opisem projektu zostały opisane w rozdziale 3.4, a poniżej wydnieje lista częściowo lub w pełni zawartych elementów w zależności od modułu. 
+\begin{enumerate}
+	\item Moduł organizacji danych
+	\begin{itemize}
+		\item Zrealizowano: Tagowanie plików poprzez generację słów kluczy na podstawie zawartości oraz łączenie plików
+		\item Odrzucono: Automatyczne wytwarzanie struktury folderów oraz kategoryzacja.
+	\end{itemize}
+	\item Wyszukiwarka
+	\begin{itemize}
+		\item Zrealizowano: Wyszukiwanie, prezentacja wyników wyszukiwania oraz możliwość filtrowania wyników,
+		\item Odrzucono: Sugestie i autouzupełnianie
+	\end{itemize}
+	\item Moduł podsumowujący
+	\begin{itemize}
+		\item Zrealizowano: Tworzenie streszczeń metodą ekstraktywną opartą o algorytm TextRank,
+		\item Odrzucono: Wykorzystanie metod abstrakcyjnych.
+	\end{itemize}
+	\item Przetwarzanie plików
+	\begin{itemize}
+		\item Zrealizowano: Przetwarzanie cześciowe dla plików o rozszerzeniu PDF, CSV oraz TXT.
+	\end{itemize}
+	Pełen opis specyfikacji zależnej od rodzaju pliku jest przedstawiony w rozdziale 3.5.
+\end{enumerate}
 \subsection{Ograniczenia implementacji}
 \subsubsection*{Organizacja plików}
 Podczas tworzenia systemu napotkano problem dotyczący modułu organizacji danych, a dokładniej automatycznego tworzenia struktur katalogów. Proces ten wymaga wzięcia pod uwagę wielu warunków co sprawia, że koszty implementacji są niewspółmierne do oczekiwanych wyników. Przykładowe wymagania zostały wypisanie poniżej.
@@ -324,31 +348,12 @@ W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decy
 %\end{enumerate}
 \newpage
 \section{Wyniki}
-\subsection{Status realizacji}
-Ze względu na ograniczenia czasowe, implementacja obejmuje następujące elementy określone w rozdziale 2. Odchylenia od założeń przedstawionych dziale związanym z opisem projektu zostały opisane w rozdziale 3.3, a poniżej wydnieje lista częściowo lub w pełni zawartych elementów w zależności od modułu. 
-\begin{enumerate}
-	\item Moduł organizacji danych
-	\begin{itemize}
-		\item Zrealizowano: Tagowanie plików poprzez generację słów kluczy na podstawie zawartości oraz łączenie plików
-		\item Odrzucono: Automatyczne wytwarzanie struktury folderów oraz kategoryzacja.
-	\end{itemize}
-	\item Wyszukiwarka
-	\begin{itemize}
-		\item Zrealizowano: Wyszukiwanie, prezentacja wyników wyszukiwania oraz możliwość filtrowania wyników,
-		\item Odrzucono: Sugestie i autouzupełnianie
-	\end{itemize}
-	\item Moduł podsumowujący
-	\begin{itemize}
-		\item Zrealizowano: Tworzenie streszczeń metodą ekstraktywną opartą o algorytm TextRank,
-		\item Odrzucono: Wykorzystanie metod abstrakcyjnych.
-	\end{itemize}
-	\item Przetwarzanie plików
-	\begin{itemize}
-		\item Zrealizowano: Przetwarzanie cześciowe dla plików o rozszerzeniu PDF, CSV oraz TXT.
-	\end{itemize}
-	Pełen opis specyfikacji zależnej od rodzaju pliku jest przedstawiony w rozdziale 3.4.
-\end{enumerate}
-\subsection{Diagram przepływu danych}
+\subsection{Końcowy diagram aktywności}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{img/plantuml.png}
+\caption{Diagram aktywności końcowej aplikacji}
+\end{figure}
 \subsection{Możliwości rozwoju i wykorzystania aplikacji}
 Wspomniane funkcjonalności to jedynie początek istnienia tego systemu. Stworzenie dodatkowych zdolności programu jest uproszczone, poprzez oparcie systemu o odpowiedzi w postaci komunikatu http zamiast stosowania szablonów, jak to jest zwykle przy standardowym projektowaniu z użyciem Python Flask. Baza danych wykorzystana w projekcie, MongoDB, jest bazą typu NoSQL, która umożliwia przechowywanie informacji w nie ustrukturyzowany sposób. Dzięki czemu tabele można wypełnić dowolnymi wartościami a sama aplikacja wyświetla wyszystkie elementy tabeli dla wyszukiwanego obiektu.\par
 \subsubsection{Ekspansja działań dotyczących danych tabelarycznych}
