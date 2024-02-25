@@ -36,14 +36,24 @@ Dataset management application}}\\[40mm]
 \newpage
 \section*{Wstęp}
 \addcontentsline{toc}{section}{Wstęp}
-Poniższa praca ma na celu zapewnienie kompleksowego przeglądu projektu aplikacji, która umożliwi osobom fizycznym lepsze zarządzanie i wykorzystywanie własnych zasobów wiedzy. Przedstawiając tym zasady projektowania, szczegóły implementacji i potencjalne rozszerzenia aplikacji.\par
-Aplikacja ułatwia płynne gromadzenie danych, umożliwiając użytkownikom importowanie i przechowywanie plików zawierających cenne informacje. Pliki te, określane zbiorczo jako zbiór danych, obejmują szeroki zakres typów treści, z których każdy reprezentuje wiedzę możliwą do interpretacji przez człowieka. Od prac naukowych po osobiste notatki i pliki multimedialne, projekt systemu uwzględnia obsługę różnych formatów danych, aby zaspokoić indywidualne preferencje i wymagania użytkowników.\par
-Choć początkowo została zaprojektowana jako proste rozwiązanie programowe dla użytkowników prywatnych, aplikacja może być wyposażona w rozszerzenia, które wykorzystują techniki sztucznej inteligencji (AI).\par
-W niniejszym dokumencie zostanie zagłębiony koncept i możliwy rozwój tej aplikacji, podkreślając kluczowe komponenty, takie jak moduł gromadzenia danych, mechanizm kategoryzacji czy funkcjonalność wyszukiwania. Ponadto zostanie zbadana integrację rozszerzeń opartych na sztucznej inteligencji w celu zautomatyzowania takich elementów jak proces klasyfikacji, oferując wgląd w podstawowe algorytmy i strategie wdrażania.
+Niniejsza praca ma na celu prezentacje projektu aplikacji, która umożliwiłaby użytkownikowi gromadzenie i zarządzanie zbiorami danych. Przedstawia elementy implementacji i potencjalne rozszerzenia aplikacji.\par
+Aplikacja ułatwiłaby użytkownikom importowanie i przechowywanie plików zawierających informacje. Pliki te, określane zbiorczo jako zbiór danych, obejmują szeroki zakres typów treści, między innymi artykuły naukowe, dane tabelaryczne czy pliki tekstowe. System, po rozpoznaniu formatu danych, analizowałby ich zawartość aby wspomóc proces klasyfikacji. \par
+%Pliki te, określane zbiorczo jako zbiór danych, obejmują szeroki zakres typów treści,  z których każdy reprezentuje wiedzę możliwą do interpretacji przez człowieka. Od prac naukowych po osobiste notatki i pliki multimedialne, projekt systemu uwzględnia obsługę różnych formatów danych, aby zaspokoić indywidualne preferencje i wymagania użytkowników.\par
+Została zaprojektowana jako proste rozwiązanie programowe do indywidualnego użytku z możliwością wyposażenia w rozszerzenia, które wykorzystują techniki sztucznej inteligencji (AI).\par
+Treść pracy zaprezentuje kluczowe komponenty, takie jak moduł gromadzenia danych, mechanizm kategoryzacji czy funkcjonalność wyszukiwania. Ponadto zostanie wspomniana integracja rozszerzeń opartych na sztucznej inteligencji mającej na celu zautomatyzowanie takich elementów jak proces klasyfikacji, opisując podstawowe algorytmy i strategie wdrażania. 
 \newpage
 %% ########################################################
 \section{Zagadnienia dotyczące projektu}
-Zaprojektowany system ma uprościć proces gromadzenia informacji dla użytkownika prywatnego. Zgromadzone dane mogą być przechowywane w pliku w systemie plików lub przy użyciu takich narzędzi jak bazy danych. Rozważając rodzaj przechowywania danych należy również wziąć pod uwagę aspekt fizyczny. Rozróżnienie to jest opisane w rozdziale 1.1. Wraz z danymi będą przechowywanie metainformacje, opisujące te dane.  \par
+%Gromadzone dane można przechowywać w różnych formach (pliki w systemie plików, rekordy w bazach danych) i w różnych miejscach  (lokalne nośniki, zasoby w chmurze). W tej wersji projektu, ze  względu na przewidywaną skalę, zdecydowano się na składowanie danych w nierealcynej bazie danych zarządzanej silnikiem MongoDB. Omówienie różnych aspektów przechowywania danych znajduje się w r.1.1
+Zaprojektowany system jest przeznaczony do gromadzenia i klasyfikowania danych dla indywidualnego użytkownika. Zgromadzone dane mogą być przechowywane w pliku w systemie plików lub przy użyciu takich narzędzi jak bazy danych. Rozważając rodzaj przechowywania danych należy również wziąć pod uwagę aspekt fizyczny. Rozróżnienie to jest opisane w rozdziale 1.1. 
+%Wraz z danymi będą przechowywanie metainformacje, opisujące te dane.  
+\par
+Zamysłem aplikacji jest wspomaganie klasyfikacji gromadzonych danych. Aby było to możliwe należy pliku wyciągnąć informacje, a następnie
+       dostarczyć ją w formie przetworzonej,
+     - sposób wydobywania właściwych informacji i przetwarzania zależy
+       od rodzaju danych (dokumenty tekstowe, dane tabelaryczne, grafiki
+       ....)
+
 Pozyskiwanie informacji z plików różni się zależnie od ich rodzaju. Aplikacja umożliwia przetworzenie plików tabelarycznych czy tekstowych, poprzez wykorzystanie ich zawartości. Szczególnym przypadkiem są pliki PDF, gdzie proces ekstrakcji zawartości jest utrudniony w związku z kodowaniem i formatem pliku, co zostanie omówione w dziale 1.2. \par
 Projekt aplikacji wykorzystuje architekturę typu klient-serwer. Określenie architektura aplikacji odnosi się do wysokopoziomowej struktury i organizacji systemów oprogramowania. W rozdziale 1.4 została opisana wyżej wymieniona architektura pod kątem charakterystyki i przypadków użycia. 
 %Projekt aplikacji wykorzystuje architekture typu klient-serwer, jednakże dzięki wykorzystaniu pakietu \textit{Electron} języka Javascript, jest możliwe przekształcenie aplikacji webowej na natywną. Biblioteka Electron jest projektem umożliwiającym tworzenie aplikacji natywnych używając technologii web. Pełny opis tej biblioteki jest zawarty w podrozdziale 1.4. 
@@ -83,15 +93,7 @@ Usługi \textbf{przechowywania w chmurze}, takie jak Amazon Web Services (AWS) c
 \end{itemize}\par
 Wybór miejsca przechowywania danych zależy od takich czynników, jak wymagania bezpieczeństwa, potrzeby skalowalności czy ograniczenia budżetowe. Często korzystne dla organizacji jest przyjęcie podejścia hybrydowego lub wielochmurowego, wykorzystującego mocne strony różnych opcji przechowywania danych. Umożliwia to zaspokojenie różnorodnych potrzeb biznesowych przy jednoczesnym złagodzeniu wpływu niedoskonałości różnych rozwiązań \cite{Ho2022}.
 %% ########################################################
-\subsection{Ekstrakcja tekstu plików PDF}
-Pliki PDF są powszechnie przyjętym standardem przechowywania informacji. Format PDF jest oparty o strukturę binarnego formatu plików, zoptymalizowanego pod kątem wysokiej wydajności odczytu wizualnego. Zawierają w sobie informacje o strukturze dokumentu, takie jak zawartość tekstowa, grafiki czy użyta czcionka. Są one zoptymalizowane pod drukowanie. Niezaszyfrowane PDF mogą być w całości reprezentowane z użyciem wartości bitowych, odpowiadających części zbioru znaków zdefiniowanego w \textit{ANSI X3.4-1986}, symbole kontrolne oraz puste znaki. Wizualnie jednak nie są one ograniczone do zbioru znaków ASCII \cite{ISO32000}.\par
-Format PDF separuje informacje dotyczące samego znaku a jego wizualną reprezentacją. Jest to rozróżnienie na znak pisarski (grafem) i glif, gdzie grafem jest jednostką tekstu a glif, jednostką graficzną. Glif informuje o położeniu znaków na stronie dokumentu, jego czcionce i innych elementach wyglądu. \par
-Otrzymanie zawartości pliku może być wykonane za pomocą wydobycia elementów PDF z strumienia pliku lub z użyciem analizy obrazów, na przykład technologi optycznego rozpoznawania znaków OCR (\textit{ang. Optical Character Recogintion}). 
-Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do edytowania czy wyszukiwania. Techniki oparte o analizę obrazów są bezpośrednio zależne od jakości wprowadzonego elementu. Idealną sytuacją dla wykożystania metod OCR jest kiedy posiadany plik zawiera w sobie jedynie tekst i jest obrazem binarnym \cite{mithe2013optical}. Dodatkowym atutem takich systemów jest możliwość wykrycia pisma i konwersja na tekst.\par
-Ekstrahowanie danych z strumienia pliku, wiąże się z kilkoma problemami. Biorąc pod uwagę możliwość że plik pdf może posiadać różne kodowanie takie jak \textit{UTF-8}, \textit{ASCII} czy \textit{Unicode}, możemy doświadczyć utraty informacji spowodowanej schematem kodowania pliku. Automatyczna ekstrakcja zawartości polega na selekcji znaków znajdujących się pomiędzy zdefiniowanymi słowami kluczowymi. \par
-Pliki PDF są przystosowane do drukowania, z tego powodu reprezentacja tekstu w strumieniu może się znacząco różnić od tej na stronie. Ponieważ pozycje znaków na poszczególnych stronach są absolutne, przedstawienie w strumieniu bierze pod uwagę koordynaty elementów.\par
-Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie ich poprawności względem dokumentu wejściowego. Brak formalnej definicji struktury, przynajmniej jeżeli chodzi o artykuły naukowe, uniemożliwia stworzenie uniwersalnego algorytmu ekstrakcji.
-%%#########################################
+
 \subsection{Problem tworzenia streszczeń}
 Streszczenie artykułu naukowego jest jego kluczowym elementem. Ilość informacji dostępnych dla każdego, kto szuka wiedzy na dany temat, może być przytłaczająca. Jego celem jest przekazanie najważniejszych cech czytanej treści, aby czytelnik mógł określić, czy informacje są dla niego istotne. \par
 W kontekście uczenia maszynowego, kondensacja treści w celu stworzenia abstraktu, najczęściej opiera się na obliczaniu poziomu istotności dla każdego zdania \cite{MUTLU2020102359}. Skracając czas potrzebny na napisanie abstraktu, automatyzacja ma na celu ułatwienie autorom pisania artykułów. Systemy ATS (ang. \textit{Automatic Text Summarization}) są jednym z cięższych wyzwań sztucznej inteligencji, dotyczących przetwarzania języka naturalnego \cite{ELKASSAS2021113679}. Podejścia do tworzenia tych systemów, możemy podzielić na ekstraktywane, abstrakcyjne i hybrydowe. 
@@ -108,12 +110,21 @@ Jednymi z pierwszych metod ewaluacji automatycznej były metryki takie jak podob
 	\item \textit{ROUGE-L} jest wyznaczana na podstawie porównania najdłuższych wspólnych sekwencji słów w zdaniach, występujących w streszczeniu wygenerowanym i wzorcowym. 
 	\item \textit{ROUGE-S} działa na tej samej zasadzie co \textit{ROUGE-2} lecz uwzględnia w swoim działaniu struktury skip-bigram, który jest rozszerzeniem definicji bigramów o możliwość zawierania w sobie maksymalnie jednego przedimka.
 \end{itemize}
+\subsection{Ekstrakcja tekstu plików PDF}
+Pliki PDF są powszechnie przyjętym standardem przechowywania informacji. Format PDF jest oparty o strukturę binarnego formatu plików, zoptymalizowanego pod kątem wysokiej wydajności odczytu wizualnego. Zawierają w sobie informacje o strukturze dokumentu, takie jak zawartość tekstowa, grafiki czy użyta czcionka. Są one zoptymalizowane pod drukowanie. Niezaszyfrowane PDF mogą być w całości reprezentowane z użyciem wartości bitowych, odpowiadających części zbioru znaków zdefiniowanego w \textit{ANSI X3.4-1986}, symbole kontrolne oraz puste znaki. Wizualnie jednak nie są one ograniczone do zbioru znaków ASCII \cite{ISO32000}.\par
+Format PDF separuje informacje dotyczące samego znaku a jego wizualną reprezentacją. Jest to rozróżnienie na znak pisarski (grafem) i glif, gdzie grafem jest jednostką tekstu a glif, jednostką graficzną. Glif informuje o położeniu znaków na stronie dokumentu, jego czcionce i innych elementach wyglądu. \par
+Otrzymanie zawartości pliku może być wykonane za pomocą wydobycia elementów PDF z strumienia pliku lub z użyciem analizy obrazów, na przykład technologi optycznego rozpoznawania znaków OCR (\textit{ang. Optical Character Recogintion}). 
+Podstawowym zadaniem systemu OCR jest konwersja dokumentów w dane możliwe do edytowania czy wyszukiwania. Techniki oparte o analizę obrazów są bezpośrednio zależne od jakości wprowadzonego elementu. Idealną sytuacją dla wykożystania metod OCR jest kiedy posiadany plik zawiera w sobie jedynie tekst i jest obrazem binarnym \cite{mithe2013optical}. Dodatkowym atutem takich systemów jest możliwość wykrycia pisma i konwersja na tekst.\par
+Ekstrahowanie danych z strumienia pliku, wiąże się z kilkoma problemami. Biorąc pod uwagę możliwość że plik pdf może posiadać różne kodowanie takie jak \textit{UTF-8}, \textit{ASCII} czy \textit{Unicode}, możemy doświadczyć utraty informacji spowodowanej schematem kodowania pliku. Automatyczna ekstrakcja zawartości polega na selekcji znaków znajdujących się pomiędzy zdefiniowanymi słowami kluczowymi. \par
+Pliki PDF są przystosowane do drukowania, z tego powodu reprezentacja tekstu w strumieniu może się znacząco różnić od tej na stronie. Ponieważ pozycje znaków na poszczególnych stronach są absolutne, przedstawienie w strumieniu bierze pod uwagę koordynaty elementów.\par
+Niezależne od sposobu pobierania informacji, nie jest możliwe zagwarantowanie ich poprawności względem dokumentu wejściowego. Brak formalnej definicji struktury, przynajmniej jeżeli chodzi o artykuły naukowe, uniemożliwia stworzenie uniwersalnego algorytmu ekstrakcji.
+%%#########################################
 \subsection{Architektura klient-server}
-Architektura klient-serwer to model projektowania systemów rozproszonych, w którym zadania lub procesy obliczeniowe są podzielone między klientów i serwery. W tej architekturze klientami są zazwyczaj urządzenia użytkowników końcowych (takie jak komputery, smartfony lub tablety), które żądają usług lub zasobów, podczas gdy serwery są scentralizowanymi systemami, które je zapewniają. Architektura najczęściej wykorzystywana w wytwarzaniu oprogramowania internetowego z wykorzystaniem takich narzędzi jak języki opisowe HTML i CSS, czy języka Javascript. Takie aplikacje działają w przeglądarkach internetowych, lecz dzięki takim szkieletom aplikacji jak Electron istnieje możliwość konwersji na program z własnym interfejsem graficznym, oddzielonym od przeglądarki. Opis tego projektu znajduje się w dalszej części rozdziału.\par
+Architektura klient-serwer to model projektowania systemów rozproszonych, w którym zadania lub procesy obliczeniowe są podzielone między klientów i serwery. W tej architekturze klientami są zazwyczaj urządzenia użytkowników końcowych (takie jak komputery, smartfony lub tablety), które żądają usług lub zasobów, podczas gdy serwery są scentralizowanymi systemami, które je zapewniają \cite{client}. Architektura najczęściej wykorzystywana w wytwarzaniu oprogramowania internetowego z wykorzystaniem takich narzędzi jak języki opisowe HTML i CSS, czy języka Javascript. Takie aplikacje działają w przeglądarkach internetowych, lecz dzięki takim szkieletom aplikacji jak Electron istnieje możliwość konwersji na program z własnym interfejsem graficznym, oddzielonym od przeglądarki. Opis tego projektu znajduje się w dalszej części rozdziału.\par
 Transfer informacji między elementami aplikacji może odbywa się z pomocą protokołu komunikacyjnego jak HTTP/HTTPS \par
 HTTP (\textit{ang. Hypertext transfer protocol}) jest to bezstanowy protokół, co oznacza, że każde zapytanie jest przetwarzane niezależne od poprzedniego. Jest on zgodny z modelem zapytanie-odpowiedź (\textit{ang. request-response}), gdzie klient wysyła proźbę a serwer odpowiada. Odpowiedź zawiera w sobie kod statusu, wymagane zasoby lub treść błędu.\par
 \subsubsection{Pakiet Electron}
-Electron jest oparty na Chromium, projekcie stojącym za przeglądarką Google Chrome. Oznacza to, że aplikacje wykorzystują ten sam silnik renderujący i obsługę standardów internetowych, co Chrome. Electron osadza instancję Chromium do renderowania treści internetowych w oknach aplikacji.\par
+Electron jest oparty na Chromium, projekcie stojącym za przeglądarką Google Chrome. Oznacza to, że aplikacje wykorzystują ten sam silnik renderujący i obsługę standardów internetowych, co Chrome. Electron osadza instancję Chromium do renderowania treści internetowych w oknach aplikacji \cite{electron}.\par
 Standard tworzenia aplikacji z pomocą tej biblioteki jest oparty o komunikację międzyprocesową (\textit{ang. IPC, Inter-process communication}), która jest wynikiem implementacji izolacji wątku. 
 \subsubsection*{Izolacja wątku}
 Separacja wątków odnosi się do możliwości izolacji różnych części aplikacji w celu zapobiegania interferencji oraz zapewnienia stabilności aplikacji. Separacja ta jest osiągana poprzez wykorzystanie wielu procesów, w tym procesu głównego i procesów renderujących.
@@ -152,6 +163,11 @@ Ze względu na rozbudowany charakter narzędzia, zostało ono zaprojektowane jak
 %	\item Zapewnienie użytkownikom szybkiego wyszukiwania określonych dokumentów z przechowywanych informacji za pomocą słów kluczowych, nazw plików lub innych parametrów.
 %	\item Automatyczne generowanie streszczeń artykułów w celu zapewnienia użytkownikom szybkiego wglądu w treść bez konieczności czytania całego tekstu.
 \end{itemize}\par
+\begin{figure}[h!]
+\centering
+  \includegraphics[width=\textwidth]{img/component.pdf}
+  \caption{Diagram komponentów projektu}
+\end{figure}
 %Aplikację można podzielić na kilka głównych komponentów, z których każdy pełni odrębną funkcję w systemie. Do nich zaliczamy przetwarzanie, wyszukiwanie, streszczenia, organizacja i dodawanie plików. Poniższy segment przedstawi poszczególne moduły i ich planowane możliwości.\par
 \subsection{Wymagania funkcjonalne modułów}
 \textbf{Moduł organizacji danych} automatycznie kategoryzuje i organizuje dane użytkownika, aby ułatwić ich efektywne wyszukiwanie i zarządzanie.
@@ -166,12 +182,13 @@ Ze względu na rozbudowany charakter narzędzia, zostało ono zaprojektowane jak
 	\item Zaawansowane filtry: Aplikacja oferuje szereg filtrów wyszukiwania, takich jak zakres dat, typ pliku lub tag, umożliwiając użytkownikom zawężenie wyników wyszukiwania i znalezienie dokładnie tego, czego szukają.
 	\item Sugestie i autouzupełnianie: Gdy użytkownicy wpisują swoje zapytania, aplikacja zapewnia sugestie i opcje autouzupełniania, aby przyspieszyć proces wyszukiwania i poprawić dokładność.
 \end{itemize}\par
-\textbf{Moduł podsumowujący} generuje zwięzłe streszczenia długich dokumentów, zapewniając użytkownikom szybki wgląd w główne punkty artykułów.
+\textbf{Moduł podsumowujący} generuje zwięzłe streszczenia długich dokumentów, zapewniając użytkownikom szybki wgląd w główne punkty artykułów. Realizuje też opisywanie innych rodzajów plików.
 \begin{itemize}
 	\item Algorytmy podsumowujące tekst: Aplikacja wykorzystuje zaawansowane algorytmy do podsumowywania tekstu, które mogą obejmować metody ekstrakcyjne, które wybierają ważne zdania lub metody abstrakcyjne, które generują nową treść podsumowania.
 	\item Automatyczne podsumowanie: Użytkownicy mogą wybrać opcje dla automatycznego generowania podsumowań dla dokumentów w aplikacji, takie jak ilość zdań lub poziom szczegółowości podsumowań.
 \end{itemize}\par
-\textbf{Przetwarzanie plików} wykrywa rodzaj pliku dodanego przez klienta i wyznacza akcje do przeprowadzenia zgodnie z typem. 
+\textbf{Przetwarzanie plików} wykrywa rodzaj pliku dodanego przez klienta i wyznacza akcje do przeprowadzenia zgodnie z typem.
+\newpage
 \subsection{Przykładowe schematy funkcjonalności}
 \subsubsection*{Dodawanie plików PDF}
 Zachowanie systemu przy dodaniu plików tekstowych.
@@ -187,7 +204,7 @@ Model TextRank zastosowany w projekcie, jest algorytmem rankingowym opartym na g
 Poniższy diagram przedstawia proces dodawania pliku PDF wraz z uwzględnieniem implementacji asocjacji plików o podobnej tematyce, opisanej w punkcie 2.4.3.
 \begin{figure}[h!]
 \centering
-  \includegraphics{img/activity\_file\_add.png}
+  \includegraphics[width=\textwidth]{img/activity\_file\_add.pdf}
   \caption{Diagram aktywności przesyłania pliku PDF}
 \end{figure}
 \clearpage
@@ -203,7 +220,7 @@ Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule 
 \end{enumerate}
 \begin{figure}[h!]
 \centering
-  \includegraphics[width=0.8\textwidth]{img/file\_search.png}
+  \includegraphics[width=0.8\textwidth]{img/file\_search.pdf}
   \caption{Schemat sekwencyjny wyszukiwania pliku}
 \end{figure}
 %\begin{figure}[h!]
@@ -225,7 +242,7 @@ Użytkownik ma możliwość wysukiwania plików po słowach kluczach lub tytule 
 \end{enumerate}
 \begin{figure}[h!]
 \centering
-  \includegraphics[width=0.9\textwidth]{img/csvac.png}
+  \includegraphics[width=0.9\textwidth]{img/csvac.pdf}
   \caption{Diagram aktywności przetwarzania plików tabelarycznych}
 \end{figure}
 %% ########################################################
@@ -261,13 +278,13 @@ Do przechowywania wyodrębnionych danych wybrano nierelacyjną bazę danych, a j
 Aby ustanowić komunikację między aplikacją a bazą danych, zaimplementowano serwer WWW przy użyciu biblioteki Flask języka Python. Działając jako istotny łącznik, serwer ten zarządza wszystkimi podstawowymi funkcjami aplikacji. Nadzoruje on zadania takie jak przetwarzanie plików, ekstrakcja danych, klasyfikacja i segregacja, wraz z wszelkimi niezbędnymi operacjami manipulacji danymi. Takie podejście zapewnia płynną interakcję między komponentami aplikacji, umożliwiając wydajną obsługę i zarządzanie danymi w całym systemie.\par
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]{img/archi2.png}
-\caption{Diagram łączenia komponentów}
+\includegraphics[width=\textwidth]{img/archi2.pdf}
+\caption{Diagram struktury aplikacji}
 \end{figure}\par
 \subsection{Opis wykorzystywanych elementów}
-Javascript to powszechnie używany język programowania do tworzenia stron internetowych, znany ze swojej wszechstronności i kompatybilności z przeglądarkami. Opisywany system wykorzystuje Javasctipt w środowisku \textit{Node.js}, co ułatwia dostęp do różnorodnych pakietów takich jak \textit{React}, których opis jest przedstawiony poniżej.
+Javascript to powszechnie używany język programowania do tworzenia stron internetowych, znany ze swojej wszechstronności i kompatybilności z przeglądarkami \cite{javascript}. Opisywany system wykorzystuje Javascript w środowisku \textit{Node.js}, co ułatwia dostęp do różnorodnych pakietów takich jak \textit{React}, których opis jest przedstawiony poniżej.
 \begin{itemize}
-	\item \textit{React} - biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu.
+	\item \textit{React} - biblioteka pozwalająca na budowanie interaktywnych interfejsów użytkownika. Główną koncepcją React są komponenty, czyli samodzielne, hermetyczne jednostku interfejsu \cite{reactjs}.
 	\item \textit{Axios} - klient HTTP z pomocą którego odbywa się komunikacja z serwerem. Jest to mechanizm oparty o obietnice co pozwala na asynchroniczną relacje z punktem końcowym (\textit{ang. endpoint}). W systemie, po otrzymaniu odpowiedzi od serwera, ustawiany jest stan, czego przykład wykorzystania jest przedstawiony poniżej.
 \begin{figure}[h!]
 \centering
@@ -275,7 +292,8 @@ Javascript to powszechnie używany język programowania do tworzenia stron inter
 \caption{Przykład wykorzystania \textit{Axios}; Implementacja dodania pliku}
 \end{figure}
 \end{itemize}\par
-Python to język programowania wysokiego poziomu znany ze swojej prostoty, czytelności i szerokiego wsparcia dla bibliotek, co czyni go odpowiednim wyborem do tworzenia backendu. 
+\newpage
+Python to język programowania wysokiego poziomu znany ze swojej prostoty, czytelności i szerokiego wsparcia dla bibliotek, co czyni go odpowiednim wyborem do tworzenia backendu \cite{python}. 
 Stworzenie serwera w tym języku pozwala na korzystanie z dużego zestawu bibliotek dotyczących takich tematów jak przetwarzanie i analiza danych czy szerokiego spektrum bibliotek sztucznej inteligencji.
 Python ma dużą i aktywną społeczność programistów, którzy przyczyniają się do jego rozległego ekosystemu bibliotek, frameworków i innych narzędzi. Poniżej zostały przedstawione używane w aplikacji elementy.
 \begin{itemize}
@@ -347,11 +365,10 @@ W pierwszym przypadku program sprawdza długość tekstu i na tej podstawie decy
 %	\end{figure}
 %\end{enumerate}
 \newpage
-\section{Wyniki}
 \subsection{Końcowy diagram aktywności}
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]{img/plantuml.png}
+\includegraphics[width=0.9\textwidth]{img/plantuml.pdf}
 \caption{Diagram aktywności końcowej aplikacji}
 \end{figure}
 \subsection{Możliwości rozwoju i wykorzystania aplikacji}
@@ -377,8 +394,9 @@ Powszechnie dostępne, ogromne bazy danych, takie jak \textit{Pascal VOC} czy \t
 \section*{Podsumowanie}
 \addcontentsline{toc}{section}{Podsumowanie}
 W ramach projektu zaprezentowano aplikację umożliwiającą komfortowe przechowywanie oraz zmniejszenie ingerencji użytkownika w proces interpretacji plików. Opisano funkcjonalności aplikacji oraz możliwe rozszerzenia  aplikacji w dalszym ciągu rozwoju. \par
-Decyzja o wykorzystaniu MongoDB, nierelacyjnej bazy danych, była kluczowa dla dostosowania się do zróżnicowanego i nieustrukturyzowanego charakteru plików, umożliwiając elastyczne i wydajne rozwiązania w zakresie przechowywania danych. Wybór ten podkreślił zdolność aplikacji do obsługi różnych typów plików i struktur danych, zwiększając tym samym jej użyteczność i zdolność adaptacji.\par
-Badania nad aplikacją wyeksponowały ciekawy koncept jakim jest praca z pilkami o rozszerzeniu PDF, ponieważ proces automatycznego pobierania tekstu jest zależny od wielu czynników. Okazało się, że rozkład tekstu na stronie jak i program, którego użyto do stworzenia pliku może przyczynić się do błędnego eksportu tekstu. Nie jest możliwe uwzględnienie każdego przypadku stuktury pliku aby zapewnić prawidłowy proces ekstrakcji. Należałoby zastanowić się nad poprawą implementacji tego algorytmu lub zastosowanie innych sposobów, takich jak \textit{Optical Character Recognition}.
+Jednym z intrygujących wyzwań była implementacja ekstrakcji tekstu z plików PDF. Analiza tego procesu skupiła się głównie na wyodrębnianiu tekstu bezpośrednio ze strumienia pliku, podkreślając złożoność i interpretowania struktur dokumentów. Skłoniło to również do rozważenia alternatywnych metod ekstrakcji, takich jak optyczne rozpoznawanie znaków (OCR). \par
+Ponadto, chociaż aplikacja oferuje możliwość wyszukiwania, ważne jest, aby uznać jej potencjalne ograniczenia, szczególnie w przypadkach, gdy błędy ekstrakcji tekstu sprawiają, że słowa kluczowe są nieskuteczne dla dokładnych wyników wyszukiwania.\par
+Architektura aplikacji pozwala jednak na jej przyszłą rozbudowę i ulepszenie. Integracja z zewnętrznymi interfejsami API lub dodanie rozszerzeń może jeszcze bardziej zwiększyć jej funkcjonalność. Co więcej, wykorzystanie bazy danych NoSQL zapewnia elastyczność w przechowywaniu różnych typów informacji, przyczyniając się do skalowalności aplikacji. Niemniej jednak ważne jest, aby zdać sobie sprawę, że wdrożenie kategoryzacji według tematów w celu tworzenia katalogów w aplikacji stanowi znaczące przedsięwzięcie. Osiągnięcie tej funkcjonalności wymaga znacznych inwestycji w czas i zasoby, ponieważ opiera się na płynnym funkcjonowaniu różnych połączonych ze sobą komponentów w ekosystemie aplikacji.
 %% ########################################################
 \newpage
 \listoffigures

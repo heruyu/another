@@ -1,0 +1,272 @@
+Dzień dobry,
+z odpowiedzią czekałem na kolejną wersję (3.5), ale niepotrzebnie.
+Teraz skupię się na uwagach do stylu. Są ogólne, ale na przykładzie wstępu. Mam nadzieję, że się Pani przydadzą teraz i w przyszłości (np. przy pisaniu dokumentacji).
+
+Miało być krótko, ale się nie udało.
+C.D.N.
+
+
+------%<---------------------------------------------------------------
+
+Dużo dyplomantów przejawia magiczne myślenie, że praca dyplomowa powinna
+być niezrozumiała i naszpikowana odstraszającymi sformułowaniami. Wtedy
+zyska uznanie w oczach recenzenta.
+To błąd. Powinna być napisana tak, by chciało się ją czytać. Oczywiście,
+styl powinien być oficjalny, bez poufałości („Grębosz”!!) i kolokwializmów.
+Należy też uważać na sformułowania, które u odbiorcy mogłyby wywoływać
+wrażenie nadmiernej pewności autora, niespełnialnych obiecanek, czy też
+ochotę na ich weryfikację.
+
+Po tym wstępie ad rem.
+
+1)
+
+"""
+Poniższa praca ma na celu zapewnienie kompleksowego przeglądu projektu aplikacji,
+która umożliwi osobom fizycznym lepsze zarządzanie i wykorzystywanie własnych
+zasobów wiedzy. Przedstawiając tym zasady projektowania, szczegóły implementacji
+i potencjalne rozszerzenia aplikacji.
+"""
+
+a) „na celu zapewnienie”
+   zapewnienie = danie pewności albo zagwarantowanie dostarczenia
+      czegoś,
+   - gwarantuje Pani cokolwiek?
+
+   - użycie „na celu” ma w sobie ukrytą możliwość zaprzeczenia wynikom,
+     tj.:  „miało na celu, ale się nie udało”
+     połączenie tego z „zapewnianiem” daje dziwne odczucia,
+
+b) „kompleksowego przeglądu” –
+   - kompleksowy, czyli całkowity,
+   - przegląd - czyli pobieżny.
+   Byłoby to w porządku, ale na pewno nie przedstawia Pani wszystkiego,
+   nawet pobieżnie. A więc obietnica bez pokrycia.
+
+c) „która umożliwi ...”
+   - ale to praca eksperymentalna: nie wiadomo, czy pomysł jest dobry,
+     on jest dopiero testowany,
+   - problem tkwi w użytym w trybie: (powinien być przypuszczający),
+     albo czasie (przyszły);
+     można zmienić formę na opis celu: ma umożliwiać,
+   - może lepiej skrócić do samej funkcjonalności („do zarządzania”).
+
+d) „wykorzystywanie własnych zasobów wiedzy” - to jest niefortunne
+     sformułowanie; kojarzy się z „wiedzą w głowie”.
+    Poza tym sugeruje, że zasoby już są, a nie, że aplikacja będzie je
+    dopiero gromadzić.
+
+e) „osoby fizyczne” – tu jest kłopot z rozumieniem tego sformułowania.
+   Musi być ono osadzone we właściwym kontekście i we właściwej formie.
+
+   Skąd te problemy? Normalnie osoba to synonim człowieka. Ale już
+   „osoba fizyczna” pojawia się w terminach prawniczych, na odróżnienie
+   od  „osoby prawnej”. Ta druga może człowiekiem, ale też może być
+   instytucją, czy czymś tam jeszcze (podmiot prawny).
+
+   W tym wypadku chodzi raczej o rozróżnienie „użytkowanie indywidualne”
+    vs „zbiorowe”, np. w korporacji, czy grupie na githubie. To ciężko
+   ująć normalnie, a trochę strach używać sformułowań z reklam
+   (użytkownik korporacyjny).
+
+   Można próbować to ominąć opisując docelową skalę aplikacji: mała,
+   z małą bazą danych, dla (stosunkowo?) niewielkich zasobów, do
+   __użytku_indywidualnego__ (ew. prywatnego, choć to coś innego).
+
+f) „Poniższa praca” - gdyby chodziło o fragment tekstu (np. rozdział) to
+    kierunek poniżej/powyżej ma sens. A tu chodzi o całość (włącznie ze
+    stronami poprzedzającymi). Więc raczej: niniejsza, prezentowana,
+    itp.
+
+g) „Przedstawiając tym zasady projektowania, szczegóły implementacji i
+   potencjalne rozszerzenia aplikacji.”
+   Ogólnie z błędami („tym”?).
+
+   A w szczegółach:
+   - nie są omawiane „zasady projektowania” - i dobrze, Pani się zajmuje
+     konkretną aplikacją, a nie metodologią projektowania,
+   - „szczegóły implementacji” - nie ma na ten temat za dużo, więc to
+     sformułowanie jest na wyrost.
+
+
+A to dopiero pierwszy akapit!
+Dalej już nie tak szczegółowo.
+
+
+2)
+"""
+Aplikacja ułatwia płynne gromadzenie danych, umożliwiając użytkownikom
+importowanie i przechowywanie plików zawierających cenne informacje.
+"""
+1) co oznacza „płynne gromadzenie danych”
+2) czy czas i tryb nie są zbyt optymistyczne (wszystko działa?)
+3) „cenne informacje” - nie brzmi zbyt oficjalnie.
+
+"Pliki te, określane zbiorczo jako zbiór danych, ..." - to wynika z
+poprzedniego zdania.
+
+
+
+3)
+
+"""
+... obejmują szeroki zakres typów treści, z których każdy reprezentuje wiedzę
+możliwą do interpretacji przez człowieka. Od prac naukowych po osobiste
+notatki i pliki multimedialne, projekt systemu uwzględnia obsługę różnych
+formatów danych, aby zaspokoić indywidualne preferencje i wymagania
+użytkowników.
+"""
+
+
+a) Nie jest jasne, co to jest „szeroki zakres typów treści" i do czego
+   potrzebna jest „interpretacja przez człowieka."
+   To trzeba rozwinąć.
+
+b) Podanie, jako „typów treści”, „Od prac naukowych po osobiste
+     notatki i pliki multimedialne”, chyba nie jest szczęśliwe.
+   Czy system rozpoznaje, co jest pracą naukową, a co beletrystyką?
+
+   Nie wiem czy dobrze interpretuję, ale chyba chodzi o:
+   - pliki w dowolnych formatach,
+   - których zawartość, po rozpoznaniu formatu, może być przez aplikację
+     analizowana w celu wspomagania klasyfikacji
+
+   Nb. w reszcie dokumentu nie zauważyłem, czy dane innego typu (np.
+   tabelaryczne) są jakoś przetwarzane,
+
+
+
+4)
+"""
+Choć początkowo została zaprojektowana jako proste rozwiązanie
+programowe dla użytkowników prywatnych, aplikacja może być wyposażona
+w rozszerzenia, które wykorzystują techniki sztucznej inteligencji (AI).
+"""
+* Pojawia się kilka niejasności:
+  - czy rozwiązania dla „użytkowników prywatnych” stoją w sprzeczności
+    z AI?
+  - czy „początkowo” oznacza, ze _już_ tak nie jest, w szczególności,
+    czy jest to w opozycji do stwierdzenia „aplikacja może być
+    wyposażona" (czas!).
+
+* Zamiast niebezpiecznego „użytkownika prywatnego”, lepiej użyć
+„indywidualnego użytku”.
+
+* Myślę, że znowu, najlepiej uprościć:
+  - zaprojektowana jako ...
+  - z możliwością  ...
+
+
+
+5)
+"W niniejszym dokumencie zostanie zagłębiony koncept ... "
+
+* No bez przesady! Nie pisze Pani scenariusza do kontynuacji 1670. Skąd
+  te archaizmy?
+* O możliwym rozwoju jest niewiele, więc lepiej tego w tym miejscu nie
+  wspominać.
+
+
+6)
+"""Ponadto zostanie zbadana integrację rozszerzeń opartych na sztucznej
+inteligencji w celu zautomatyzowania takich elementów jak proces klasyfikacji,
+oferując wgląd w podstawowe algorytmy i strategie wdrażania.
+"""
+* gramatyka
+* „zostanie zbadana” – jak to interpretować?
+  - w przyszłości?
+  - w tym dokumencie?
+  Żadna z odpowiedzi nie jest dobra. W tym dokumencie jest trochę na ten
+  temat, ale nie na tyle, by określać to „zbadaniem”.
+* „... oferując wgląd...” - zbyt patetycznie.
+
+To kontynuacja. Rozdział 1.
+Teraz bardziej pobieżnie.
+(I proszę pamiętać, że prostota jest cenna.)
+
+Pozdrawiam
+P.Oleksik
+
+------%<---------------------------------------------------------------
+
+1)  Tytuł rozdziału jeszcze wymaga namysłu. Ale to później.
+
+2) „Zaprojektowany system ma uprościć proces gromadzenia informacji dla
+   użytkownika prywatnego.”
+
+   - jest przeznaczony do gromadzenia i klasyfikowania danych
+   - ... dla indywidualnego użytkownika,
+     („użytkownik prywatny” zalatuje PRL-em)
+
+
+3) „Zgromadzone dane mogą być przechowywane...”
+
+   - w wypowiedzi trzeba jasno odróżnić informacje ogólne od
+     szczegółowych (dotyczących tego projektu); można to zrobić przez
+     dobranie odpowiedniej formy:
+
+     Gromadzone dane można przechowywać w różnych formach (pliki w
+     systemie plików, rekordy w bazach danych) i w różnych miejscach
+     (lokalne nośniki, zasoby w chmurze). W tej wersji projektu, ze
+     względu na przewidywaną skalę, zdecydowano się na składowanie
+     danych w nierealcynej bazie danych zarządzanej silnikiem MongoDB.
+     Omówienie różnych aspektów przechowywania danych znajduje się w
+     r.1.1
+
+   - Uwagi:
+     * tematyka podpunktu 1.1 nie jest aż tak istotna, z punktu widzenia
+       tematu pracy, a jest bardziej rozbudowana od innych; należałoby
+       poprawić proporcje,
+     * zgodnie z pow. napisanym wstępem, należy dodać podpunkt o
+       nierelacyjnych bazach i MongoDB,
+     * nie rozwija Pani tematu metainformacji (co w nich jest
+       przetrzymywane), więc je pomijam; ale można też zrobić odwrotnie:
+       dodać kolejny podpunkt, albo umieścić te informacje w projekcie
+
+4) „Pozyskiwanie informacji z plików  ...”
+
+   * tu jest wyraźny przeskok w wypowiedzi; pojawia się pytanie: po co
+     pozyskiwać informacje, skoro dane mają być tylko gromadzone?
+   * trzeba to opisać
+
+     - cel: aplikacja ma wspomagać klasyfikowanie gromadzonych danych
+     - dlatego: trzeba z pliku wyciągnąć informacje, a następnie
+       dostarczyć ją w formie przetworzonej,
+     - sposób wydobywania właściwych informacji i przetwarzania zależy
+       od rodzaju danych (dokumenty tekstowe, dane tabelaryczne, grafiki
+       ....)
+
+   * uwagi: nie zauważyłem informacji o przetwarzaniu danych innych niż
+     tekstowe, w szczególności tabelarycznych; czy są implementowane?
+     jak nie, to można to podkreślić: „w tej wersji skupiono się na ...
+     w postaci generowania abstraktów”
+
+5) „Projekt aplikacji wykorzystuje architekturę typu klient-serwer.
+   Określenie architektura aplikacji odnosi się do wysokopoziomowej
+   struktury i organizacji systemów oprogramowania. ”
+
+   „W rozdziale 1.4 została opisana wyżej wymieniona architektura pod
+   kątem charakterystyki i przypadków użycia.”
+
+
+   Fakty:
+   * projekt zakłada wykorzystanie http i html – czyli jest to aplikacja
+     webowa,
+   * zastosowanie elektrona zmienia sytuację o tyle, że nie korzysta się
+     z zewnętrznej przeglądarki,
+
+   Opis:
+   * w projekcie założono zastosowanie architektury aplikacji webowej,
+   * natomiast w realizacji, dzięki wykorzystaniu pakietu Electron,
+     finalna aplikacja  nie wymaga używania zewnętrznej przeglądarki,
+     przez co zachowuje się jak desktopowa,
+   * opis architektury aplikacji webowych oraz właściwości electron
+     znajduje się w punktach ...
+
+
+6) Uwagi do kolejności podrozdziałów
+   * dotyczący przechowywania - na początek, dotyczący architektur - na
+     koniec – zgodnie z opisem we wstępie
+   * w środku: tworzenie abstraktów przed ekstrakcją tekstu z PDF.
+
+
