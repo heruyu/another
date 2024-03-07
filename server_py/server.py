@@ -104,7 +104,7 @@ def upload():
         res = re.sub(r'([^0-9]\.)\d+',r'\1',res)
 
         #tags
-        lang = "en"
+        lang = "pl"
         max_ngram_size = 3
         deduplication_treshold = 0.5
         num_keywords = 6
@@ -133,9 +133,9 @@ def upload():
         
         # print(main_title, file=sys.stderr)
 
-        parser = PlaintextParser.from_string(res,Tokenizer("english"))
+        parser = PlaintextParser.from_string(res,Tokenizer("polish"))
         summarizer = TextRankSummarizer()
-        summary =summarizer(parser.document,2)
+        summary =summarizer(parser.document,6)
         text_summary=""
 
         for sentence in summary:
