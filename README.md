@@ -1,3 +1,6 @@
+### This was testing things for my bachelors degree, basically: summarisation modules, text analysis, sentiment etc.
+
+
 ### open app
 
 1. cd server_py
